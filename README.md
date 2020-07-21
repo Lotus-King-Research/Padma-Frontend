@@ -52,3 +52,14 @@ Production build folders - dist (for web), electron_dist (for electron)
 ```
 yarn lint
 ```
+
+### Update app icon
+Update the file public/img/icons/padma.png
+
+Then run the following command to generate the required iconset
+```
+yarn electron:generate-icons
+```
+
+After this, run a production build to incorporate the new iconset
+
