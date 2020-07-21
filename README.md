@@ -63,3 +63,10 @@ yarn electron:generate-icons
 
 After this, run a production build to incorporate the new iconset
 
+### Debugging production build
+
+The following is a good thread
+https://stackoverflow.com/questions/45485262/how-to-debug-electron-production-binaries#45487191
+
+Debugtron works well, but is by ByteDance
+
