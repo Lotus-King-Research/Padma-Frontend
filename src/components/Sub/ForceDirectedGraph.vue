@@ -30,10 +30,6 @@ export default {
     return {
       graphWidth: 0,
       graphHeight: 0,
-      padding: 5,
-      radius: d => {
-        return +d.degree * 20;
-      },
       force: null
     };
   },
@@ -100,10 +96,21 @@ export default {
       for (const nodeKey of Object.keys(graphData.nodes)) {
         nodes.push({
           id: nodeKey,
-          label: graphData.nodes[nodeKey].label,
-          degree: 0.4
+          label: graphData.nodes[nodeKey].label
         });
       }
+
+      // Now need to update the weight for each node
+      nodes.forEach(node => {
+        if (node.id === "0") {
+          node.weight = 1;
+        } else {
+          node.weight = Math.max(
+            0.5,
+            edges.find(el => el.target === node.id).weight
+          );
+        }
+      });
 
       const linkLayer = d3
         .select("svg")
@@ -116,10 +123,7 @@ export default {
         .enter()
         .append("line")
         .attr("stroke", "#000000")
-        .attr("stroke-opacity", 0.1)
-        .attr("stroke-width", d => {
-          return (1.05 - d.weight) * 60;
-        });
+        .attr("stroke-opacity", 0.1);
 
       const nodeLayer = d3
         .select("svg")
@@ -130,7 +134,7 @@ export default {
         .enter()
         .append("text")
         .text(d => d.label)
-        .style("font-size", this.radius / 2 + "px")
+        .style("font-size", d => Math.ceil(Math.pow(d.weight, 4) * 30) + "px")
         .style("cursor", "pointer")
         .on("click", () => {
           this.$router.push(`/find_similar?query=${d => d.label}`);
