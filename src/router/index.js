@@ -30,6 +30,11 @@ export default new Router({
           path: "render_text",
           name: "rendertext",
           component: require("@/components/Pages/RenderText").default
+        },
+        {
+          path: "tokenize",
+          name: "tokenize",
+          component: require("@/components/Pages/Tokenize").default
         }
       ]
     },

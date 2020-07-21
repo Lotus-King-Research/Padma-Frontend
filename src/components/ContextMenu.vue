@@ -56,7 +56,9 @@ export default {
 
     doWordStats() {},
 
-    doTokenize() {},
+    doTokenize() {
+      this.$router.push(`/tokenize?query=${this.selectedText}`);
+    },
 
     getSelectionText() {
       let text = "";
