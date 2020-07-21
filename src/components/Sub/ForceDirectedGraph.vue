@@ -1,9 +1,9 @@
 <template>
-  <div class="force-directed-graph">
+  <div class="force-directed-graph" ref="graph">
     <svg
       id="svg"
       pointer-events="all"
-      viewBox="0 0 960 800"
+      :viewBox="`0 0 ${graphWidth} ${graphHeight}`"
       preserveAspectRatio="xMinYMin meet"
     ></svg>
   </div>
@@ -28,8 +28,8 @@ export default {
 
   data() {
     return {
-      width: 960,
-      height: 800,
+      graphWidth: 0,
+      graphHeight: 0,
       padding: 5,
       radius: d => {
         return +d.degree * 20;
@@ -48,6 +48,9 @@ export default {
   },
 
   mounted() {
+    this.graphWidth = window.innerWidth - 30;
+    this.graphHeight = window.innerHeight - 100;
+
     this.force = d3
       .forceSimulation()
       // Create a force between nodes based on links
@@ -58,11 +61,14 @@ export default {
         })
       )
       // forceManyBody simulates attraction and repulsion between nodes based on edge weight
-      .force("charge", d3.forceManyBody().strength(-30000))
+      .force("charge", d3.forceManyBody().strength(-5000))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
       // Sets center force to the middle of the visualization
-      .force("center", d3.forceCenter(this.width / 2, this.height / 2));
+      .force(
+        "center",
+        d3.forceCenter(this.graphWidth / 2, this.graphHeight / 2)
+      );
 
     this.renderGraph(this.graphData);
   },
@@ -105,8 +111,8 @@ export default {
         .select("svg")
         .append("g")
         .attr("class", "edges")
-        .attr("width", this.width)
-        .attr("height", this.height)
+        .attr("width", this.graphWidth)
+        .attr("height", this.graphHeight)
         .selectAll("line")
         .data(edges)
         .enter()
