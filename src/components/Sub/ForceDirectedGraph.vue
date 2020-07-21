@@ -132,7 +132,6 @@ export default {
         .enter()
         .append("text")
         .text(d => d.label)
-        .attr("fill", "purple")
         .attr("y", this.radius + "px");
 
       // Initiate force simulation, set nodes to specified array
