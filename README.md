@@ -19,12 +19,12 @@ yarn install
 This works on linux, mac, windows git bash. On windows powershell you would need to export the variable VUE_APP_API_URL=http://padma.io
 
 ### Compiles and hot-reloads for development
-From the repo folder, do the following
+From the repo folder, do the following (for electron)
 ```
 yarn electron:serve
 ```
 
-or
+or (for web)
 
 ```
 yarn serve
@@ -45,6 +45,8 @@ Web:
 ```
 yarn build
 ```
+
+Production build folders - dist (for web), electron_dist (for electron)
 
 ### Lints and fixes files
 ```
