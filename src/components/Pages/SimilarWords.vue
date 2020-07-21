@@ -26,6 +26,13 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.apiResult = {};
+      this.doSimilarWords();
+    }
+  },
+
   mounted() {
     this.doSimilarWords();
   },

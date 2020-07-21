@@ -105,8 +105,6 @@ export default {
         });
       }
 
-      console.log(nodes, edges);
-
       const linkLayer = d3
         .select("svg")
         .append("g")
@@ -132,7 +130,12 @@ export default {
         .enter()
         .append("text")
         .text(d => d.label)
-        .attr("y", this.radius + "px");
+        .style("font-size", this.radius / 2 + "px")
+        .style("cursor", "pointer")
+        .on("click", () => {
+          this.$router.push(`/find_similar?query=${d => d.label}`);
+          d3.event.stopPropagation();
+        });
 
       // Initiate force simulation, set nodes to specified array
       this.force
