@@ -32,6 +32,11 @@ export default new Router({
           component: require("@/components/Pages/RenderText").default
         },
         {
+          path: "find_similar",
+          name: "similarwords",
+          component: require("@/components/Pages/SimilarWords").default
+        },
+        {
           path: "tokenize",
           name: "tokenize",
           component: require("@/components/Pages/Tokenize").default

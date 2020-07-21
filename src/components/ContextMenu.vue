@@ -52,7 +52,9 @@ export default {
       this.$router.push(`/search_texts?query=${this.selectedText}`);
     },
 
-    doSimilarWords() {},
+    doSimilarWords() {
+      this.$router.push(`/find_similar?query=${this.selectedText}`);
+    },
 
     doWordStats() {
       this.$router.push(`/word_statistics?query=${this.selectedText}`);

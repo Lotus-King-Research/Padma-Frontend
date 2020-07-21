@@ -4,6 +4,7 @@ const searchTextsUrl = "/search_texts";
 const renderTextUrl = "/render_text";
 const tokenizeUrl = "/tokenize";
 const wordStatisticsUrl = "/word_statistics";
+const similarWordsUrl = "/find_similar";
 
 const apiInstance = API();
 
@@ -46,6 +47,16 @@ export const Services = {
     try {
       return await apiInstance.get(
         `${wordStatisticsUrl}?query=${query}&mode=api`
+      );
+    } catch (err) {
+      return null;
+    }
+  },
+
+  async similarWords(query) {
+    try {
+      return await apiInstance.get(
+        `${similarWordsUrl}?query=${query}&mode=api`
       );
     } catch (err) {
       return null;
