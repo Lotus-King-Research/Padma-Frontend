@@ -44,7 +44,6 @@ export default {
       // Execute search query
       const res = await Services.searchTexts(this.searchQuery);
       this.results = res.data;
-      console.log(res);
     },
 
     renderText(idx) {

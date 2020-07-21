@@ -25,6 +25,11 @@ export default new Router({
           path: "search_texts",
           name: "searchtexts",
           component: require("@/components/Pages/SearchTexts").default
+        },
+        {
+          path: "render_text",
+          name: "rendertext",
+          component: require("@/components/Pages/RenderText").default
         }
       ]
     },
