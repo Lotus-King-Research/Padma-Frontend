@@ -3,7 +3,7 @@
     <div>
       <table class="dataframe">
         <th class="dataframe">most common</th>
-        <th class="dataframe"></th>
+        <th class="dataframelast"></th>
         <template v-for="(mcv, idx) in results.most_common_value">
           <tr :key="idx">
             <td class="td-key">{{ results.most_common_key[idx] }}</td>
@@ -15,11 +15,11 @@
     <div>
       <table class="dataframe">
         <th class="dataframe">prominence</th>
-        <th class="dataframe"></th>
+        <th class="dataframelast"></th>
         <template v-for="(pv, idx) in results.prominence_value">
           <tr :key="idx">
             <td class="td-key">{{ results.prominence_key[idx] }}</td>
-            <td class="td-value">{{ results.prominence_value[i] }}%</td>
+            <td class="td-value">{{ results.prominence_value[idx] }}</td>
           </tr>
         </template>
       </table>
@@ -27,7 +27,7 @@
     <div>
       <table class="dataframe">
         <th class="dataframe">co-occuring</th>
-        <th class="dataframe"></th>
+        <th class="dataframelast"></th>
         <template v-for="(cov, idx) in results.co_occurance_value">
           <tr :key="idx">
             <td class="td-key">{{ results.co_occurance_key[idx] }}</td>
@@ -75,5 +75,60 @@ export default {
 <style lang="scss" scoped>
 .d-flex {
   gap: 20px;
+}
+
+.dataframe {
+  margin: 10px;
+  border-collapse: separate;
+  border-spacing: 0px;
+  border: 0px solid #bfbfbf;
+  border-radius: 20px 20px 0 0;
+  border-width: 1.5px;
+  border-color: rgb(179, 179, 179);
+  box-shadow: 0 0 5.5px rgba(0, 0, 0, 0.014), 0 0 11px rgba(0, 0, 0, 0.028),
+    0 0 22px rgba(0, 0, 0, 0.04), 0 0 34px rgba(0, 0, 0, 0.052),
+    0 0 48px rgba(0, 0, 0, 0.066), 0 0 56px rgba(0, 0, 0, 0.1);
+
+  th,
+  td {
+    text-align: left;
+    border-width: 0px;
+    padding: 14px;
+    padding-left: 20px;
+    font-size: x-large;
+    color: #2c2c2c;
+    font-family: "Tinos", serif;
+  }
+
+  th {
+    background-color: #5f1c26;
+    color: white;
+  }
+
+  td {
+    border-bottom-width: 1px;
+    border-color: rgba(0, 0, 0, 0.26);
+    border-radius: 0px;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #fff8eb;
+  }
+
+  tr:nth-child(even) {
+    background-color: #fff8eb;
+  }
+
+  th:first-child {
+    border-radius: 18.7px 0 0 0;
+  }
+
+  .dataframelast {
+    border-radius: 0 18.7px 0 0;
+  }
+
+  th:only-child {
+    border-radius: 20px 20px 0 0;
+  }
 }
 </style>

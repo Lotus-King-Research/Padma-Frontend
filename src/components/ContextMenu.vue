@@ -54,7 +54,9 @@ export default {
 
     doSimilarWords() {},
 
-    doWordStats() {},
+    doWordStats() {
+      this.$router.push(`/word_statistics?query=${this.selectedText}`);
+    },
 
     doTokenize() {
       this.$router.push(`/tokenize?query=${this.selectedText}`);

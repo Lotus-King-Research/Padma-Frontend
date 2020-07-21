@@ -37,7 +37,7 @@ export default new Router({
           component: require("@/components/Pages/Tokenize").default
         },
         {
-          path: "wordstatistics",
+          path: "word_statistics",
           name: "wordstatistics",
           component: require("@/components/Pages/WordStatistics").default
         }
