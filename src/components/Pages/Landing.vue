@@ -49,9 +49,7 @@ export default {
 
   methods: {
     doDictionaryLookup() {
-      if (this.queryString !== "") {
-        this.$router.push(`dictionary_lookup?query=${this.queryString}`);
-      }
+      this.$router.push(`dictionary_lookup?query=${this.queryString}`);
     }
   }
 };
