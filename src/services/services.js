@@ -3,6 +3,7 @@ const dictLookupUrl = "/dictionary_lookup";
 const searchTextsUrl = "/search_texts";
 const renderTextUrl = "/render_text";
 const tokenizeUrl = "/tokenize";
+const wordStatisticsUrl = "/word_statistics";
 
 const apiInstance = API();
 
@@ -36,6 +37,16 @@ export const Services = {
   async tokenize(query) {
     try {
       return await apiInstance.get(`${tokenizeUrl}?query=${query}&mode=api`);
+    } catch (err) {
+      return null;
+    }
+  },
+
+  async wordStatistics(query) {
+    try {
+      return await apiInstance.get(
+        `${wordStatisticsUrl}?query=${query}&mode=api`
+      );
     } catch (err) {
       return null;
     }
