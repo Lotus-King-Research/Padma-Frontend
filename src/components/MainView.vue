@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" @contextmenu.stop="openMenu">
+  <div id="wrapper" @contextmenu.prevent="openMenu">
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
 
