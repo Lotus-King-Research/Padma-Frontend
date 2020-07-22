@@ -40,7 +40,7 @@ export default {
   methods: {
     async doSimilarWords() {
       // Check for english chars
-      if (this.wordQuery.match("/[a-z]/i")) {
+      if (this.wordQuery.match(/[a-z]/i)) {
         return;
       }
 
