@@ -18,10 +18,8 @@
         <th class="dataframelast"></th>
         <template v-for="(pv, idx) in results.prominence_value">
           <tr :key="idx">
-            <td class="td-key">
-              <a :href="getProminenceLink(idx)">
-                {{ results.prominence_name[idx] }}
-              </a>
+            <td class="td-key prominence" @click="gotoProminenceLink(idx)">
+              {{ results.prominence_name[idx] }}
             </td>
             <td class="td-value">{{ results.prominence_value[idx] }}</td>
           </tr>
@@ -73,8 +71,10 @@ export default {
       this.results = res.data;
     },
 
-    getProminenceLink(idx) {
-      return `/render_text?title=${this.results.prominence_key[idx]}`;
+    gotoProminenceLink(idx) {
+      this.$router.push(
+        `/render_text?title=${this.results.prominence_key[idx]}`
+      );
     }
   }
 };
@@ -117,6 +117,14 @@ export default {
     border-bottom-width: 1px;
     border-color: rgba(0, 0, 0, 0.26);
     border-radius: 0px;
+
+    &.prominence {
+      cursor: pointer;
+
+      &:hover {
+        color: rgba(42, 42, 42, 0.6);
+      }
+    }
   }
 
   tr:nth-child(odd) {

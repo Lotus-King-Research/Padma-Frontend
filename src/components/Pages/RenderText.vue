@@ -24,17 +24,14 @@ export default {
 
   data() {
     return {
-      text: ""
+      text: "",
+      textTitle: ""
     };
   },
 
   computed: {
     title() {
       return this.$route.query.title;
-    },
-
-    textTitle() {
-      return this.$route.query.text_title;
     },
 
     start() {
@@ -61,6 +58,7 @@ export default {
     async fetchTextToRender() {
       const res = await Services.renderText(this.title, this.start, this.end);
       this.text = res ? res.data.text : "";
+      this.textTitle = res ? res.data.text_title : "";
     },
 
     expandRender() {
