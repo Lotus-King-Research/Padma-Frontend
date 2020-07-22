@@ -47,7 +47,7 @@ export default {
       // Execute search query
       const res = await Services.searchTexts(this.searchQuery);
       this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length) {
+      if (!Object.keys(this.results).length || !this.results.title.length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
     },
