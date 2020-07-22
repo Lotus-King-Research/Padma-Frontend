@@ -2,16 +2,19 @@
   <div class="container-fixed">
     <template v-for="(t, idx) in results.title">
       <!--- handle the request from `>>` --->
-      <p class="tibetan-text" :id="results.title[idx]" :key="idx">
+      <p class="tibetan-text mb-0 pb-0" :id="results.title[idx]" :key="idx">
         {{ results.text[idx] }}
-        <br />
-        <span class="tibetan-source" id="source">{{ results.title[idx] }}</span>
-        <i
-          class="fa fa-angle-double-right expand-icon"
-          title="expand"
-          @click="renderText(idx)"
-        ></i>
       </p>
+      <span :key="'span' + idx" class="tibetan-source" id="source">
+        {{ results.text_title[idx] }}
+      </span>
+      <i
+        :key="'i' + idx"
+        class="fa fa-angle-double-right expand-icon"
+        title="expand"
+        @click="renderText(idx)"
+      ></i>
+      <hr align="left" :key="'hr' + idx" />
     </template>
   </div>
 </template>
@@ -52,7 +55,7 @@ export default {
       let start = startTemp;
       let end = endTemp + 2;
       this.$router.push(
-        `/render_text?title=${this.results.title[idx]}&start=${start}&end=${end}`
+        `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
       );
     }
   }
@@ -78,5 +81,12 @@ export default {
   position: absolute;
   padding-left: 15px;
   padding-top: 22px;
+}
+
+hr {
+  width: 30%;
+  text-align: left;
+  height: 0.1px;
+  margin-left: 5px;
 }
 </style>

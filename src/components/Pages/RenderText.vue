@@ -1,10 +1,10 @@
 <template>
-  <div class="container-fixed vertical-center">
-    <div class="tibetan-text-reader">
+  <div class="container-fixed m-4 mt-5 pt-4">
+    <div class="tibetan-text-reader mb-4'">
       {{ text }}
     </div>
-    <p class="tibetan-source" id="source">
-      <span class="source" id="source"> {{ title }}</span>
+    <p id="source">
+      <span class="tibetan-source-reader"> {{ textTitle }}</span>
       <i
         class="fa fa-angle-double-right expand-icon"
         id="add"
@@ -31,6 +31,10 @@ export default {
   computed: {
     title() {
       return this.$route.query.title;
+    },
+
+    textTitle() {
+      return this.$route.query.text_title;
     },
 
     start() {
@@ -62,7 +66,7 @@ export default {
     expandRender() {
       const newEnd = Number(this.end) + 2;
       this.$router.push(
-        `/render_text?title=${this.title}&start=${this.start}&end=${newEnd}`
+        `/render_text?title=${this.title}&text_title=${this.textTitle}&start=${this.start}&end=${newEnd}`
       );
     }
   }
@@ -75,9 +79,9 @@ export default {
   font-family: "Jomolhari", serif;
 }
 
-.tibetan-source {
+.tibetan-source-reader {
   opacity: 0.4;
-  font-size: x-large;
+  font-size: 1em;
   font-family: "Tinos", serif;
 }
 

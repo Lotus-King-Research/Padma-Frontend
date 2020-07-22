@@ -2,7 +2,7 @@
   <div class="d-flex">
     <div>
       <table class="dataframe">
-        <th class="dataframe">most common</th>
+        <th class="dataframe">common</th>
         <th class="dataframelast"></th>
         <template v-for="(mcv, idx) in results.most_common_value">
           <tr :key="idx">
@@ -18,7 +18,11 @@
         <th class="dataframelast"></th>
         <template v-for="(pv, idx) in results.prominence_value">
           <tr :key="idx">
-            <td class="td-key">{{ results.prominence_key[idx] }}</td>
+            <td class="td-key">
+              <a :href="getProminenceLink(idx)">
+                {{ results.prominence_name[idx] }}
+              </a>
+            </td>
             <td class="td-value">{{ results.prominence_value[idx] }}</td>
           </tr>
         </template>
@@ -26,7 +30,7 @@
     </div>
     <div>
       <table class="dataframe">
-        <th class="dataframe">co-occuring</th>
+        <th class="dataframe">proximity</th>
         <th class="dataframelast"></th>
         <template v-for="(cov, idx) in results.co_occurance_value">
           <tr :key="idx">
@@ -67,6 +71,10 @@ export default {
       // Execute word statistics query
       const res = await Services.wordStatistics(this.searchQuery);
       this.results = res.data;
+    },
+
+    getProminenceLink(idx) {
+      return `/render_text?title=${this.results.prominence_key[idx]}`;
     }
   }
 };

@@ -39,6 +39,11 @@ export default {
 
   methods: {
     async doSimilarWords() {
+      // Check for english chars
+      if (this.wordQuery.match("/[a-z]/i")) {
+        return;
+      }
+
       // Execute similar words query
       const res = await Services.similarWords(this.wordQuery);
       this.apiResult = res.data;
