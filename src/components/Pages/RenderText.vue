@@ -57,8 +57,11 @@ export default {
   methods: {
     async fetchTextToRender() {
       const res = await Services.renderText(this.title, this.start, this.end);
-      this.text = res ? res.data.text : "";
-      this.textTitle = res ? res.data.text_title : "";
+      this.text = res && res.data ? res.data.text : "";
+      this.textTitle = res && res.data ? res.data.text_title : "";
+      if (this.text === "") {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
     },
 
     expandRender() {

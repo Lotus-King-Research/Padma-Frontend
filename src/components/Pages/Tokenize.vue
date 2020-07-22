@@ -36,7 +36,10 @@ export default {
     async doTokenize() {
       // Execute tokenize query
       const res = await Services.tokenize(this.tokenizeQuery);
-      this.tokens = res.data.tokens;
+      this.tokens = res && res.data ? res.data.tokens : [];
+      if (!this.tokens.length) {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
     }
   }
 };

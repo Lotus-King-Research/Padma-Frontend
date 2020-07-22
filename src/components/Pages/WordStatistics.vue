@@ -50,7 +50,7 @@ export default {
 
   data() {
     return {
-      results: []
+      results: {}
     };
   },
 
@@ -68,7 +68,10 @@ export default {
     async doWordStatistics() {
       // Execute word statistics query
       const res = await Services.wordStatistics(this.searchQuery);
-      this.results = res.data;
+      this.results = res && res.data ? res.data : {};
+      if (!Object.keys(this.results).length) {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
     },
 
     gotoProminenceLink(idx) {
