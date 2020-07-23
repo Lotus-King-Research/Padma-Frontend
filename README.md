@@ -48,6 +48,20 @@ yarn build
 
 Production build folders - dist (for web), electron_dist (for electron)
 
+### Docker build / deploy
+To build - from repo folder
+
+```
+docker build -t padma-frontend .
+```
+
+Deploy (runs on 127.0.0.1:8080)
+
+```
+docker run -it -p 8080:8080 --rm --name padma-frontend-vue-1 padma-frontend
+```
+
+
 ### Lints and fixes files
 ```
 yarn lint

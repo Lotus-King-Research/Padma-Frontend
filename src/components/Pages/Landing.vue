@@ -15,7 +15,8 @@
               type="text"
               class="form-control cursor form-css"
               v-model="queryString"
-              rows="11"
+              rows="15"
+              placeholder="Start by entering a Tibetan word or a segment of text"
             ></textarea>
           </div>
         </form>
@@ -61,7 +62,7 @@ export default {
   font-size: 24px;
   margin: 10px;
   font-family: sans-serif;
-  font-weight: 600;
+  font-weight: 400;
   color: #444;
   line-height: 1.3;
   width: 100%;
@@ -121,5 +122,10 @@ input[type="reset"] {
 
 button:hover {
   opacity: 0.5;
+}
+
+.form-control::placeholder {
+  font-size: 0.8em !important;
+  font-style: italic;
 }
 </style>

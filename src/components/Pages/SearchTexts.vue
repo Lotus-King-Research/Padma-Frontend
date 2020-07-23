@@ -8,12 +8,14 @@
       <span :key="'span' + idx" class="tibetan-source" id="source">
         {{ results.text_title[idx] }}
       </span>
-      <i
+      <font-awesome-icon
         :key="'i' + idx"
-        class="fa fa-angle-double-right expand-icon"
+        :icon="['fas', 'angle-double-right']"
+        class="expand-icon"
+        size="2x"
         title="expand"
         @click="renderText(idx)"
-      ></i>
+      />
       <hr align="left" :key="'hr' + idx" />
     </template>
   </div>
@@ -80,10 +82,12 @@ export default {
 .expand-icon {
   cursor: pointer;
   opacity: 0.3;
-  font-size: x-large;
   position: absolute;
   padding-left: 15px;
-  padding-top: 22px;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 
 hr {

@@ -113,7 +113,7 @@ export default {
       });
 
       const linkLayer = d3
-        .select("svg")
+        .select("#svg")
         .append("g")
         .attr("class", "edges")
         .attr("width", this.graphWidth)
@@ -126,7 +126,7 @@ export default {
         .attr("stroke-opacity", 0.1);
 
       const nodeLayer = d3
-        .select("svg")
+        .select("#svg")
         .append("g")
         .attr("class", "nodes")
         .selectAll("text")
