@@ -29,7 +29,7 @@ export default {
 
   data() {
     return {
-      results: []
+      results: {}
     };
   },
 
@@ -41,7 +41,7 @@ export default {
 
   watch: {
     $route() {
-      this.results = [];
+      this.results = {};
       this.doSearch();
     }
   },
@@ -54,7 +54,10 @@ export default {
     async doSearch() {
       // Execute search query
       const res = await Services.dictionaryLookup(this.searchQuery);
-      this.results = res.data;
+      this.results = res && res.data ? res.data : {};
+      if (!Object.keys(this.results).length) {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
     }
   }
 };

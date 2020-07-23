@@ -135,9 +135,13 @@ export default {
         .append("text")
         .text(d => d.label)
         .style("font-size", d => Math.ceil(Math.pow(d.weight, 4) * 30) + "px")
-        .style("cursor", "pointer")
-        .on("click", () => {
-          this.$router.push(`/find_similar?query=${d => d.label}`);
+        .style("cursor", d => (d.label.match(/[a-z]/i) ? "default" : "pointer"))
+        .on("click", d => {
+          // Non english and not the central word?
+          if (!d.label.match("/[a-z]/i") && d.id !== "0") {
+            this.$router.push(`/find_similar?query=${d.label}`);
+          }
+
           d3.event.stopPropagation();
         });
 

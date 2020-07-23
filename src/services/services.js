@@ -27,9 +27,15 @@ export const Services = {
 
   async renderText(title, start, end) {
     try {
-      return await apiInstance.get(
-        `${renderTextUrl}?title=${title}&start=${start}&end=${end}&mode=api`
-      );
+      if (start != null && end != null) {
+        return await apiInstance.get(
+          `${renderTextUrl}?title=${title}&start=${start}&end=${end}&mode=api`
+        );
+      } else {
+        return await apiInstance.get(
+          `${renderTextUrl}?title=${title}&mode=api`
+        );
+      }
     } catch (err) {
       return null;
     }

@@ -40,13 +40,16 @@ export default {
   methods: {
     async doSimilarWords() {
       // Check for english chars
-      if (this.wordQuery.match("/[a-z]/i")) {
+      if (this.wordQuery.match(/[a-z]/i)) {
         return;
       }
 
       // Execute similar words query
       const res = await Services.similarWords(this.wordQuery);
-      this.apiResult = res.data;
+      this.apiResult = res && res.data ? res.data : {};
+      if (!Object.keys(this.apiResult).length) {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
     }
   }
 };
