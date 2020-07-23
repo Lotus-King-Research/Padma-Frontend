@@ -3,12 +3,14 @@
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
     <div class="row">
-      <i
+      <font-awesome-icon
+        :icon="['fas', 'arrow-circle-left']"
         :class="{ visible: notLandingPage }"
-        class="fa fa-arrow-circle-o-left go-back ml-4 pt-3 pb-3"
+        class="go-back ml-4 pt-3 pb-3"
+        size="3x"
         title="back"
         @click="goBack"
-      ></i>
+      />
       <button
         type="image"
         :class="{ visible: notLandingPage }"
@@ -58,7 +60,6 @@ export default {
 
 <style lang="scss" scoped>
 .go-back {
-  font-size: x-large;
   cursor: pointer;
   opacity: 0.3;
   display: none;

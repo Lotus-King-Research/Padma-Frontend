@@ -5,12 +5,13 @@
     </div>
     <p id="source">
       <span class="tibetan-source-reader"> {{ textTitle }}</span>
-      <i
-        class="fa fa-angle-double-right expand-icon"
-        id="add"
+      <font-awesome-icon
+        :icon="['fas', 'angle-double-right']"
+        class="expand-icon"
+        size="2x"
         title="add segments"
         @click="expandRender"
-      ></i>
+      />
     </p>
   </div>
 </template>
@@ -89,9 +90,11 @@ export default {
 .expand-icon {
   cursor: pointer;
   opacity: 0.3;
-  font-size: x-large;
   position: absolute;
   padding-left: 15px;
-  padding-top: 6px;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 </style>
