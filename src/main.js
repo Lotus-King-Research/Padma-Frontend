@@ -8,6 +8,8 @@ import { BootstrapVue } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
+import(/* webpackPreload: true */ "typeface-jomolhari/index.css");
+
 import Toasted from "vue-toasted";
 Vue.use(Toasted);
 
