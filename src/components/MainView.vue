@@ -2,18 +2,25 @@
   <div id="wrapper" @contextmenu.prevent="openMenu">
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
-
-    <!--- main content area --->
-    <div class="container-fluid">
+    <div class="row">
+      <i
+        :class="{ visible: notLandingPage }"
+        class="fa fa-arrow-circle-o-left go-back ml-4 pt-3 pb-3"
+        title="back"
+        @click="goBack"
+      ></i>
       <button
         type="image"
         :class="{ visible: notLandingPage }"
-        class="button-image float-right"
+        class="button-image ml-auto mr-4"
         @click="goHome"
       >
         <img class="logo-navi" src="@/assets/images/padma.png" width="50px;" />
       </button>
-      <router-view></router-view>
+    </div>
+    <!--- main content area --->
+    <div class="container-fluid">
+      <router-view />
     </div>
   </div>
 </template>
@@ -40,15 +47,33 @@ export default {
 
     openMenu(event, data) {
       this.$refs.cmenu.openMenu(event, data);
+    },
+
+    goBack() {
+      window.history.back();
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-button {
+.go-back {
+  font-size: x-large;
+  cursor: pointer;
+  opacity: 0.3;
   display: none;
-  margin-right: 25px;
+
+  &.visible {
+    display: block;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.button-image {
+  display: none;
 
   &.visible {
     display: block;
