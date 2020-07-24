@@ -1,0 +1,33 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Staging
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2    
+    - name: Build Staging API Image
+      run: |
+        docker login docker.pkg.github.com --username mikkokotila --password ${{ secrets.MIKKOKOTILA_TOKEN }}
+        docker build -t docker.pkg.github.com/mikkokotila/padma-frontend/frontend:staging -f ./Dockerfile_Staging .
+        docker push docker.pkg.github.com/mikkokotila/padma-frontend/frontend:staging
+    - name: Deploy to Staging
+      uses: appleboy/ssh-action@master
+      with:
+        host: 18.158.207.5
+        username: ubuntu
+        key: ${{ secrets.PADMA }}
+        command_timeout: 5m
+        script: |
+          RUNNING_IMAGE=$(sudo docker ps | grep docker-entrypoint | cut -d ' ' -f1)
+          sudo docker login docker.pkg.github.com --username mikkokotila --password ${{ secrets.MIKKOKOTILA_TOKEN }}
+          sudo docker pull docker.pkg.github.com/mikkokotila/padma-frontend/frontend:staging
+          NEW_IMAGE_ID=$(sudo docker images | grep frontend | head -1 | tr -s ' ' | cut -d ' ' -f3)
+          sudo docker stop $RUNNING_IMAGE
+          sudo docker run --restart unless-stopped -p 8080:8080 $NEW_IMAGE_ID
