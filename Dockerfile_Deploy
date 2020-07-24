@@ -16,7 +16,7 @@ RUN yarn install
 COPY . .
 
 # Set environmental variable
-ARG VUE_APP_API_URL=http://padma.io/api
+ARG VUE_APP_API_URL=http://api.padma.io
 
 # build app for production with minification
 RUN yarn build
