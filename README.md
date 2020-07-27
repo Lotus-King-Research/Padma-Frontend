@@ -82,6 +82,8 @@ or
 docker-compose -f ./docker-compose-dev-staging.yml up
 ```
 
+After you do this, you can visit http://localhost:8002/ in browser to access the frontend
+
 
 ### Lints and fixes files
 ```
