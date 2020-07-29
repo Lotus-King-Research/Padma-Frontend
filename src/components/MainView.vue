@@ -2,12 +2,12 @@
   <div id="wrapper" @contextmenu.prevent="openMenu">
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
-    <div class="row">
+    <div class="row ml-5">
       <font-awesome-icon
         :icon="['fas', 'arrow-circle-left']"
         :class="{ visible: notLandingPage }"
-        class="go-back ml-4 pt-3 pb-3"
-        size="3x"
+        class="go-back my-3 ml-2"
+        size="2x"
         title="back"
         @click="goBack"
       />
