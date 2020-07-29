@@ -1,8 +1,5 @@
 <template>
   <div class="dictionarylookup">
-    <div class="container-fluid pb-2 pl-4">
-      <font class="tibetan-text-reader">{{ searchQuery }}</font>
-    </div>
     <div class="container-fluid">
       <template v-for="(token, idx) in results.tokens">
         <table class="dataframe mb-4" :key="idx">
