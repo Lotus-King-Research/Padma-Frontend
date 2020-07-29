@@ -60,6 +60,13 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.results = {};
+      this.doWordStatistics();
+    }
+  },
+
   mounted() {
     this.doWordStatistics();
   },

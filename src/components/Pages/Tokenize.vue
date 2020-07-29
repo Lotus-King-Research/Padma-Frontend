@@ -28,6 +28,13 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.tokens = [];
+      this.doTokenize();
+    }
+  },
+
   mounted() {
     this.doTokenize();
   },

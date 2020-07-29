@@ -61,6 +61,29 @@ Deploy (runs on 127.0.0.1:8080)
 docker run -it -p 8080:8080 --rm --name padma-frontend-vue-1 padma-frontend
 ```
 
+### Docker dev 
+To build the dev container (first case if running backend locally, second is if using staging api)
+```
+docker-compose -f ./docker-compose-dev-local.yml build
+```
+or
+
+```
+docker-compose -f ./docker-compose-dev-staging.yml build
+```
+
+Then run `docker-compose up` with the same yml file above i.e.
+```
+docker-compose -f ./docker-compose-dev-local.yml up
+```
+
+or
+```
+docker-compose -f ./docker-compose-dev-staging.yml up
+```
+
+After you do this, you can visit http://localhost:8002/ in browser to access the frontend
+
 
 ### Lints and fixes files
 ```

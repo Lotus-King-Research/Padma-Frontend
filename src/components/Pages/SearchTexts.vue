@@ -40,6 +40,13 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.results = {};
+      this.doSearch();
+    }
+  },
+
   mounted() {
     this.doSearch();
   },
