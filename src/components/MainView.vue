@@ -14,10 +14,11 @@
       <button
         type="image"
         :class="{ visible: notLandingPage }"
-        class="button-image ml-auto mr-4"
+        class="button-image mr-auto mr-4"
+        size="2x"
         @click="goHome"
       >
-        <img class="logo-navi" src="@/assets/images/padma.png" width="50px;" />
+        <img class="logo-navi pb-3 ml-3" src="@/assets/images/padma.png" width="70px;" />
       </button>
     </div>
     <!--- main content area --->
