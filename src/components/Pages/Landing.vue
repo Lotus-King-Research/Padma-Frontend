@@ -1,7 +1,7 @@
 <template>
-  <div class="landing">
+  <div class="container-fixed landing">
     <center>
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mt-5 mb-2 ml-3">
         <form
           class="form-inline"
           action=""
@@ -16,7 +16,7 @@
               class="form-control cursor form-css"
               v-model="queryString"
               rows="15"
-              placeholder="Start by entering a Tibetan word or a segment of text"
+              placeholder="Start by entering a Tibetan word or a segment of text..."
             ></textarea>
           </div>
         </form>
@@ -59,9 +59,8 @@ export default {
 <style lang="scss" scoped>
 .form-css {
   display: block;
-  font-size: 24px;
-  margin: 10px;
-  font-family: sans-serif;
+  font-size: 34px;
+  font-family: "Tinos", serif;
   font-weight: 400;
   color: #444;
   line-height: 1.3;
@@ -74,7 +73,10 @@ export default {
   appearance: none;
   border: 1px solid #bfbfbf;
   line-height: normal;
-  padding-top: 20px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
   align-content: center;
 
   &::-ms-expand {
