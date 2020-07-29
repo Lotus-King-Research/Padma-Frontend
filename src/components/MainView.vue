@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" @contextmenu.prevent="openMenu">
+  <div class="wrapper" id="wrapper" @contextmenu.prevent="openMenu">
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
     <div class="row ml-5">
@@ -60,6 +60,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.wrapper {
+  max-width: 90%;
+}
+
 .go-back {
   cursor: pointer;
   opacity: 0.3;
