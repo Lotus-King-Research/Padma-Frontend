@@ -53,7 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .tibetan-text-reader {
   font-size: 1.5em;
   font-family: "Jomolhari", serif;

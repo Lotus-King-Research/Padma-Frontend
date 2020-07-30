@@ -18,7 +18,11 @@
         size="2x"
         @click="goHome"
       >
-        <img class="logo-navi pb-3 ml-3" src="@/assets/images/padma.png" width="70px;" />
+        <img
+          class="logo-navi pb-3 ml-3"
+          src="@/assets/images/padma.png"
+          width="70px;"
+        />
       </button>
     </div>
     <!--- main content area --->
@@ -60,7 +64,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .wrapper {
   max-width: 90%;
 }

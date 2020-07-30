@@ -74,7 +74,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .tibetan-text {
   font-size: 1.6em;
   font-family: "Jomolhari", serif;
