@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fixed">
+  <div class="container-fixed px-5 pb-5">
     <template v-for="(t, idx) in results.title">
       <!--- handle the request from `>>` --->
       <p class="tibetan-text mb-0 pb-0" :id="results.title[idx]" :key="idx">
@@ -12,7 +12,6 @@
         :key="'i' + idx"
         :icon="['fas', 'angle-double-right']"
         class="expand-icon"
-        size="2x"
         title="expand"
         @click="renderText(idx)"
       />
@@ -76,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .tibetan-text {
-  font-size: 1.2em;
+  font-size: 1.6em;
   font-family: "Jomolhari", serif;
 }
 
@@ -87,6 +86,8 @@ export default {
 }
 
 .expand-icon {
+  font-size: 35px;
+
   cursor: pointer;
   opacity: 0.3;
   position: absolute;

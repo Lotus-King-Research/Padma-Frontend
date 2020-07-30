@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fixed vertical-center">
+  <div class="container-fixed px-5 pb-5">
     <font
       v-for="(token, idx) in tokens"
       class="tibetan-text-reader"

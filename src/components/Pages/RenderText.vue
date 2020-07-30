@@ -1,9 +1,9 @@
 <template>
-  <div class="container-fixed m-4 mt-5 pt-4">
+  <div class="container-fixed mx-5 my-3">
     <div class="tibetan-text-reader mb-4'">
       {{ text }}
     </div>
-    <p id="source">
+    <p id="source" class="mt-2">
       <span class="tibetan-source-reader"> {{ textTitle }}</span>
       <font-awesome-icon
         :icon="['fas', 'angle-double-right']"
@@ -76,18 +76,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tibetan-text {
-  font-size: 1.2em;
+.tibetan-text-reader {
+  font-size: 1.6em;
   font-family: "Jomolhari", serif;
 }
 
 .tibetan-source-reader {
   opacity: 0.4;
-  font-size: 1em;
+  font-size: 1.3em;
   font-family: "Tinos", serif;
 }
 
 .expand-icon {
+  font-size: 35px;
+
   cursor: pointer;
   opacity: 0.3;
   position: absolute;

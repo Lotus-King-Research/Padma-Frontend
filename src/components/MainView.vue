@@ -1,23 +1,28 @@
 <template>
-  <div id="wrapper" @contextmenu.prevent="openMenu">
+  <div class="wrapper" id="wrapper" @contextmenu.prevent="openMenu">
     <!--- context menu --->
     <ContextMenu ref="cmenu"></ContextMenu>
-    <div class="row">
+    <div class="row ml-5">
       <font-awesome-icon
         :icon="['fas', 'arrow-circle-left']"
         :class="{ visible: notLandingPage }"
-        class="go-back ml-4 pt-3 pb-3"
-        size="3x"
+        class="go-back my-3 ml-2"
+        size="2x"
         title="back"
         @click="goBack"
       />
       <button
         type="image"
         :class="{ visible: notLandingPage }"
-        class="button-image ml-auto mr-4"
+        class="button-image mr-auto mr-4"
+        size="2x"
         @click="goHome"
       >
-        <img class="logo-navi" src="@/assets/images/padma.png" width="50px;" />
+        <img
+          class="logo-navi pb-3 ml-3"
+          src="@/assets/images/padma.png"
+          width="70px;"
+        />
       </button>
     </div>
     <!--- main content area --->
@@ -59,6 +64,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  max-width: 90%;
+}
+
 .go-back {
   cursor: pointer;
   opacity: 0.3;
