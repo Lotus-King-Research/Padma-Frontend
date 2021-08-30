@@ -20,11 +20,11 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/assets/scss/index.scss";
 body {
-  margin-top: 12px !important;
-  font-size: 24px !important;
-  background: #fff8eb !important;
-  font-family: "Tinos", serif !important;
+  margin: 0;
+  padding: 0;
+  font-family: $en-font;
 }
 
 .loader {

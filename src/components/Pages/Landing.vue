@@ -57,12 +57,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/index.scss";
 .form-css {
   display: block;
   font-size: 34px;
   font-family: "Tinos", serif;
   font-weight: 400;
-  color: #444;
+  color: #ccc;
   line-height: 1.3;
   width: 100%;
   box-sizing: border-box;
