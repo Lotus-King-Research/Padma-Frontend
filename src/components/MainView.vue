@@ -2,7 +2,7 @@
   <b-container class="home" fluid>
     <b-row class="padma-logo-mobile">
       <b-col class="padma-logo-img justify-content-center">
-        <img src="@/assets/images/padma.png" />
+        <img src="@/assets/images/padma.png" @click="goHome" />
       </b-col>
     </b-row>
     <b-row class="row input-area">
@@ -15,7 +15,7 @@
         ></textarea>
       </b-col>
       <b-col class="padma-logo justify-content-center" md="2">
-        <img src="@/assets/images/padma.png" />
+        <img src="@/assets/images/padma.png" @click="goHome" />
       </b-col>
       <b-col class="menu-list">
         <b-row>
@@ -37,9 +37,23 @@
     </b-row>
     <b-row class="menu-dropdown">
       <b-col class="for-mobile">
-        <div class="select">
-          <v-select :options="options"></v-select>
-        </div>
+        <b-row class="select">
+          <b-col>
+            <v-select
+              :options="options"
+              v-model="selectedMenu"
+              class="selectMenu"
+              :clearable="false"
+            >
+            </v-select>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <!-- Main content here for mobile -->
+            <router-view />
+          </b-col>
+        </b-row>
       </b-col>
     </b-row>
   </b-container>
@@ -51,12 +65,23 @@ export default {
   data() {
     return {
       queryString: "",
-      options: ["foo", "bar", "baz"]
+      selectedMenu: "Select Action",
+      // options: ["Dictionary", "Texts", "Similar Words", "Statistics", "Tokenize"],
+      options: [
+        { label: "Dictionary", value: "Dictionary", id: 1 },
+        { label: "Texts", value: "Texts", id: 2 },
+        { label: "Similar Words", value: "Similar Words", id: 3 },
+        { label: "Statistics", value: "Statistics", id: 4 },
+        { label: "Tokenize", value: "Tokenize", id: 5 }
+      ]
     };
   },
   methods: {
     doDictionaryLookup() {
       this.$router.push(`/dictionary_lookup?query=${this.queryString}`);
+    },
+    goHome() {
+      this.$router.push("/");
     }
 
     // goHome() {
@@ -101,6 +126,7 @@ export default {
     textarea {
       height: 20rem;
       letter-spacing: 0.1rem;
+      padding: 1.5rem;
     }
     textarea::placeholder {
       color: $dropdown-color;
@@ -142,13 +168,55 @@ export default {
     }
   }
   .menu-dropdown {
-    .select {
-    }
+    padding-top: 1.5rem;
 
     @include breakpoint(medium) {
       .for-mobile {
         display: none;
       }
+    }
+  }
+}
+</style>
+<style lang="scss">
+@import "@/assets/scss/index.scss";
+.select {
+  .selectMenu {
+    .vs__search::placeholder,
+    .vs__dropdown-toggle {
+      background: transparent;
+      border-radius: 0px;
+      border: none;
+      border-bottom: solid 1px $dropdown-color;
+      color: $dropdown-color;
+      font-size: 1.2em;
+      letter-spacing: 0.1rem;
+      text-transform: lowercase;
+      font-variant: small-caps;
+    }
+    .vs__dropdown-menu {
+      background-color: $off-white;
+    }
+    .vs__actions {
+      padding: 0.4rem 0.5rem;
+      background-color: $dropdown-color;
+    }
+    .vs__open-indicator {
+      fill: #fff;
+    }
+    .vs__selected {
+      color: $dropdown-color;
+    }
+    .vs__dropdown-option {
+      color: $primary-color;
+      letter-spacing: 0.1rem;
+      background-color: $off-white;
+    }
+    .vs__dropdown-option:hover {
+      color: $dropdown-color;
+    }
+    .vs__dropdown-option--highlight {
+      background: none;
     }
   }
 }
