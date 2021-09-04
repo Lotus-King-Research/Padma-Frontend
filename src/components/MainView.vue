@@ -1,121 +1,155 @@
 <template>
-  <div class="wrapper" id="wrapper" @contextmenu.prevent="openMenu">
-    <!--- context menu --->
-    <ContextMenu ref="cmenu"></ContextMenu>
-    <div class="row ml-5">
-      <font-awesome-icon
-        :icon="['fas', 'arrow-circle-left']"
-        :class="{ visible: notLandingPage }"
-        class="go-back my-3 ml-2"
-        size="2x"
-        title="back"
-        @click="goBack"
-      />
-      <button
-        type="image"
-        :class="{ visible: notLandingPage }"
-        class="button-image mr-auto mr-4"
-        size="2x"
-        @click="goHome"
-      >
-        <img
-          class="logo-navi pb-3 ml-3"
-          src="@/assets/images/padma.png"
-          width="70px;"
-        />
-      </button>
-    </div>
-    <!--- main content area --->
-    <div class="container-fluid">
-      <router-view />
-    </div>
-  </div>
+  <b-container class="home" fluid>
+    <b-row class="padma-logo-mobile">
+      <b-col class="padma-logo-img justify-content-center">
+        <img src="@/assets/images/padma.png" />
+      </b-col>
+    </b-row>
+    <b-row class="row input-area">
+      <b-col md="4">
+        <textarea
+          type="text"
+          class="form-control cursor form-css"
+          v-model="queryString"
+          placeholder="Enter Tibetan Text"
+        ></textarea>
+      </b-col>
+      <b-col class="padma-logo justify-content-center" md="2">
+        <img src="@/assets/images/padma.png" />
+      </b-col>
+      <b-col class="menu-list">
+        <b-row>
+          <b-col>
+            <label @click="doDictionaryLookup"> Dictionary </label>
+            <label> Texts </label>
+            <label> Similar Words </label>
+            <label> Statistics </label>
+            <label> Tokenize </label>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <!-- Main content here -->
+            <router-view />
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
+    <b-row class="menu-dropdown">
+      <b-col class="for-mobile">
+        <div class="select">
+          <v-select :options="options"></v-select>
+        </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-import ContextMenu from "./ContextMenu";
-
 export default {
   name: "mainview",
-  components: {
-    ContextMenu
+  data() {
+    return {
+      queryString: "",
+      options: ["foo", "bar", "baz"]
+    };
   },
-
-  computed: {
-    notLandingPage() {
-      return !this.$root.$route.path.includes("/home");
-    }
-  },
-
   methods: {
-    goHome() {
-      this.$router.push("/home");
-    },
-
-    openMenu(event, data) {
-      this.$refs.cmenu.openMenu(event, data);
-    },
-
-    goBack() {
-      window.history.back();
+    doDictionaryLookup() {
+      this.$router.push(`/dictionary_lookup?query=${this.queryString}`);
     }
+
+    // goHome() {
+    //   this.$router.push("/home");
+    // },
+
+    // openMenu(event, data) {
+    //   this.$refs.cmenu.openMenu(event, data);
+    // },
+
+    // goBack() {
+    //   window.history.back();
+    // }
   }
 };
 </script>
-
 <style lang="scss" scoped>
-.wrapper {
-  max-width: 90%;
-}
-
-.go-back {
-  cursor: pointer;
-  opacity: 0.3;
-  display: none;
-
-  &.visible {
-    display: block;
+@import "vue-select/src/scss/vue-select.scss";
+@import "@/assets/scss/index.scss";
+.home {
+  margin: 0;
+  padding: 2.5rem 2.5rem 0 2.5rem;
+  .padma-logo-mobile {
+    margin-bottom: 2rem;
+    .padma-logo-img {
+      display: grid;
+      img {
+        width: 4rem;
+        opacity: 0.5;
+        transition: opacity 2s;
+      }
+      img:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+    }
+    @include breakpoint(medium) {
+      display: none;
+    }
   }
+  .input-area {
+    textarea {
+      height: 20rem;
+      letter-spacing: 0.1rem;
+    }
+    textarea::placeholder {
+      color: $dropdown-color;
+    }
+    .padma-logo {
+      display: none;
+    }
+    .menu-list {
+      display: none;
+    }
+    @include breakpoint(medium) {
+      textarea {
+        height: 40rem;
+        padding: 2rem;
+        text-transform: uppercase;
+      }
+      .padma-logo {
+        display: grid;
+        align-items: center;
+        img {
+          width: 5rem;
+          opacity: 0.5;
+          transition: opacity 2s;
+        }
+        img:hover {
+          opacity: 1;
+          cursor: pointer;
+        }
+      }
+      .menu-list {
+        display: block;
+        font-size: 1em;
+        text-transform: uppercase;
 
-  &:hover {
-    opacity: 0.5;
+        label {
+          padding-right: 2rem;
+        }
+      }
+    }
   }
-}
+  .menu-dropdown {
+    .select {
+    }
 
-.button-image {
-  display: none;
-
-  &.visible {
-    display: block;
+    @include breakpoint(medium) {
+      .for-mobile {
+        display: none;
+      }
+    }
   }
-}
-</style>
-
-<style lang="scss">
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: none !important;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-}
-
-button,
-input[type="submit"],
-input[type="reset"] {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  opacity: 0.2;
-  transition: opacity 0.2s ease-in-out;
-  padding-top: 15px;
-}
-
-button:hover {
-  opacity: 0.5;
 }
 </style>

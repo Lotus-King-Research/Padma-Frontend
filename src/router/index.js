@@ -7,15 +7,15 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/home",
+      // redirect: "/home",
       name: "mainview",
       component: require("@/components/MainView").default,
       children: [
-        {
-          path: "home",
-          name: "landing",
-          component: require("@/components/Pages/Landing").default
-        },
+        // {
+        //   path: "home",
+        //   name: "landing",
+        //   component: require("@/components/Pages/Landing").default
+        // },
         {
           path: "dictionary_lookup",
           name: "dictionarylookup",

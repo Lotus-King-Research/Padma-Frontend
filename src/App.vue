@@ -22,10 +22,37 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/index.scss";
 body {
-  margin: 0;
   padding: 0;
-  font-family: $en-font;
+  font-size: 1em !important;
+  font-family: $en-font !important;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("assets/images/old-paper-bg.png") !important;
 }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+// button,
+// input[type="submit"],
+// input[type="reset"] {
+//   background: none;
+//   color: inherit;
+//   border: none;
+//   padding: 0;
+//   font: inherit;
+//   cursor: pointer;
+//   outline: inherit;
+//   opacity: 0.2;
+//   transition: opacity 0.2s ease-in-out;
+//   padding-top: 15px;
+// }
 
 .loader {
   position: absolute;

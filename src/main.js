@@ -3,6 +3,10 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import "vue-select/dist/vue-select.css";
+
+import vSelect from "vue-select";
+Vue.component("v-select", vSelect);
 
 import { BootstrapVue } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
