@@ -14,23 +14,55 @@
           placeholder="Enter Tibetan Text"
         ></textarea>
       </b-col>
-      <b-col class="padma-logo justify-content-center" md="2">
+      <b-col class="padma-logo justify-content-center" md="1">
         <img src="@/assets/images/padma.png" @click="goHome" />
       </b-col>
       <b-col class="menu-list">
-        <b-row>
+        <b-row class="menu-list-items">
           <b-col>
-            <label @click="doDictionaryLookup"> Dictionary </label>
-            <label> Texts </label>
-            <label> Similar Words </label>
-            <label> Statistics </label>
-            <label> Tokenize </label>
+            <label
+              :class="{ active: tabSelected === 'dictionary' }"
+              @click="doDictionaryLookup"
+            >
+              Dictionary
+            </label>
+            <label
+              :class="{ active: tabSelected === 'texts' }"
+              @click="doSearchTexts"
+            >
+              Texts
+            </label>
+            <label
+              :class="{ active: tabSelected === 'similarWords' }"
+              @click="doSimilarWords"
+            >
+              Similar Words
+            </label>
+            <label
+              :class="{ active: tabSelected === 'statistics' }"
+              @click="doWordStats"
+            >
+              Statistics
+            </label>
+            <label
+              :class="{ active: tabSelected === 'tokenize' }"
+              @click="doTokenize"
+            >
+              Tokenize
+            </label>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row class="main-content-area">
           <b-col>
             <!-- Main content here -->
             <router-view />
+          </b-col>
+        </b-row>
+        <b-row class="footer">
+          <b-col>
+            <label> About </label>
+            <label> Privacy </label>
+            <label> Terms & Condition </label>
           </b-col>
         </b-row>
       </b-col>
@@ -41,6 +73,7 @@
           <b-col>
             <v-select
               :options="options"
+              @input="setSelectedfunction"
               v-model="selectedMenu"
               class="selectMenu"
               :clearable="false"
@@ -48,10 +81,17 @@
             </v-select>
           </b-col>
         </b-row>
-        <b-row>
+        <b-row class="main-content-mobile">
           <b-col>
             <!-- Main content here for mobile -->
             <router-view />
+          </b-col>
+        </b-row>
+        <b-row class="footer-mobile">
+          <b-col>
+            <label> About </label>
+            <label> Privacy </label>
+            <label> Terms & Condition </label>
           </b-col>
         </b-row>
       </b-col>
@@ -65,12 +105,12 @@ export default {
   data() {
     return {
       queryString: "",
+      tabSelected: null,
       selectedMenu: "Select Action",
-      // options: ["Dictionary", "Texts", "Similar Words", "Statistics", "Tokenize"],
       options: [
         { label: "Dictionary", value: "Dictionary", id: 1 },
         { label: "Texts", value: "Texts", id: 2 },
-        { label: "Similar Words", value: "Similar Words", id: 3 },
+        { label: "Similar Words", value: "SimilarWords", id: 3 },
         { label: "Statistics", value: "Statistics", id: 4 },
         { label: "Tokenize", value: "Tokenize", id: 5 }
       ]
@@ -78,10 +118,51 @@ export default {
   },
   methods: {
     doDictionaryLookup() {
-      this.$router.push(`/dictionary_lookup?query=${this.queryString}`);
+      this.tabSelected = "dictionary";
+      this.$router.push(`dictionary_lookup?query=${this.queryString}`);
+    },
+    doSearchTexts() {
+      this.tabSelected = "texts";
+      this.$router.push(`search_texts?query=${this.queryString}`);
+    },
+
+    doSimilarWords() {
+      this.tabSelected = "similarWords";
+      this.$router.push(`find_similar?query=${this.queryString}`);
+    },
+
+    doWordStats() {
+      this.tabSelected = "statistics";
+      this.$router.push(`word_statistics?query=${this.queryString}`);
+    },
+
+    doTokenize() {
+      this.tabSelected = "tokenize";
+      this.$router.push(`tokenize?query=${this.queryString}`);
     },
     goHome() {
+      this.queryString = "";
+      this.tabSelected = null;
       this.$router.push("/");
+    },
+    setSelectedfunction() {
+      switch (this.selectedMenu.value) {
+        case "Dictionary":
+          this.doDictionaryLookup();
+          break;
+        case "Texts":
+          this.doSearchTexts();
+          break;
+        case "SimilarWords":
+          this.doSimilarWords();
+          break;
+        case "Statistics":
+          this.doWordStats();
+          break;
+        case "Tokenize":
+          this.doTokenize();
+          break;
+      }
     }
 
     // goHome() {
@@ -126,9 +207,16 @@ export default {
     textarea {
       height: 20rem;
       letter-spacing: 0.1rem;
+      font-family: $tib-font;
       padding: 1.5rem;
+      font-size: 2.5rem;
+      border: none;
+      outline: none;
+      box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
     }
     textarea::placeholder {
+      font-size: 1rem;
+      font-family: $en-font;
       color: $dropdown-color;
     }
     .padma-logo {
@@ -160,15 +248,54 @@ export default {
         display: block;
         font-size: 1em;
         text-transform: uppercase;
+        padding-top: 1rem;
 
         label {
           padding-right: 2rem;
+          font-weight: 600;
+        }
+        .menu-list-items {
+          .active {
+            color: $dropdown-color;
+            text-decoration: underline;
+            text-underline-offset: 0.4em;
+            text-decoration-thickness: 0.2em;
+          }
+        }
+        .main-content-area {
+          border: none;
+          height: 30rem;
+          overflow-y: scroll;
+          padding-top: 5rem;
+        }
+        .footer {
+          text-transform: none;
+          color: $footer-text-color;
+          padding-top: 5rem;
+          display: grid;
+          justify-content: end;
+
+          label {
+            font-weight: normal;
+          }
         }
       }
     }
   }
   .menu-dropdown {
     padding-top: 1.5rem;
+    .for-mobile {
+      .main-content-mobile {
+        padding-top: 2rem;
+      }
+      .footer-mobile {
+        color: $footer-text-color;
+        padding-top: 2rem;
+        label {
+          padding-right: 2rem;
+        }
+      }
+    }
 
     @include breakpoint(medium) {
       .for-mobile {

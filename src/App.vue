@@ -21,10 +21,20 @@ export default {
 
 <style lang="scss">
 @import "@/assets/scss/index.scss";
+@font-face {
+  font-family: "ZillaSlab";
+  src: local("ZillaSlab"),
+    url("~@/assets/fonts/ZillaSlab-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Jomolhari";
+  src: local("Jomolhari"),
+    url("~@/assets/fonts/Jomolhari-Regular.ttf") format("truetype");
+}
 body {
   padding: 0;
   font-size: 1em !important;
-  font-family: $en-font !important;
+  font-family: ZillaSlab !important;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
