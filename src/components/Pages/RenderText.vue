@@ -1,19 +1,25 @@
 <template>
-  <div class="container-fixed mx-5 my-3">
-    <div class="tibetan-text-reader mb-4'">
-      {{ text }}
-    </div>
-    <p id="source" class="mt-2">
-      <span class="tibetan-source-reader"> {{ textTitle }}</span>
-      <font-awesome-icon
-        :icon="['fas', 'angle-double-right']"
-        class="expand-icon"
-        size="2x"
-        title="add segments"
-        @click="expandRender"
-      />
-    </p>
-  </div>
+  <b-container class="render-text-container">
+    <b-row>
+      <b-col class="tibetan-text-reader mb-4'" cols="12">
+        <h1>{{ text }}</h1>
+      </b-col>
+      <b-col id="source" cols="10" class="tibetan-source-reader">
+        <span> {{ textTitle }} </span>
+      </b-col>
+      <b-col cols="2" class="arrow-icon">
+        <div class="arrow">
+          <img
+            src="@/assets/images/icon-right-arrow.svg"
+            @click="expandRender"
+          />
+        </div>
+      </b-col>
+      <b-col cols="12" class="horz-line">
+        <hr />
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -76,27 +82,42 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tibetan-text-reader {
-  font-size: 1.6em;
-  font-family: "Jomolhari", serif;
-}
-
-.tibetan-source-reader {
-  opacity: 0.4;
-  font-size: 1.3em;
-  font-family: "Tinos", serif;
-}
-
-.expand-icon {
-  font-size: 35px;
-
-  cursor: pointer;
-  opacity: 0.3;
-  position: absolute;
-  padding-left: 15px;
-
-  &:hover {
-    opacity: 0.5;
+@import "@/assets/scss/index.scss";
+.render-text-container {
+  .tibetan-text-reader {
+    font-family: $tib-font;
+    padding-left: 0;
+  }
+  .tibetan-source-reader {
+    font-family: $tib-font;
+    font-size: x-large;
+    padding-left: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.8rem;
+    color: $secondary-color;
+  }
+  .arrow-icon {
+    display: grid;
+    justify-content: end;
+    padding-right: 0;
+    .arrow {
+      width: 3rem;
+      height: 100%;
+      background-color: $secondary-color;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .horz-line {
+    margin-bottom: 3rem;
+    padding-right: 0;
+    padding-left: 0;
+    hr {
+      margin: 0;
+      height: 0.1rem;
+      background-color: $secondary-color;
+    }
   }
 }
 </style>

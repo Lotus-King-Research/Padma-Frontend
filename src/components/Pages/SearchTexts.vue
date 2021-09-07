@@ -1,23 +1,36 @@
 <template>
-  <div class="container-fixed px-5 pb-5">
-    <template v-for="(t, idx) in results.title">
-      <!--- handle the request from `>>` --->
-      <p class="tibetan-text mb-0 pb-0" :id="results.title[idx]" :key="idx">
-        {{ results.text[idx] }}
-      </p>
-      <span :key="'span' + idx" class="tibetan-source" id="source">
-        {{ results.text_title[idx] }}
-      </span>
-      <font-awesome-icon
-        :key="'i' + idx"
-        :icon="['fas', 'angle-double-right']"
-        class="expand-icon"
-        title="expand"
-        @click="renderText(idx)"
-      />
-      <hr align="left" :key="'hr' + idx" />
-    </template>
-  </div>
+  <b-container fluid>
+    <b-row class="text-container">
+      <template v-for="(t, idx) in results.title">
+        <b-col
+          cols="12"
+          :key="idx"
+          class="tibetan-text"
+          :id="results.title[idx]"
+        >
+          <h1>
+            {{ results.text[idx] }}
+          </h1>
+        </b-col>
+        <b-col cols="11" :key="'span' + idx" class="tibetan-source" id="source">
+          <span>
+            {{ results.text_title[idx] }}
+          </span>
+        </b-col>
+        <b-col cols="1" class="arrow-icon" :key="'i' + idx">
+          <div class="arrow">
+            <img
+              src="@/assets/images/icon-right-arrow.svg"
+              @click="renderText(idx)"
+            />
+          </div>
+        </b-col>
+        <b-col cols="12" class="horz-line" :key="'hr' + idx">
+          <hr align="left" />
+        </b-col>
+      </template>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -74,34 +87,44 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tibetan-text {
-  font-size: 1.6em;
-  font-family: "Jomolhari", serif;
-}
+@import "@/assets/scss/index.scss";
 
-.tibetan-source {
-  opacity: 0.4;
-  font-size: x-large;
-  font-family: "Tinos", serif;
-}
-
-.expand-icon {
-  font-size: 35px;
-
-  cursor: pointer;
-  opacity: 0.3;
-  position: absolute;
-  padding-left: 15px;
-
-  &:hover {
-    opacity: 0.5;
+.text-container {
+  .tibetan-text {
+    font-family: $tib-font;
+    padding-left: 0;
   }
-}
-
-hr {
-  width: 30%;
-  text-align: left;
-  height: 0.1px;
-  margin-left: 5px;
+  .tibetan-source {
+    font-family: $tib-font;
+    font-size: x-large;
+    padding-left: 0;
+    padding-top: 0.5rem;
+    padding-right: 1.5rem;
+    padding-bottom: 0.8rem;
+    color: $secondary-color;
+  }
+  .arrow-icon {
+    display: grid;
+    justify-content: end;
+    padding-right: 0;
+    .arrow {
+      width: 3rem;
+      height: 100%;
+      background-color: $secondary-color;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .horz-line {
+    margin-bottom: 3rem;
+    padding-right: 0;
+    padding-left: 0;
+    hr {
+      margin: 0;
+      height: 0.1rem;
+      background-color: $secondary-color;
+    }
+  }
 }
 </style>
