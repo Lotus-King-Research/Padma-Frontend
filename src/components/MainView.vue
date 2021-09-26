@@ -108,58 +108,69 @@ export default {
       tabSelected: null,
       selectedMenu: "Select Action",
       options: [
-        { label: "Dictionary", value: "Dictionary", id: 1 },
-        { label: "Texts", value: "Texts", id: 2 },
-        { label: "Similar Words", value: "SimilarWords", id: 3 },
-        { label: "Statistics", value: "Statistics", id: 4 },
-        { label: "Tokenize", value: "Tokenize", id: 5 }
+        { label: "Dictionary", value: "dictionary", id: 1 },
+        { label: "Texts", value: "texts", id: 2 },
+        { label: "Similar Words", value: "similarWords", id: 3 },
+        { label: "Statistics", value: "statistics", id: 4 },
+        { label: "Tokenize", value: "tokenize", id: 5 }
       ]
     };
   },
   methods: {
     doDictionaryLookup() {
-      this.tabSelected = "dictionary";
+      const value = "dictionary";
+      this.tabSelected = value;
+      this.selectedMenu = value;
       this.$router.push(`dictionary_lookup?query=${this.queryString}`);
     },
     doSearchTexts() {
-      this.tabSelected = "texts";
+      const value = "texts";
+      this.tabSelected = value;
+      this.selectedMenu = value;
       this.$router.push(`search_texts?query=${this.queryString}`);
     },
 
     doSimilarWords() {
-      this.tabSelected = "similarWords";
+      const value = "similarWords";
+      this.tabSelected = value;
+      this.selectedMenu = value;
       this.$router.push(`find_similar?query=${this.queryString}`);
     },
 
     doWordStats() {
-      this.tabSelected = "statistics";
+      const value = "statistics";
+      this.tabSelected = value;
+      this.selectedMenu = value;
       this.$router.push(`word_statistics?query=${this.queryString}`);
     },
 
     doTokenize() {
-      this.tabSelected = "tokenize";
+      const value = "tokenize";
+      this.tabSelected = value;
+      this.selectedMenu = value;
       this.$router.push(`tokenize?query=${this.queryString}`);
     },
     goHome() {
       this.queryString = "";
       this.tabSelected = null;
+      this.selectedMenu = "Select Action";
       this.$router.push("/");
     },
     setSelectedfunction() {
       switch (this.selectedMenu.value) {
-        case "Dictionary":
+        case "dictionary":
           this.doDictionaryLookup();
           break;
-        case "Texts":
+        case "texts":
           this.doSearchTexts();
           break;
-        case "SimilarWords":
+        case "similarWords":
           this.doSimilarWords();
           break;
-        case "Statistics":
+        case "statistics":
           this.doWordStats();
           break;
-        case "Tokenize":
+        case "tokenize":
           this.doTokenize();
           break;
       }

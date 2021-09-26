@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fixed px-5 pb-5">
+  <div class="container-fixed">
     <font
       v-for="(token, idx) in tokens"
       class="tibetan-text-reader"
@@ -53,10 +53,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/scss/index.scss";
 .tibetan-text-reader {
-  font-size: 1.5em;
-  font-family: "Jomolhari", serif;
+  font-size: 2em;
+  font-family: "Jomolhari";
   margin-right: 15px;
+
+  @include breakpoint(medium) {
+    font-size: 3em;
+  }
 }
 
 font:nth-of-type(2) {
