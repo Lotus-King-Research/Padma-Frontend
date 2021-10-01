@@ -13,6 +13,10 @@
           v-model="queryString"
           placeholder="Enter Tibetan Text"
         ></textarea>
+        <label>
+          <input type="checkbox" name="tokenize" />
+          <span>Tokenize query</span>
+        </label>
       </b-col>
       <b-col class="padma-logo justify-content-center" md="1">
         <img src="@/assets/images/padma.png" @click="goHome" />
@@ -230,6 +234,36 @@ export default {
       font-family: $en-font;
       color: $dropdown-color;
     }
+    label {
+      span {
+        color: $dropdown-color;
+      }
+      input[type="checkbox"] {
+        display: none;
+      }
+      input[type="checkbox"] + *::before {
+        content: "";
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+        border-radius: 10%;
+        border: solid 0.13rem $dropdown-color;
+      }
+      input[type="checkbox"]:checked + *::before {
+        content: "✓";
+        color: $dropdown-color;
+        display: flex;
+        align-items: center;
+      }
+      input[type="checkbox"]:checked + * {
+        color: $dropdown-color;
+      }
+      input[type="checkbox"] + * {
+        display: flex;
+        align-items: center;
+        padding-top: 1rem;
+      }
+    }
     .padma-logo {
       display: none;
     }
@@ -238,7 +272,7 @@ export default {
     }
     @include breakpoint(medium) {
       textarea {
-        height: 40rem;
+        height: 37rem;
         padding: 2rem;
         text-transform: uppercase;
       }
@@ -284,7 +318,7 @@ export default {
           color: $footer-text-color;
           padding-top: 5rem;
           display: grid;
-          justify-content: end;
+          justify-content: start;
 
           label {
             font-weight: normal;
