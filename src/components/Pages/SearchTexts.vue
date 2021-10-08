@@ -21,7 +21,7 @@
           <div class="arrow">
             <img
               src="@/assets/images/icon-right-arrow.svg"
-              @click="renderText(idx)"
+              @click="openTextModal(idx)"
             />
           </div>
         </b-col>
@@ -29,6 +29,7 @@
           <hr align="left" />
         </b-col>
       </template>
+      <textModal :results="results" :index="index" />
     </b-row>
   </b-container>
 </template>
@@ -38,11 +39,14 @@ import { Services } from "@/services/services";
 
 export default {
   name: "searchtexts",
-  components: {},
+  components: {
+    textModal: () => import("@/components/Sub/textModal.vue")
+  },
 
   data() {
     return {
-      results: {}
+      results: {},
+      index: null
     };
   },
 
@@ -71,6 +75,10 @@ export default {
       if (!Object.keys(this.results).length || !this.results.title.length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
+    },
+    openTextModal(idx) {
+      this.index = idx;
+      this.$root.$emit("bv::show::modal", "textModal");
     },
 
     renderText(idx) {

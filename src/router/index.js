@@ -17,6 +17,11 @@ export default new Router({
         //   component: require("@/components/Pages/Landing").default
         // },
         {
+          path: "",
+          name: "default",
+          component: require("@/components/Pages/default").default
+        },
+        {
           path: "dictionary_lookup",
           name: "dictionarylookup",
           component: require("@/components/Pages/DictionaryLookup").default
@@ -24,7 +29,8 @@ export default new Router({
         {
           path: "search_texts",
           name: "searchtexts",
-          component: require("@/components/Pages/SearchTexts").default
+          // component: require("@/components/Pages/SearchTexts").default
+          component: () => import("@/components/Pages/SearchTexts")
         },
         {
           path: "render_text",
