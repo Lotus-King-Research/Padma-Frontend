@@ -311,7 +311,7 @@ export default {
           border: none;
           height: 30rem;
           overflow-y: scroll;
-          padding-top: 5rem;
+          padding-top: 2rem;
         }
         .footer {
           text-transform: none;
