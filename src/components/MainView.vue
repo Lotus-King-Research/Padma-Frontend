@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       queryString: "",
-      tabSelected: null,
+      tabSelected: "dictionary",
       selectedMenu: "Select Action",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },

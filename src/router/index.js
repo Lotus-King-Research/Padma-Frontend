@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      // redirect: "/home",
+      redirect: "/dictionary_lookup",
       name: "mainview",
       component: require("@/components/MainView").default,
       children: [
@@ -17,8 +17,8 @@ export default new Router({
         //   component: require("@/components/Pages/Landing").default
         // },
         {
-          path: "",
-          name: "default",
+          path: "home",
+          name: "home",
           component: require("@/components/Pages/default").default
         },
         {
@@ -29,8 +29,8 @@ export default new Router({
         {
           path: "search_texts",
           name: "searchtexts",
-          // component: require("@/components/Pages/SearchTexts").default
-          component: () => import("@/components/Pages/SearchTexts")
+          component: require("@/components/Pages/SearchTexts").default
+          // component: () => import("@/components/Pages/SearchTexts")
         },
         {
           path: "render_text",

@@ -39,8 +39,13 @@
           </span>
         </template>
       </multiselect>
-
-      <template v-for="(token, idx) in results.tokens">
+      <div class="default-text" v-if="!searchQuery">
+        <p>
+          Start by entering a Tibetan word or a segment of text inside the white
+          textarea on the left ...
+        </p>
+      </div>
+      <template v-for="(token, idx) in results.tokens" v-else>
         <div :key="idx">
           <h1>{{ token }}</h1>
           <template v-for="(item, idx2) in results.text[idx]">
@@ -122,8 +127,10 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .dictionarylookup {
+  height: 100%;
   text-transform: lowercase;
   .container-fluid {
+    height: 100%;
     padding-left: 0;
 
     input[type="checkbox"] {
@@ -163,6 +170,17 @@ export default {
     .multiselect {
       width: 44%;
       margin-bottom: 2rem;
+    }
+    .default-text {
+      height: 78%;
+      display: flex;
+      align-items: center;
+
+      p {
+        font-size: 1.5em;
+        color: hsla(37, 18%, 45%, 1);
+        line-height: 1.8rem;
+      }
     }
   }
 }
