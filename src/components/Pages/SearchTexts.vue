@@ -29,7 +29,7 @@
           <hr align="left" />
         </b-col>
       </template>
-      <textModal :results="results" :index="index" />
+      <textModal :title="title" :start="start" :end="end" />
     </b-row>
   </b-container>
 </template>
@@ -46,7 +46,10 @@ export default {
   data() {
     return {
       results: {},
-      index: null
+      index: null,
+      title: "",
+      start: "",
+      end: ""
     };
   },
 
@@ -77,6 +80,7 @@ export default {
       }
     },
     openTextModal(idx) {
+      this.renderText(idx);
       this.index = idx;
       this.$root.$emit("bv::show::modal", "textModal");
     },
@@ -84,11 +88,12 @@ export default {
     renderText(idx) {
       let startTemp = this.results.location[idx];
       let endTemp = this.results.location[idx];
-      let start = startTemp;
-      let end = endTemp + 2;
-      this.$router.push(
-        `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
-      );
+      this.start = startTemp;
+      this.end = endTemp + 2;
+      this.title = this.results.title[idx];
+      // this.$router.push(
+      //   `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
+      // );
     }
   }
 };
