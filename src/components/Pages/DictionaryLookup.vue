@@ -168,8 +168,12 @@ export default {
       margin-bottom: 2rem;
     }
     .multiselect {
-      width: 44%;
+      width: 100%;
       margin-bottom: 2rem;
+
+      @include breakpoint(medium) {
+        width: 44%;
+      }
     }
     .default-text {
       height: 78%;

@@ -156,7 +156,7 @@ export default {
     },
     goHome() {
       this.queryString = "";
-      this.tabSelected = null;
+      this.tabSelected = "dictionary";
       this.selectedMenu = "Select Action";
       this.$router.push("/");
     },
