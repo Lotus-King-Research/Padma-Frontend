@@ -13,17 +13,22 @@
         <b-row>
           <b-col cols="3">
             <div class="arrow-section" v-if="!hideModalBody">
-              <div class="next-arrow" @click="expandRender()">
-                <ChevronRight />
+              <div class="next-arrow single-arrow" @click="expandRender()">
+                <img src="@/assets/images/single-arrow.svg" alt="render text" />
               </div>
-              <div class="next-arrow">
-                <ChevronDoubleRight />
+              <div class="next-arrow double-arrow" @click="renderFullText()">
+                <img
+                  src="@/assets/images/double-cross.svg"
+                  alt="show full text"
+                />
               </div>
             </div>
           </b-col>
           <b-col cols="6">
             <!-- གཡོན་པད་མ་དཀར་པོ་བསྣམས་པ། -->
-            {{ resultText }}
+            <div class="title-text">
+              {{ resultTitle }}
+            </div>
           </b-col>
           <b-col cols="3">
             <div class="btn-section">
@@ -32,13 +37,16 @@
                 @click="minimizeModal()"
                 v-if="!hideModalBody"
               >
-                <WindowMinimize />
+                <img
+                  src="@/assets/images/minimize-icon.svg"
+                  alt="minimize modal"
+                />
               </div>
               <div class="maximize-arrow" @click="maximizeModal()" v-else>
-                <ArrowUp />
+                <img src="@/assets/images/arrow-up.svg" alt="maximize modal" />
               </div>
               <div class="close-arrow" @click="closeModal()">
-                <Close />
+                <img src="@/assets/images/close-icon.svg" alt="close modal" />
               </div>
             </div>
           </b-col>
@@ -49,7 +57,7 @@
       <b-row>
         <b-col>
           <!-- ཕུད་རབས་རྒྱས་པའི་སྦྱོར་རྗེས་ཀྱི་ངག་འདོན་ཉུང་ངུར་བསྡུས་པ་ <br /> -->
-          {{ resultTitle }}
+          {{ resultText }}
         </b-col>
       </b-row>
     </b-container>
@@ -57,11 +65,6 @@
 </template>
 <script>
 import { Services } from "@/services/services";
-import ChevronDoubleRight from "vue-material-design-icons/ChevronDoubleRight.vue";
-import ChevronRight from "vue-material-design-icons/ChevronRight.vue";
-import Close from "vue-material-design-icons/Close.vue";
-import WindowMinimize from "vue-material-design-icons/WindowMinimize.vue";
-import ArrowUp from "vue-material-design-icons/ArrowUp.vue";
 
 export default {
   props: {
@@ -74,13 +77,6 @@ export default {
     end: {
       type: Number || String
     }
-  },
-  components: {
-    ChevronDoubleRight,
-    ChevronRight,
-    Close,
-    WindowMinimize,
-    ArrowUp
   },
   data() {
     return {
@@ -118,6 +114,9 @@ export default {
     expandRender() {
       const newEnd = Number(this.end) + 2;
       this.fetchTextToRender(this.title, this.start, newEnd);
+    },
+    renderFullText() {
+      this.fetchTextToRender(this.title);
     }
   }
 };
@@ -131,6 +130,7 @@ export default {
   .modal-content {
     width: 100vw;
     height: 100vh;
+    overflow: scroll;
     .box-style {
       width: 2rem;
       height: 2rem;
@@ -150,6 +150,20 @@ export default {
           @extend .box-style;
           background-color: $secondary-color;
         }
+        .single-arrow {
+          img {
+            width: 20%;
+          }
+        }
+        .double-arrow {
+          img {
+            width: 32%;
+          }
+        }
+      }
+      .title-text {
+        display: flex;
+        justify-content: center;
       }
       .btn-section {
         display: flex;
@@ -157,9 +171,15 @@ export default {
         .minimize-arrow {
           @extend .box-style;
           background-color: hsla(37, 18%, 45%, 1);
+          img {
+            width: 28%;
+          }
         }
         .close-arrow {
           @extend .minimize-arrow;
+          img {
+            width: 28%;
+          }
         }
         .maximize-arrow {
           @extend .minimize-arrow;
