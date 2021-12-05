@@ -199,7 +199,12 @@ export default {
 @import "@/assets/scss/index.scss";
 .home {
   margin: 0;
-  padding: 2.5rem 2.5rem 0 2.5rem;
+  padding: 0rem 2.5rem 0 2.5rem;
+  @include breakpoint(medium) {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+  }
   .padma-logo-mobile {
     margin-bottom: 2rem;
     .padma-logo-img {

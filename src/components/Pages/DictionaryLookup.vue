@@ -207,6 +207,9 @@ $font-color: hsl(0, 0%, 0%);
   color: $font-color !important;
   background: none !important;
 }
+.option__title {
+  color: $dropdown-color;
+}
 .multiselect__tag-icon:after {
   color: $font-color;
 }
