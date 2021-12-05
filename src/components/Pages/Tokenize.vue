@@ -4,6 +4,9 @@
       v-for="(token, idx) in tokens"
       class="tibetan-text-reader"
       :key="idx"
+      :style="{
+        color: colors[idx % 2]
+      }"
       >{{ token }}</font
     >
   </div>
@@ -18,7 +21,8 @@ export default {
 
   data() {
     return {
-      tokens: []
+      tokens: [],
+      colors: ["#372118", "#725144"]
     };
   },
 
@@ -57,14 +61,9 @@ export default {
 .tibetan-text-reader {
   font-size: 2em;
   font-family: "Jomolhari";
-  margin-right: 15px;
 
   @include breakpoint(medium) {
     font-size: 3em;
   }
-}
-
-font:nth-of-type(2) {
-  color: rgba(0, 0, 0, 0.705);
 }
 </style>
