@@ -14,7 +14,6 @@
         track-by="name"
         @select="onSelect($event)"
         @remove="onRemove($event)"
-        :preselect-first="true"
       >
         <template
           slot="option"
@@ -62,6 +61,7 @@
 <script>
 import { Services } from "@/services/services";
 import multiselect from "vue-multiselect";
+import { mapState } from "vuex";
 
 export default {
   name: "dictionarylookup",
@@ -72,21 +72,12 @@ export default {
   data() {
     return {
       results: {},
-      value: [],
-      options: [
-        { name: "Mahavyutpatti", checked: false },
-        { name: "Erik pema kunsang", checked: false },
-        { name: "Ives waldo", checked: false },
-        { name: "Jeffrey hopkins", checked: false },
-        { name: "Lobsang monlam", checked: false },
-        { name: "Tibetan multi", checked: false },
-        { name: "Tibetan medicine", checked: false },
-        { name: "Verb lexicon", checked: false }
-      ]
+      value: []
     };
   },
 
   computed: {
+    ...mapState(["options"]),
     searchQuery() {
       return this.$route.query.query;
     }
@@ -101,13 +92,18 @@ export default {
 
   mounted() {
     this.doSearch();
+    if (this.options.length > 0) {
+      let selectedDictionaries = this.options.filter(a => {
+        if (a.checked === true) return a;
+      });
+      this.value = [...selectedDictionaries];
+    }
   },
   methods: {
     async doSearch() {
       // Execute search query
       const res = await Services.dictionaryLookup(this.searchQuery);
       this.results = res && res.data ? res.data : {};
-      console.log("results =", this.results);
       if (!Object.keys(this.results).length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
@@ -115,10 +111,12 @@ export default {
     onSelect(option) {
       let index = this.options.findIndex(item => item.name === option.name);
       this.options[index].checked = true;
+      this.$store.commit("updateDictionary", this.value);
     },
     onRemove(option) {
       let index = this.options.findIndex(item => item.name === option.name);
       this.options[index].checked = false;
+      this.$store.commit("updateDictionary", this.value);
     }
   }
 };

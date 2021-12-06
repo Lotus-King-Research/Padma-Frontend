@@ -15,6 +15,12 @@ export default {
 
   computed: {
     ...mapState(["loading"])
+  },
+  created() {
+    const optionsData = JSON.parse(localStorage.getItem("options"));
+    if (optionsData !== null) {
+      this.$store.commit("storeDicOptions", optionsData);
+    }
   }
 };
 </script>
