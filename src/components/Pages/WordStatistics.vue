@@ -6,7 +6,9 @@
         <div>
           <template v-for="(mcv, idx) in results.most_common_value">
             <div :key="idx">
-              <label class="text"> {{ results.most_common_key[idx] }} </label>
+              <label class="text">
+                {{ results.most_common_key[idx] }}
+              </label>
               <label class="count">
                 ( {{ results.most_common_value[idx] }} )</label
               >
@@ -35,7 +37,7 @@
                 <SquareRounded :fillColor="color(pv)" :size="15" />
               </b-col>
               <b-col class="value" cols="11">
-                <label @click="gotoProminenceLink(idx)">
+                <label @click="renderText(results.prominence_key[idx])">
                   {{ results.prominence_name[idx] }}
                 </label>
               </b-col>
@@ -59,6 +61,7 @@
         </b-container>
       </b-col>
     </b-row>
+    <textModal :titleText="titleText" />
   </b-container>
 </template>
 
@@ -69,13 +72,15 @@ import SquareRounded from "vue-material-design-icons/SquareRounded.vue";
 export default {
   name: "wordstatistics",
   components: {
-    SquareRounded
+    SquareRounded,
+    textModal: () => import("@/components/Sub/textModal.vue")
   },
 
   data() {
     return {
       results: {},
-      title: true
+      title: true,
+      titleText: ""
     };
   },
 
@@ -119,6 +124,10 @@ export default {
         this.searchQuery,
         `<span class="highlight">${this.searchQuery}</span>`
       );
+    },
+    renderText(title) {
+      this.titleText = title;
+      this.$root.$emit("bv::show::modal", "textModal");
     }
   }
 };

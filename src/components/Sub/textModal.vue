@@ -12,7 +12,11 @@
       <b-container fluid>
         <b-row>
           <b-col cols="3">
-            <div class="arrow-section" v-if="!hideModalBody">
+            <div
+              class="arrow-section"
+              v-if="!hideModalBody"
+              v-show="hideRenderingBtn"
+            >
               <div class="next-arrow single-arrow" @click="expandRender()">
                 <img src="@/assets/images/single-arrow.svg" alt="render text" />
               </div>
@@ -71,6 +75,9 @@ export default {
     title: {
       type: String
     },
+    titleText: {
+      type: String
+    },
     start: {
       type: Number || String
     },
@@ -82,12 +89,17 @@ export default {
     return {
       hideModalBody: false,
       resultTitle: "",
-      resultText: ""
+      resultText: "",
+      hideRenderingBtn: true
     };
   },
   watch: {
     title() {
       this.fetchTextToRender(this.title, this.start, this.end);
+    },
+    titleText() {
+      this.hideRenderingBtn = false;
+      this.fetchTextToRender(this.titleText);
     }
   },
   methods: {
@@ -96,6 +108,7 @@ export default {
       this.resultTitle = "";
       this.resultText = "";
       this.hideModalBody = false;
+      this.hideRenderingBtn = true;
     },
     minimizeModal() {
       this.hideModalBody = true;
