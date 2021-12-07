@@ -61,7 +61,7 @@
         </b-container>
       </b-col>
     </b-row>
-    <textModal :titleText="titleText" />
+    <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
 </template>
 

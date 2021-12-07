@@ -29,7 +29,6 @@
             </div>
           </b-col>
           <b-col cols="6">
-            <!-- གཡོན་པད་མ་དཀར་པོ་བསྣམས་པ། -->
             <div class="title-text">
               {{ resultTitle }}
             </div>
@@ -60,8 +59,10 @@
     <b-container fluid>
       <b-row>
         <b-col>
-          <!-- ཕུད་རབས་རྒྱས་པའི་སྦྱོར་རྗེས་ཀྱི་ངག་འདོན་ཉུང་ངུར་བསྡུས་པ་ <br /> -->
-          {{ resultText }}
+          <span v-if="hideRenderingBtn">
+            {{ resultText }}
+          </span>
+          <span v-html="highLightQuery(resultText)" v-else></span>
         </b-col>
       </b-row>
     </b-container>
@@ -83,6 +84,9 @@ export default {
     },
     end: {
       type: Number || String
+    },
+    searchQuery: {
+      type: String
     }
   },
   data() {
@@ -130,6 +134,12 @@ export default {
     },
     renderFullText() {
       this.fetchTextToRender(this.title);
+    },
+    highLightQuery(text) {
+      return text.replaceAll(
+        this.searchQuery,
+        `<span class="highlight">${this.searchQuery}</span>`
+      );
     }
   }
 };
@@ -202,6 +212,9 @@ export default {
     .modal-body {
       color: $primary-color;
       font-size: 2rem;
+      .highlight {
+        color: $secondary-color;
+      }
     }
     .modalBody {
       display: none;
