@@ -32,7 +32,7 @@
           <template v-for="(pv, idx) in results.prominence_value">
             <b-row :key="idx" class="byTitle">
               <b-col class="icon" cols="1">
-                <SquareRounded fillColor="#861B15" :size="15" />
+                <SquareRounded :fillColor="color(pv)" :size="15" />
               </b-col>
               <b-col class="value" cols="11">
                 <label @click="gotoProminenceLink(idx)">
@@ -109,6 +109,9 @@ export default {
       this.$router.push(
         `/render_text?title=${this.results.prominence_key[idx]}`
       );
+    },
+    color(value) {
+      return "rgba(134,27,21," + parseFloat(value) + ")";
     }
   }
 };
