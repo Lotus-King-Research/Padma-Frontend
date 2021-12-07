@@ -47,7 +47,8 @@
             <b-row :key="idx">
               <b-col>
                 <label class="text">
-                  {{ results.co_occurance_key[idx] }}
+                  <span v-html="highLightQuery(results.co_occurance_key[idx])">
+                  </span>
                 </label>
                 <label class="count">
                   ( {{ results.co_occurance_value[idx] }} )
@@ -112,6 +113,12 @@ export default {
     },
     color(value) {
       return "rgba(134,27,21," + parseFloat(value) + ")";
+    },
+    highLightQuery(text) {
+      return text.replaceAll(
+        this.searchQuery,
+        `<span class="highlight">${this.searchQuery}</span>`
+      );
     }
   }
 };
@@ -167,6 +174,9 @@ export default {
       .text {
         display: inline;
         font-size: $text-font-size;
+        ::v-deep .highlight {
+          color: $secondary-color;
+        }
       }
       .count {
         color: hsla(37, 18%, 45%, 1);
