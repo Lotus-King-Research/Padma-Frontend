@@ -120,6 +120,11 @@ export default {
       ]
     };
   },
+  mounted() {
+    if (this.$route.query.query) {
+      this.queryString = this.$route.query.query;
+    }
+  },
   methods: {
     doDictionaryLookup() {
       const value = "dictionary";
