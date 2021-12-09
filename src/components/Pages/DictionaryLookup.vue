@@ -47,9 +47,15 @@
       <template v-for="(token, idx) in results.tokens" v-else>
         <div :key="idx">
           <h1>{{ token }}</h1>
-          <template v-for="(item, idx2) in results.text[idx]">
+          <!-- <template v-for="(item, idx2) in results.text[idx]">
             <p :key="idx2">
               {{ item }}
+            </p>
+          </template> -->
+          <template v-for="(item, idx2) in resultArray">
+            <p :key="idx2">
+              <span class="dic_source"> {{ item.source }} </span>
+              {{ item.text }}
             </p>
           </template>
         </div>
@@ -80,6 +86,18 @@ export default {
     ...mapState(["options"]),
     searchQuery() {
       return this.$route.query.query;
+    },
+    resultArray() {
+      let ar1 = [].concat.apply([], this.results.source[0]);
+      let ar2 = [].concat.apply([], this.results.text[0]);
+      let res = [];
+      ar1.forEach(function(v, i) {
+        var obj = {};
+        obj.source = v;
+        obj.text = ar2[i];
+        res.push(obj);
+      });
+      return res;
     }
   },
 
@@ -172,6 +190,9 @@ export default {
       @include breakpoint(medium) {
         width: 44%;
       }
+    }
+    .dic_source {
+      color: red;
     }
     .default-text {
       height: 78%;
