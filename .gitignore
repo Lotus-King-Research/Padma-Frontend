@@ -1,10 +1,17 @@
-.DS_Store
+i.DS_Store
 node_modules
 /dist
 
 # local env files
 .env.local
 .env.*.local
+
+#https certificates
+localhost+2-key.pem
+localhost+2.pem
+
+#vue config file
+vue.config.js
 
 # Log files
 npm-debug.log*

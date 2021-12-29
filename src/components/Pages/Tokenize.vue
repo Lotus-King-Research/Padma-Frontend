@@ -46,7 +46,8 @@ export default {
   methods: {
     async doTokenize() {
       // Execute tokenize query
-      const res = await Services.tokenize(this.tokenizeQuery);
+
+      const res = await Services.tokenize(this.tokenizeQuery.replace(/,/g, ""));
       this.tokens = res && res.data ? res.data.tokens : [];
       if (!this.tokens.length) {
         this.$toasted.error("No results found", { duration: 5000 });

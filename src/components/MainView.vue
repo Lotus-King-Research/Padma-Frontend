@@ -7,21 +7,20 @@
     </b-row>
     <b-row class="row input-area">
       <b-col md="4">
-        <textarea
-          type="text"
-          class="form-control cursor form-css"
+        <customTextArea
           v-model="queryString"
-          placeholder="Enter Tibetan Text"
-        ></textarea>
+          :routeQuery="queryString"
+          :tokenizeQuery="tokenizeQuery"
+        />
         <label>
-          <input type="checkbox" name="tokenize" />
+          <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
           <span>Tokenize query</span>
         </label>
       </b-col>
       <b-col class="padma-logo justify-content-center" md="1">
         <img src="@/assets/images/padma.png" @click="goHome" />
       </b-col>
-      <b-col class="menu-list">
+      <b-col class="menu-list" md="7">
         <b-row class="menu-list-items">
           <b-col>
             <label
@@ -36,12 +35,12 @@
             >
               Texts
             </label>
-            <label
+            <!-- <label
               :class="{ active: tabSelected === 'similarWords' }"
               @click="doSimilarWords"
             >
               Similar Words
-            </label>
+            </label> -->
             <label
               :class="{ active: tabSelected === 'statistics' }"
               @click="doWordStats"
@@ -104,13 +103,22 @@
 </template>
 
 <script>
+import { Services } from "@/services/services";
+import customTextArea from "@/components/Sub/customTextArea.vue";
+
 export default {
   name: "mainview",
+  components: {
+    customTextArea
+  },
   data() {
     return {
       queryString: "",
       tabSelected: "dictionary",
       selectedMenu: "Select Action",
+      tokenizeQuery: false,
+      tokens: [],
+      colors: ["#372118", "#725144"],
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
         { label: "Texts", value: "texts", id: 2 },
@@ -119,6 +127,20 @@ export default {
         { label: "Tokenize", value: "tokenize", id: 5 }
       ]
     };
+  },
+  computed: {
+    inputStyles() {
+      return {
+        color: "red"
+      };
+    }
+  },
+  watch: {
+    tokenizeQuery() {
+      if (this.tokenizeQuery) {
+        this.doTokenizeQuery();
+      }
+    }
   },
   mounted() {
     if (this.$route.query.query) {
@@ -139,12 +161,12 @@ export default {
       this.$router.push(`search_texts?query=${this.queryString}`);
     },
 
-    doSimilarWords() {
-      const value = "similarWords";
-      this.tabSelected = value;
-      this.selectedMenu = value;
-      this.$router.push(`find_similar?query=${this.queryString}`);
-    },
+    // doSimilarWords() {
+    //   const value = "similarWords";
+    //   this.tabSelected = value;
+    //   this.selectedMenu = value;
+    //   this.$router.push(`find_similar?query=${this.queryString}`);
+    // },
 
     doWordStats() {
       const value = "statistics";
@@ -163,6 +185,7 @@ export default {
       this.queryString = "";
       this.tabSelected = "dictionary";
       this.selectedMenu = "Select Action";
+      this.tokenizeQuery = false;
       this.$router.push("/");
     },
     setSelectedfunction() {
@@ -183,19 +206,16 @@ export default {
           this.doTokenize();
           break;
       }
+    },
+    async doTokenizeQuery() {
+      // Execute tokenize query
+      const res = await Services.tokenize(this.queryString);
+      this.tokens = res && res.data ? res.data.tokens : [];
+      if (!this.tokens.length) {
+        this.$toasted.error("No results found", { duration: 5000 });
+      }
+      this.queryString = this.tokens;
     }
-
-    // goHome() {
-    //   this.$router.push("/home");
-    // },
-
-    // openMenu(event, data) {
-    //   this.$refs.cmenu.openMenu(event, data);
-    // },
-
-    // goBack() {
-    //   window.history.back();
-    // }
   }
 };
 </script>
@@ -204,7 +224,11 @@ export default {
 @import "@/assets/scss/index.scss";
 .home {
   margin: 0;
+  justify-content: center;
   padding: 0rem 2.5rem 0 2.5rem;
+  label {
+    cursor: pointer;
+  }
   @include breakpoint(medium) {
     display: flex;
     height: 100vh;
@@ -229,6 +253,7 @@ export default {
     }
   }
   .input-area {
+    width: 100%;
     textarea {
       height: 20rem;
       letter-spacing: 0.1rem;

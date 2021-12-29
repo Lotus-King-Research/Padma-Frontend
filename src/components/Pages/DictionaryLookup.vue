@@ -219,7 +219,7 @@ $font-color: hsl(0, 0%, 0%);
 }
 .multiselect__tag {
   color: $font-color !important;
-  background: none;
+  background-color: hsla(36, 100%, 95%, 1);
 }
 .multiselect__option--selected,
 .multiselect__option--selected::after {

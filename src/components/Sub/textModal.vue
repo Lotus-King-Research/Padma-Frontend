@@ -80,10 +80,10 @@ export default {
       type: String
     },
     start: {
-      type: Number || String
+      type: [Number, String]
     },
     end: {
-      type: Number || String
+      type: [Number, String]
     },
     searchQuery: {
       type: String
