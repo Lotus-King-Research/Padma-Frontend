@@ -16,6 +16,9 @@
           <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
           <span>Tokenize query</span>
         </label>
+        <b-button @click="lookup()">
+          LOOKUP <span class="greater-than-arrow"> > </span>
+        </b-button>
       </b-col>
       <b-col class="padma-logo justify-content-center" md="1">
         <img src="@/assets/images/padma.png" @click="goHome" />
@@ -25,31 +28,30 @@
           <b-col>
             <label
               :class="{ active: tabSelected === 'dictionary' }"
-              @click="doDictionaryLookup"
+              @click="tabSelected = 'dictionary'"
             >
               Dictionary
             </label>
             <label
               :class="{ active: tabSelected === 'texts' }"
-              @click="doSearchTexts"
+              @click="tabSelected = 'texts'"
             >
               Texts
             </label>
             <!-- <label
               :class="{ active: tabSelected === 'similarWords' }"
-              @click="doSimilarWords"
             >
               Similar Words
             </label> -->
             <label
               :class="{ active: tabSelected === 'statistics' }"
-              @click="doWordStats"
+              @click="tabSelected = 'statistics'"
             >
               Statistics
             </label>
             <label
               :class="{ active: tabSelected === 'tokenize' }"
-              @click="doTokenize"
+              @click="tabSelected = 'tokenize'"
             >
               Tokenize
             </label>
@@ -148,6 +150,9 @@ export default {
     }
   },
   methods: {
+    lookup() {
+      this.setSelectedfunction();
+    },
     doDictionaryLookup() {
       const value = "dictionary";
       this.tabSelected = value;
@@ -189,7 +194,7 @@ export default {
       this.$router.push("/");
     },
     setSelectedfunction() {
-      switch (this.selectedMenu.value) {
+      switch (this.selectedMenu.value || this.tabSelected) {
         case "dictionary":
           this.doDictionaryLookup();
           break;
@@ -254,20 +259,23 @@ export default {
   }
   .input-area {
     width: 100%;
-    textarea {
-      height: 20rem;
-      letter-spacing: 0.1rem;
-      font-family: $tib-font;
-      padding: 1.5rem;
-      font-size: 2.5rem;
+
+    .btn {
+      float: right;
+      margin-right: 1rem;
+      margin-top: 0.6rem;
+      width: 7rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $secondary-color;
       border: none;
-      outline: none;
-      box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
     }
-    textarea::placeholder {
-      font-size: 1rem;
-      font-family: $en-font;
-      color: $dropdown-color;
+    .greater-than-arrow {
+      padding-left: 0.5rem;
+      font-weight: bold;
+      padding-bottom: 0.07rem;
     }
     label {
       span {
@@ -316,8 +324,6 @@ export default {
         align-items: center;
         img {
           width: 5rem;
-          opacity: 0.5;
-          transition: opacity 2s;
         }
         img:hover {
           opacity: 1;
