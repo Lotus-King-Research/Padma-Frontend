@@ -32,7 +32,7 @@ Repository for Padma frontend.
 
 ## Integrations
 
-- [Padma-Backend](https://github.com/Lotus-King-Research/Padma-Backend/)
+- [Padma-Backend](https://github.com/Lotus-King-Research/Padma-Backend/tree/master/docs)
 
 ## Docs
 
