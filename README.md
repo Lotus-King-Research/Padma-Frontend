@@ -1,109 +1,39 @@
-# padma-frontend
-VueJS web + electron frontend for http://padma.io
+<h1 align="center">
+  <br>
+  <a href="http://eka.to"><img src="https://raw.githubusercontent.com/Lotus-King-Research/Home/main/Assets/Images/Lotus-King-Research-Logo-Transparent.png" alt="Lotus King Research" width="200"></a>
+  <br>
+</h1>
 
-Electron allows cross platform (Mac, Windows, Linux) packaging of this frontend
+<h3 align="center">Padma is a next-generation Tibetan language translation eco-system for Dharma texts. </h3>
 
-Note - the instructions below use yarn but work just as well with npm
+<p align="center">
+  
+  <a href="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png">
+    <img width=150px src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Cc-by-nc-sa_icon.svg/1280px-Cc-by-nc-sa_icon.svg.png" alt="License">
+  </a>
+</p>
 
-## Project setup
-From the repo folder, do the following
-```
-yarn install
-```
+<p align="center">
+  <a href="#description">Description</a> •
+  <a href="#owner">Owner</a> •
+  <a href="#integrations">Integrations</a> •
+  <a href="#docs">Docs</a>
+</p>
+<hr>
 
-## Before serving for dev or building for production
-```
-. .env
-```
+## Description
 
-This works on linux, mac, windows git bash. On windows powershell you would need to export the variable VUE_APP_API_URL=http://padma.io
+Repository for Padma frontend.
 
-### Compiles and hot-reloads for development
-From the repo folder, do the following (for electron)
-```
-yarn electron:serve
-```
+## Owner
 
-or (for web)
+- [@blahmonkey](https://github.com/blahmonkey)
+- [@rabtenster](https://github.com/rabtenster)
 
-```
-yarn serve
-```
+## Integrations
 
-### Compiles and minifies for production
-Electron (same platform as you are using):
-```
-yarn electron:build
-```
+- [Padma-Backend](https://github.com/Lotus-King-Trust/Padma-Backend/)
 
-Electron (mac, windows, linux -- x32, x64)
-```
-yarn electron:buildall
-```
+## Docs
 
-Web:
-```
-yarn build
-```
-
-Production build folders - dist (for web), electron_dist (for electron)
-
-### Docker build / deploy
-To build - from repo folder
-
-```
-docker build -t padma-frontend .
-```
-
-Deploy (runs on 127.0.0.1:8080)
-
-```
-docker run -it -p 8080:8080 --rm --name padma-frontend-vue-1 padma-frontend
-```
-
-### Docker dev 
-To build the dev container (first case if running backend locally, second is if using staging api)
-```
-docker-compose -f ./docker-compose-dev-local.yml build
-```
-or
-
-```
-docker-compose -f ./docker-compose-dev-staging.yml build
-```
-
-Then run `docker-compose up` with the same yml file above i.e.
-```
-docker-compose -f ./docker-compose-dev-local.yml up
-```
-
-or
-```
-docker-compose -f ./docker-compose-dev-staging.yml up
-```
-
-After you do this, you can visit http://localhost:8002/ in browser to access the frontend
-
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Update app icon
-Update the file public/img/icons/padma.png
-
-Then run the following command to generate the required iconset
-```
-yarn electron:generate-icons
-```
-
-After this, run a production build to incorporate the new iconset
-
-### Debugging production build
-
-The following is a good thread
-https://stackoverflow.com/questions/45485262/how-to-debug-electron-production-binaries#45487191
-
-Debugtron works well, but is by ByteDance
-
+[Docs](https://github.com/Lotus-King-Trust/Padma-Frontend/docs/README.md)
