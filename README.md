@@ -32,8 +32,8 @@ Repository for Padma frontend.
 
 ## Integrations
 
-- [Padma-Backend](https://github.com/Lotus-King-Trust/Padma-Backend/)
+- [Padma-Backend](https://github.com/Lotus-King-Research/Padma-Backend/)
 
 ## Docs
 
-[Docs](https://github.com/Lotus-King-Trust/Padma-Frontend/docs/README.md)
+[Docs](https://github.com/Lotus-King-Research/Padma-Frontend/docs/README.md)
