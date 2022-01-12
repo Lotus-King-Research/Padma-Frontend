@@ -143,7 +143,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .dictionarylookup {
-  height: 100%;
+  height: 30rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
   text-transform: lowercase;
   .container-fluid {
     height: 100%;

@@ -136,6 +136,9 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .wrapper {
+  height: 30rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
   $title-size: 0.8em;
   $bottom-padding-value: 1.2rem;
   $text-font-size: 2.3em;

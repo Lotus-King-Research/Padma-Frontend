@@ -59,12 +59,18 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
-.tibetan-text-reader {
-  font-size: 2em;
-  font-family: "Jomolhari";
+.container-fixed {
+  height: 30rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
 
-  @include breakpoint(medium) {
-    font-size: 3em;
+  .tibetan-text-reader {
+    font-size: 2em;
+    font-family: "Jomolhari";
+
+    @include breakpoint(medium) {
+      font-size: 3em;
+    }
   }
 }
 </style>

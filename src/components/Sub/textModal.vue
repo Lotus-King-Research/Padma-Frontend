@@ -29,9 +29,7 @@
             </div>
           </b-col>
           <b-col cols="6">
-            <div class="title-text">
-              {{ resultTitle }}
-            </div>
+            <div class="title-text">{{ resultTitle }} {{ resultTitle }}</div>
           </b-col>
           <b-col cols="3">
             <div class="btn-section">

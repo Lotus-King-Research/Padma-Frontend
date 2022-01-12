@@ -89,7 +89,7 @@
         <b-row class="main-content-mobile">
           <b-col>
             <!-- Main content here for mobile -->
-            <router-view />
+            <router-view name="mobile-contents" />
           </b-col>
         </b-row>
         <b-row class="footer-mobile">
@@ -147,6 +147,13 @@ export default {
   mounted() {
     if (this.$route.query.query) {
       this.queryString = this.$route.query.query;
+      if (this.$route.name === "searchtexts") {
+        this.tabSelected = "texts";
+      } else if (this.$route.name === "wordstatistics") {
+        this.tabSelected = "statistics";
+      } else if (this.$route.name === "tokenize") {
+        this.tabSelected = "tokenize";
+      }
     }
   },
   methods: {
@@ -350,8 +357,6 @@ export default {
         }
         .main-content-area {
           border: none;
-          height: 30rem;
-          overflow-y: scroll;
           padding-top: 2rem;
         }
         .footer {

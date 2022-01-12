@@ -1,20 +1,20 @@
 <template>
   <b-container fluid>
     <b-row class="text-container">
-      <template v-for="(t, idx) in results.title">
+      <template v-for="(t, idx) in textData.title">
         <b-col
           cols="12"
           :key="idx"
           class="tibetan-text"
-          :id="results.title[idx]"
+          :id="textData.title[idx]"
         >
           <h1>
-            {{ results.text[idx] }}
+            {{ textData.text[idx] }}
           </h1>
         </b-col>
         <b-col cols="11" :key="'span' + idx" class="tibetan-source" id="source">
           <span>
-            {{ results.text_title[idx] }}
+            {{ textData.text_title[idx] }}
           </span>
         </b-col>
         <b-col cols="1" class="arrow-icon" :key="'i' + idx">
@@ -30,17 +30,22 @@
         </b-col>
       </template>
       <textModal :title="title" :start="start" :end="end" />
+      <infinite-loading @infinite="fetchMoreData" spinner="spiral">
+        <div slot="no-more">No more Text</div>
+      </infinite-loading>
     </b-row>
   </b-container>
 </template>
 
 <script>
 import { Services } from "@/services/services";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "searchtexts",
   components: {
-    textModal: () => import("@/components/Sub/textModal.vue")
+    textModal: () => import("@/components/Sub/textModal.vue"),
+    InfiniteLoading
   },
 
   data() {
@@ -49,7 +54,9 @@ export default {
       index: null,
       title: "",
       start: "",
-      end: ""
+      end: "",
+      limit: 4,
+      textData: {}
     };
   },
 
@@ -75,9 +82,48 @@ export default {
       // Execute search query
       const res = await Services.searchTexts(this.searchQuery);
       this.results = res && res.data ? res.data : {};
+      this.loadMoreData();
       if (!Object.keys(this.results).length || !this.results.title.length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
+    },
+    fetchMoreData($state) {
+      setTimeout(() => this.loadMoreData($state), 400);
+    },
+    loadMoreData($state) {
+      const data = {};
+      let count = 0;
+      if (Object.keys(this.textData).length > 0) {
+        count = this.textData.location.length;
+      }
+      (data.query = this.results.query),
+        (data.location = this.results.location.slice(
+          count,
+          count + this.limit
+        )),
+        (data.text = this.results.text.slice(count, count + this.limit)),
+        (data.text_title = this.results.text_title.slice(
+          count,
+          count + this.limit
+        )),
+        (data.title = this.results.title.slice(count, count + this.limit)),
+        (data.start = "");
+      if (Object.keys(this.textData).length > 0) {
+        data.location.forEach((item, index) => {
+          this.textData.location.push(data.location[index]);
+          this.textData.text_title.push(data.text_title[index]);
+          this.textData.title.push(data.title[index]);
+          this.textData.text.push(data.text[index]);
+        });
+        if (this.results.location.length === this.textData.location.length) {
+          $state.complete();
+        } else {
+          $state.loaded();
+        }
+      } else {
+        this.textData = { ...data };
+      }
+      this.$forceUpdate();
     },
     openTextModal(idx) {
       this.renderText(idx);
@@ -102,41 +148,46 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 
-.text-container {
-  .tibetan-text {
-    font-family: $tib-font;
-    padding-left: 0;
-  }
-  .tibetan-source {
-    font-family: $tib-font;
-    font-size: x-large;
-    padding-left: 0;
-    padding-top: 0.5rem;
-    padding-right: 1.5rem;
-    padding-bottom: 0.8rem;
-    color: $secondary-color;
-  }
-  .arrow-icon {
-    display: grid;
-    justify-content: end;
-    padding-right: 0;
-    .arrow {
-      width: 3rem;
-      height: 100%;
-      background-color: $secondary-color;
-      display: grid;
-      justify-content: center;
-      align-items: center;
+.container-fluid {
+  height: 30rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
+  .text-container {
+    .tibetan-text {
+      font-family: $tib-font;
+      padding-left: 0;
     }
-  }
-  .horz-line {
-    margin-bottom: 3rem;
-    padding-right: 0;
-    padding-left: 0;
-    hr {
-      margin: 0;
-      height: 0.1rem;
-      background-color: $secondary-color;
+    .tibetan-source {
+      font-family: $tib-font;
+      font-size: x-large;
+      padding-left: 0;
+      padding-top: 0.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 0.8rem;
+      color: $secondary-color;
+    }
+    .arrow-icon {
+      display: grid;
+      justify-content: end;
+      padding-right: 0;
+      .arrow {
+        width: 3rem;
+        height: 100%;
+        background-color: $secondary-color;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .horz-line {
+      margin-bottom: 3rem;
+      padding-right: 0;
+      padding-left: 0;
+      hr {
+        margin: 0;
+        height: 0.1rem;
+        background-color: $secondary-color;
+      }
     }
   }
 }
