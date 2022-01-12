@@ -109,32 +109,49 @@ export default {
   },
 
   mounted() {
+    this.filterDictionaries();
     this.doSearch();
-    if (this.options.length > 0) {
-      let selectedDictionaries = this.options.filter(a => {
-        if (a.checked === true) return a;
-      });
-      this.value = [...selectedDictionaries];
-    }
   },
   methods: {
     async doSearch() {
       // Execute search query
-      const res = await Services.dictionaryLookup(this.searchQuery);
+      let selectedDictionaries = this.value.map(a =>
+        a.name.replace(/ /g, "_").toLowerCase()
+      );
+      const res = await Services.dictionaryLookup(
+        this.searchQuery,
+        selectedDictionaries
+      );
       this.results = res && res.data ? res.data : {};
       if (!Object.keys(this.results).length) {
         this.$toasted.error("No results found", { duration: 5000 });
+      }
+    },
+    filterDictionaries() {
+      if (this.options.length > 0) {
+        let filteredDictionaries = this.options.filter(a => {
+          if (a.checked === true) return a;
+        });
+        this.value = [...filteredDictionaries];
       }
     },
     onSelect(option) {
       let index = this.options.findIndex(item => item.name === option.name);
       this.options[index].checked = true;
       this.$store.commit("updateDictionary", this.value);
+      this.filterDictionaries();
+      if (this.searchQuery) {
+        this.doSearch();
+      }
     },
     onRemove(option) {
       let index = this.options.findIndex(item => item.name === option.name);
       this.options[index].checked = false;
       this.$store.commit("updateDictionary", this.value);
+      this.filterDictionaries();
+      if (this.searchQuery) {
+        this.doSearch();
+      }
     }
   }
 };

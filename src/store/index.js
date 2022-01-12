@@ -26,7 +26,6 @@ export default new Vuex.Store({
       state.loading = false;
     },
     updateDictionary(state, payload) {
-      console.log("payload", payload);
       if (payload.length > 0) {
         state.options[payload[0].id].checked = payload[0].checked;
         localStorage.setItem("options", JSON.stringify(state.options));
