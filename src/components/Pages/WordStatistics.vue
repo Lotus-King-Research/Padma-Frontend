@@ -117,6 +117,7 @@ export default {
       );
     },
     color(value) {
+      console.log("color =", parseInt(value));
       return "rgba(134,27,21," + parseFloat(value) + ")";
     },
     highLightQuery(text) {
@@ -182,6 +183,9 @@ export default {
       .byTitle {
         .value {
           font-size: 1.5em;
+          label {
+            cursor: pointer;
+          }
         }
       }
       .text {

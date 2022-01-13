@@ -362,7 +362,7 @@ export default {
         .footer {
           text-transform: none;
           color: $footer-text-color;
-          padding-top: 5rem;
+          padding-top: 2.7rem;
           display: grid;
           justify-content: start;
 

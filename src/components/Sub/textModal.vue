@@ -29,7 +29,9 @@
             </div>
           </b-col>
           <b-col cols="6">
-            <div class="title-text">{{ resultTitle }} {{ resultTitle }}</div>
+            <div class="title-text" :class="{ 'title-wrap': hideModalBody }">
+              {{ resultTitle }} {{ resultTitle }}
+            </div>
           </b-col>
           <b-col cols="3">
             <div class="btn-section">
@@ -198,6 +200,12 @@ export default {
       .title-text {
         display: flex;
         justify-content: center;
+      }
+      .title-wrap {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .btn-section {
         display: flex;

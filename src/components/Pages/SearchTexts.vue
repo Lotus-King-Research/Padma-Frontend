@@ -18,11 +18,8 @@
           </span>
         </b-col>
         <b-col cols="1" class="arrow-icon" :key="'i' + idx">
-          <div class="arrow">
-            <img
-              src="@/assets/images/icon-right-arrow.svg"
-              @click="openTextModal(idx)"
-            />
+          <div class="arrow" @click="openTextModal(idx)">
+            <img src="@/assets/images/icon-right-arrow.svg" />
           </div>
         </b-col>
         <b-col cols="12" class="horz-line" :key="'hr' + idx">
@@ -51,7 +48,6 @@ export default {
   data() {
     return {
       results: {},
-      index: null,
       title: "",
       start: "",
       end: "",
@@ -125,11 +121,12 @@ export default {
       }
       this.$forceUpdate();
     },
-    openTextModal(idx) {
-      this.renderText(idx);
-      this.index = idx;
-      this.$root.$emit("bv::show::modal", "textModal");
-      this.$root.$emit("renderText");
+    async openTextModal(idx) {
+      let renderTextResult = await this.renderText(idx);
+      if (renderTextResult) {
+        this.$root.$emit("bv::show::modal", "textModal");
+        this.$root.$emit("renderText");
+      }
     },
 
     renderText(idx) {
@@ -138,6 +135,7 @@ export default {
       this.start = startTemp;
       this.end = endTemp + 2;
       this.title = this.results.title[idx];
+      return true;
       // this.$router.push(
       //   `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
       // );
@@ -178,6 +176,7 @@ export default {
         display: grid;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
       }
     }
     .horz-line {
