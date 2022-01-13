@@ -9,12 +9,12 @@
           :id="textData.title[idx]"
         >
           <h1>
-            {{ textData.text[idx] }}
+            {{ textData.text_title[idx] }}
           </h1>
         </b-col>
         <b-col cols="11" :key="'span' + idx" class="tibetan-source" id="source">
           <span>
-            {{ textData.text_title[idx] }}
+            {{ textData.text[idx] }}
           </span>
         </b-col>
         <b-col cols="1" class="arrow-icon" :key="'i' + idx">
@@ -129,6 +129,7 @@ export default {
       this.renderText(idx);
       this.index = idx;
       this.$root.$emit("bv::show::modal", "textModal");
+      this.$root.$emit("renderText");
     },
 
     renderText(idx) {

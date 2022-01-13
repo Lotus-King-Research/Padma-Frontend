@@ -104,6 +104,19 @@ export default {
       this.fetchTextToRender(this.titleText);
     }
   },
+  mounted() {
+    this.$root.$on("renderText", () => {
+      if (this.title) {
+        this.fetchTextToRender(this.title, this.start, this.end);
+      }
+    }),
+      this.$root.$on("renderTextStatistics", () => {
+        if (this.titleText) {
+          this.hideRenderingBtn = false;
+          this.fetchTextToRender(this.titleText);
+        }
+      });
+  },
   methods: {
     closeModal() {
       this.$refs["text-modal"].hide();

@@ -128,6 +128,7 @@ export default {
     renderText(title) {
       this.titleText = title;
       this.$root.$emit("bv::show::modal", "textModal");
+      this.$root.$emit("renderTextStatistics");
     }
   }
 };
