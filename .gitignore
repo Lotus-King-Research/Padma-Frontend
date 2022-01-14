@@ -10,9 +10,6 @@ node_modules
 localhost+2-key.pem
 localhost+2.pem
 
-#vue config file
-vue.config.js
-
 # Log files
 npm-debug.log*
 yarn-debug.log*
