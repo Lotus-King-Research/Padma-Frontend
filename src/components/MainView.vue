@@ -9,7 +9,7 @@
       <b-col md="4">
         <customTextArea
           v-model="queryString"
-          :routeQuery="queryString"
+          :routeQuery="routeQuery"
           :tokenizeQuery="tokenizeQuery"
         />
         <label>
@@ -116,6 +116,7 @@ export default {
   data() {
     return {
       queryString: "",
+      routeQuery: "",
       tabSelected: "dictionary",
       selectedMenu: "Select Action",
       tokenizeQuery: false,
@@ -142,11 +143,22 @@ export default {
       if (this.tokenizeQuery) {
         this.doTokenizeQuery();
       }
+    },
+    "$route.query.query"() {
+      this.detectedRouterQuery();
     }
   },
   mounted() {
     if (this.$route.query.query) {
-      this.queryString = this.$route.query.query;
+      this.detectedRouterQuery();
+    }
+  },
+  methods: {
+    lookup() {
+      this.setSelectedfunction();
+    },
+    detectedRouterQuery() {
+      this.routeQuery = this.$route.query.query;
       if (this.$route.name === "searchtexts") {
         this.tabSelected = "texts";
       } else if (this.$route.name === "wordstatistics") {
@@ -154,11 +166,6 @@ export default {
       } else if (this.$route.name === "tokenize") {
         this.tabSelected = "tokenize";
       }
-    }
-  },
-  methods: {
-    lookup() {
-      this.setSelectedfunction();
     },
     doDictionaryLookup() {
       const value = "dictionary";
