@@ -7,8 +7,8 @@ module.exports = {
     host: "localhost",
     port: 8080,
     https: {
-      key: fs.readFileSync(`./localhost+2-key.pem`),
-      cert: fs.readFileSync(`./localhost+2.pem`)
+      key: fs.readFileSync(`./localhost-key.pem`),
+      cert: fs.readFileSync(`./localhost.pem`)
     },
     hotOnly: true
   }
