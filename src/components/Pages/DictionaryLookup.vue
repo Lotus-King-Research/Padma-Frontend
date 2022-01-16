@@ -54,7 +54,14 @@
           </template> -->
           <template v-for="(item, idx2) in resultArray">
             <p :key="idx2">
-              <span class="dic_source"> {{ item.source }} </span>
+              <span class="dic_source_wrapper">
+                <span class="dic_source">
+                  {{ item.source.split("_").join(" ") }}
+                </span>
+                <span class="close-btn" @click="removeSelectedDic(item)">
+                  <img src="@/assets/images/close-icon-dic.svg" alt="remove" />
+                </span>
+              </span>
               {{ item.text }}
             </p>
           </template>
@@ -145,13 +152,18 @@ export default {
       }
     },
     onRemove(option) {
-      let index = this.options.findIndex(item => item.name === option.name);
+      let index = this.options.findIndex(item => item.id === option.id);
       this.options[index].checked = false;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
       if (this.searchQuery) {
         this.doSearch();
       }
+    },
+    removeSelectedDic(item) {
+      let value = item.source.split("_").join(" ");
+      let result = this.options.filter(a => a.name.toLowerCase() == value);
+      this.onRemove(result[0]);
     }
   }
 };
@@ -210,8 +222,32 @@ export default {
         width: 44%;
       }
     }
-    .dic_source {
-      color: red;
+    .dic_source_wrapper {
+      display: block;
+      margin-bottom: 0.5rem;
+      .dic_source {
+        color: hsl(17, 39%, 15%);
+        text-transform: uppercase;
+        font-size: 0.7em;
+        padding: 0.2rem 0.5rem;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        background-color: hsla(17, 39%, 15%, 0.17);
+      }
+      .close-btn {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.7em;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        background-color: hsla(17, 39%, 15%, 0.1);
+        cursor: pointer;
+        img {
+          color: hsl(17, 39%, 15%);
+          height: 0.7rem;
+          width: 0.5rem;
+          margin-bottom: 0.1rem;
+        }
+      }
     }
     .default-text {
       height: 78%;
