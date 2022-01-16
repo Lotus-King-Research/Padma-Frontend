@@ -183,15 +183,18 @@ export default {
       .arrow-section {
         display: flex;
         .next-arrow {
+          cursor: pointer;
           @extend .box-style;
           background-color: $secondary-color;
         }
         .single-arrow {
+          cursor: pointer;
           img {
             width: 20%;
           }
         }
         .double-arrow {
+          cursor: pointer;
           img {
             width: 32%;
           }
@@ -211,6 +214,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         .minimize-arrow {
+          cursor: pointer;
           @extend .box-style;
           background-color: hsla(37, 18%, 45%, 1);
           img {

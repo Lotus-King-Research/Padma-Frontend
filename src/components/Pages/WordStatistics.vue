@@ -26,7 +26,11 @@
           >
             TITLE
           </span>
-          <span @click="title = false" :class="{ activeTab: !title }">
+          <span
+            @click="title = false"
+            class="verbatim"
+            :class="{ activeTab: !title }"
+          >
             VERBATIM
           </span>
         </label>
@@ -170,6 +174,10 @@ export default {
       font-weight: bold;
       .titleText {
         padding-right: 1rem;
+        cursor: pointer;
+      }
+      .verbatim {
+        cursor: pointer;
       }
       .activeTab {
         color: $dropdown-color;
