@@ -83,9 +83,10 @@ export default {
   color: hsla(17, 39%, 15%, 1);
   outline: none;
   padding: 2rem;
+  padding-top: 4rem;
   font-size: 2.5rem;
   font-family: $tib-font;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
   background-color: hsla(36, 100%, 95%, 1);
 

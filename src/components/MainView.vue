@@ -7,6 +7,9 @@
     </b-row>
     <b-row class="row input-area">
       <b-col md="4">
+        <div class="place-holder-text">
+          <label> Enter Tibetan Text </label>
+        </div>
         <customTextArea
           v-model="queryString"
           :routeQuery="routeQuery"
@@ -277,6 +280,14 @@ export default {
   .input-area {
     width: 100%;
 
+    .place-holder-text {
+      text-transform: uppercase;
+      color: $dropdown-color;
+      position: absolute;
+      top: 1.5rem;
+      left: 2.5rem;
+      font-weight: bold;
+    }
     .btn {
       float: right;
       margin-right: 1rem;
@@ -349,9 +360,8 @@ export default {
       }
       .menu-list {
         display: block;
-        font-size: 1em;
+        font-size: 1.1em;
         text-transform: uppercase;
-        padding-top: 1rem;
 
         label {
           padding-right: 2rem;
@@ -372,7 +382,7 @@ export default {
         .footer {
           text-transform: none;
           color: $footer-text-color;
-          padding-top: 2.7rem;
+          padding-top: 2.8rem;
           display: grid;
           justify-content: start;
 
