@@ -146,6 +146,9 @@ export default {
     },
     "$route.query.query"() {
       this.detectedRouterQuery();
+    },
+    tabSelected() {
+      this.setSelectedfunction();
     }
   },
   mounted() {
