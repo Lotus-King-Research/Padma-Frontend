@@ -9,6 +9,7 @@
 
 <script>
 import { mapState } from "vuex";
+import smartlookClient from "smartlook-client";
 
 export default {
   name: "mainview",
@@ -21,6 +22,8 @@ export default {
     if (optionsData !== null) {
       this.$store.commit("storeDicOptions", optionsData);
     }
+
+    smartlookClient.init(process.env.SL_KEY);
   }
 };
 </script>
