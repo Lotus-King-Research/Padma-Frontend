@@ -1,9 +1,12 @@
 <template>
-  <div class="container-fixed px-5 pb-5">
+  <div class="container-fixed">
     <font
       v-for="(token, idx) in tokens"
       class="tibetan-text-reader"
       :key="idx"
+      :style="{
+        color: colors[idx % 2]
+      }"
       >{{ token }}</font
     >
   </div>
@@ -18,7 +21,8 @@ export default {
 
   data() {
     return {
-      tokens: []
+      tokens: [],
+      colors: ["#372118", "#725144"]
     };
   },
 
@@ -42,7 +46,8 @@ export default {
   methods: {
     async doTokenize() {
       // Execute tokenize query
-      const res = await Services.tokenize(this.tokenizeQuery);
+
+      const res = await Services.tokenize(this.tokenizeQuery.replace(/,/g, ""));
       this.tokens = res && res.data ? res.data.tokens : [];
       if (!this.tokens.length) {
         this.$toasted.error("No results found", { duration: 5000 });
@@ -53,13 +58,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tibetan-text-reader {
-  font-size: 1.5em;
-  font-family: "Jomolhari", serif;
-  margin-right: 15px;
-}
+@import "@/assets/scss/index.scss";
+.container-fixed {
+  height: 31rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
 
-font:nth-of-type(2) {
-  color: rgba(0, 0, 0, 0.705);
+  .tibetan-text-reader {
+    font-size: 2em;
+    font-family: "Jomolhari";
+
+    @include breakpoint(medium) {
+      font-size: 3em;
+    }
+  }
 }
 </style>

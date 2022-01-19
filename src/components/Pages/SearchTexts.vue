@@ -1,35 +1,58 @@
 <template>
-  <div class="container-fixed px-5 pb-5">
-    <template v-for="(t, idx) in results.title">
-      <!--- handle the request from `>>` --->
-      <p class="tibetan-text mb-0 pb-0" :id="results.title[idx]" :key="idx">
-        {{ results.text[idx] }}
-      </p>
-      <span :key="'span' + idx" class="tibetan-source" id="source">
-        {{ results.text_title[idx] }}
-      </span>
-      <font-awesome-icon
-        :key="'i' + idx"
-        :icon="['fas', 'angle-double-right']"
-        class="expand-icon"
-        title="expand"
-        @click="renderText(idx)"
-      />
-      <hr align="left" :key="'hr' + idx" />
-    </template>
-  </div>
+  <b-container fluid>
+    <b-row class="text-container">
+      <template v-for="(t, idx) in textData.title">
+        <b-col
+          cols="12"
+          :key="idx"
+          class="tibetan-text"
+          :id="textData.title[idx]"
+        >
+          <h1>
+            {{ textData.text_title[idx] }}
+          </h1>
+        </b-col>
+        <b-col cols="11" :key="'span' + idx" class="tibetan-source" id="source">
+          <span>
+            {{ textData.text[idx] }}
+          </span>
+        </b-col>
+        <b-col cols="1" class="arrow-icon" :key="'i' + idx">
+          <div class="arrow" @click="openTextModal(idx)">
+            <img src="@/assets/images/icon-right-arrow.svg" />
+          </div>
+        </b-col>
+        <b-col cols="12" class="horz-line" :key="'hr' + idx">
+          <hr align="left" />
+        </b-col>
+      </template>
+      <textModal :title="title" :start="start" :end="end" />
+      <infinite-loading @infinite="fetchMoreData" spinner="spiral">
+        <div slot="no-more">No more Text</div>
+      </infinite-loading>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
 import { Services } from "@/services/services";
+import InfiniteLoading from "vue-infinite-loading";
 
 export default {
   name: "searchtexts",
-  components: {},
+  components: {
+    textModal: () => import("@/components/Sub/textModal.vue"),
+    InfiniteLoading
+  },
 
   data() {
     return {
-      results: {}
+      results: {},
+      title: "",
+      start: "",
+      end: "",
+      limit: 4,
+      textData: {}
     };
   },
 
@@ -55,53 +78,117 @@ export default {
       // Execute search query
       const res = await Services.searchTexts(this.searchQuery);
       this.results = res && res.data ? res.data : {};
+      this.loadMoreData();
       if (!Object.keys(this.results).length || !this.results.title.length) {
         this.$toasted.error("No results found", { duration: 5000 });
+      }
+    },
+    fetchMoreData($state) {
+      setTimeout(() => this.loadMoreData($state), 400);
+    },
+    loadMoreData($state) {
+      const data = {};
+      let count = 0;
+      if (Object.keys(this.textData).length > 0) {
+        count = this.textData.location.length;
+      }
+      (data.query = this.results.query),
+        (data.location = this.results.location.slice(
+          count,
+          count + this.limit
+        )),
+        (data.text = this.results.text.slice(count, count + this.limit)),
+        (data.text_title = this.results.text_title.slice(
+          count,
+          count + this.limit
+        )),
+        (data.title = this.results.title.slice(count, count + this.limit)),
+        (data.start = "");
+      if (Object.keys(this.textData).length > 0) {
+        data.location.forEach((item, index) => {
+          this.textData.location.push(data.location[index]);
+          this.textData.text_title.push(data.text_title[index]);
+          this.textData.title.push(data.title[index]);
+          this.textData.text.push(data.text[index]);
+        });
+        if (this.results.location.length === this.textData.location.length) {
+          $state.complete();
+        } else {
+          $state.loaded();
+        }
+      } else {
+        this.textData = { ...data };
+      }
+      this.$forceUpdate();
+    },
+    async openTextModal(idx) {
+      let renderTextResult = await this.renderText(idx);
+      if (renderTextResult) {
+        this.$root.$emit("bv::show::modal", "textModal");
+        this.$root.$emit("renderText");
       }
     },
 
     renderText(idx) {
       let startTemp = this.results.location[idx];
       let endTemp = this.results.location[idx];
-      let start = startTemp;
-      let end = endTemp + 2;
-      this.$router.push(
-        `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
-      );
+      this.start = startTemp;
+      this.end = endTemp + 2;
+      this.title = this.results.title[idx];
+      return true;
+      // this.$router.push(
+      //   `/render_text?title=${this.results.title[idx]}&text_title=${this.results.text_title[idx]}&start=${start}&end=${end}`
+      // );
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.tibetan-text {
-  font-size: 1.6em;
-  font-family: "Jomolhari", serif;
-}
+@import "@/assets/scss/index.scss";
 
-.tibetan-source {
-  opacity: 0.4;
-  font-size: x-large;
-  font-family: "Tinos", serif;
-}
-
-.expand-icon {
-  font-size: 35px;
-
-  cursor: pointer;
-  opacity: 0.3;
-  position: absolute;
-  padding-left: 15px;
-
-  &:hover {
-    opacity: 0.5;
+.container-fluid {
+  height: 31rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
+  .text-container {
+    .tibetan-text {
+      font-family: $tib-font;
+      padding-left: 0;
+    }
+    .tibetan-source {
+      font-family: $tib-font;
+      font-size: x-large;
+      padding-left: 0;
+      padding-top: 0.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 0.8rem;
+      color: $secondary-color;
+    }
+    .arrow-icon {
+      display: grid;
+      justify-content: end;
+      padding-right: 0;
+      .arrow {
+        width: 3rem;
+        height: 100%;
+        background-color: $secondary-color;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+    .horz-line {
+      margin-bottom: 3rem;
+      padding-right: 0;
+      padding-left: 0;
+      hr {
+        margin: 0;
+        height: 0.1rem;
+        background-color: $secondary-color;
+      }
+    }
   }
-}
-
-hr {
-  width: 30%;
-  text-align: left;
-  height: 0.1px;
-  margin-left: 5px;
 }
 </style>

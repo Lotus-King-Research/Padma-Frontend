@@ -1,17 +1,71 @@
 <template>
   <div class="dictionarylookup">
     <div class="container-fluid">
-      <template v-for="(token, idx) in results.tokens">
-        <table class="dataframe mb-4" :key="idx">
-          <th>{{ token }}</th>
-          <th class="dataframelast"></th>
-          <template v-for="(item, idx2) in results.text[idx]">
-            <tr :key="idx2">
-              <td class="td-key">{{ item }}</td>
-              <td class="td-value">{{ results.source[idx][idx2] }}</td>
-            </tr>
+      <multiselect
+        v-model="value"
+        :options="options"
+        :multiple="true"
+        :close-on-select="false"
+        :clear-on-select="false"
+        :preserve-search="true"
+        :show-labels="false"
+        placeholder="Select Dictionary"
+        label="name"
+        track-by="name"
+        @select="onSelect($event)"
+        @remove="onRemove($event)"
+      >
+        <template
+          slot="option"
+          slot-scope="props"
+          @click.self="select(props.option)"
+        >
+          <input
+            v-model="props.option.checked"
+            type="checkbox"
+            @focus.prevent
+          />
+          <span class="option__desc">
+            <span class="option__title">{{ props.option.name }}</span>
+          </span>
+        </template>
+        <template slot="selection" slot-scope="{ values, isOpen }">
+          <span
+            class="multiselect__single"
+            v-if="values.length &amp;&amp; !isOpen"
+          >
+            {{ values.length }} dictionaries selected
+          </span>
+        </template>
+      </multiselect>
+      <div class="default-text" v-if="!searchQuery">
+        <p>
+          Start by entering a Tibetan word or a segment of text inside the white
+          textarea on the left ...
+        </p>
+      </div>
+      <template v-for="(token, idx) in results.tokens" v-else>
+        <div :key="idx">
+          <h1>{{ token }}</h1>
+          <!-- <template v-for="(item, idx2) in results.text[idx]">
+            <p :key="idx2">
+              {{ item }}
+            </p>
+          </template> -->
+          <template v-for="(item, idx2) in resultArray">
+            <p :key="idx2">
+              <span class="dic_source_wrapper">
+                <span class="dic_source">
+                  {{ item.source.split("_").join(" ") }}
+                </span>
+                <span class="close-btn" @click="removeSelectedDic(item)">
+                  <img src="@/assets/images/close-icon-dic.svg" alt="remove" />
+                </span>
+              </span>
+              {{ item.text }}
+            </p>
           </template>
-        </table>
+        </div>
       </template>
     </div>
   </div>
@@ -19,20 +73,38 @@
 
 <script>
 import { Services } from "@/services/services";
+import multiselect from "vue-multiselect";
+import { mapState } from "vuex";
 
 export default {
   name: "dictionarylookup",
-  components: {},
+  components: {
+    multiselect
+  },
 
   data() {
     return {
-      results: {}
+      results: {},
+      value: []
     };
   },
 
   computed: {
+    ...mapState(["options"]),
     searchQuery() {
       return this.$route.query.query;
+    },
+    resultArray() {
+      let ar1 = [].concat.apply([], this.results.source[0]);
+      let ar2 = [].concat.apply([], this.results.text[0]);
+      let res = [];
+      ar1.forEach(function(v, i) {
+        var obj = {};
+        obj.source = v;
+        obj.text = ar2[i];
+        res.push(obj);
+      });
+      return res;
     }
   },
 
@@ -44,75 +116,179 @@ export default {
   },
 
   mounted() {
+    this.filterDictionaries();
     this.doSearch();
   },
-
   methods: {
     async doSearch() {
       // Execute search query
-      const res = await Services.dictionaryLookup(this.searchQuery);
+      let selectedDictionaries = this.value.map(a =>
+        a.name.replace(/ /g, "_").toLowerCase()
+      );
+      const res = await Services.dictionaryLookup(
+        this.searchQuery,
+        selectedDictionaries
+      );
       this.results = res && res.data ? res.data : {};
       if (!Object.keys(this.results).length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
+    },
+    filterDictionaries() {
+      if (this.options.length > 0) {
+        let filteredDictionaries = this.options.filter(a => {
+          if (a.checked === true) return a;
+        });
+        this.value = [...filteredDictionaries];
+      }
+    },
+    onSelect(option) {
+      let index = this.options.findIndex(item => item.name === option.name);
+      this.options[index].checked = true;
+      this.$store.commit("updateDictionary", this.value);
+      this.filterDictionaries();
+      if (this.searchQuery) {
+        this.doSearch();
+      }
+    },
+    onRemove(option) {
+      let index = this.options.findIndex(item => item.id === option.id);
+      this.options[index].checked = false;
+      this.$store.commit("updateDictionary", this.value);
+      this.filterDictionaries();
+      if (this.searchQuery) {
+        this.doSearch();
+      }
+    },
+    removeSelectedDic(item) {
+      let value = item.source.split("_").join(" ");
+      let result = this.options.filter(a => a.name.toLowerCase() == value);
+      this.onRemove(result[0]);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.dataframe {
-  margin: 10px;
-  border-collapse: separate;
-  border-spacing: 0px;
-  border: 0px solid #bfbfbf;
-  border-radius: 20px 20px 0 0;
-  border-width: 1.5px;
-  border-color: rgb(179, 179, 179);
-  box-shadow: 0 0 5.5px rgba(0, 0, 0, 0.014), 0 0 11px rgba(0, 0, 0, 0.028),
-    0 0 22px rgba(0, 0, 0, 0.04), 0 0 34px rgba(0, 0, 0, 0.052),
-    0 0 48px rgba(0, 0, 0, 0.066), 0 0 56px rgba(0, 0, 0, 0.1);
+@import "@/assets/scss/index.scss";
+.dictionarylookup {
+  height: 31rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
+  text-transform: lowercase;
+  .container-fluid {
+    height: 100%;
+    padding-left: 0;
 
-  th,
-  td {
-    text-align: left;
-    border-width: 0px;
-    padding: 14px;
-    padding-left: 20px;
-    font-size: x-large;
-    color: #2c2c2c;
-    font-family: "Tinos", serif;
-  }
+    input[type="checkbox"] {
+      appearance: none;
+      background-color: hsl(100, 100%, 100%);
+      margin-right: 0.5rem;
+      color: $dropdown-color;
+      width: 1.15em;
+      height: 1.15em;
+      border: 0.15em solid $dropdown-color;
+      border-radius: 0.15em;
+      transform: translateY(-0.075em);
+      display: inline-grid;
+      place-content: center;
+      &::before {
+        content: "\2713";
+        color: $dropdown-color;
+        display: grid;
+        place-content: center;
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--form-control-color);
+        background-color: hsl(100, 100%, 100%);
+      }
+      &:checked {
+        &::before {
+          transform: scale(1);
+        }
+      }
+    }
+    h1 {
+      font-family: $tib-font;
+      margin-bottom: 2rem;
+    }
+    .multiselect {
+      width: 100%;
+      margin-bottom: 2rem;
 
-  th {
-    background-color: #5f1c26;
-    color: white;
-  }
+      @include breakpoint(medium) {
+        width: 44%;
+      }
+    }
+    .dic_source_wrapper {
+      display: block;
+      margin-bottom: 0.5rem;
+      .dic_source {
+        color: hsl(17, 39%, 15%);
+        text-transform: uppercase;
+        font-size: 0.7em;
+        padding: 0.2rem 0.5rem;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+        background-color: hsla(17, 39%, 15%, 0.17);
+      }
+      .close-btn {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.7em;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        background-color: hsla(17, 39%, 15%, 0.1);
+        cursor: pointer;
+        img {
+          color: hsl(17, 39%, 15%);
+          height: 0.7rem;
+          width: 0.5rem;
+          margin-bottom: 0.1rem;
+        }
+      }
+    }
+    .default-text {
+      height: 78%;
+      display: flex;
+      align-items: center;
 
-  td {
-    border-bottom-width: 1px;
-    border-color: rgba(0, 0, 0, 0.26);
-    border-radius: 0px;
+      p {
+        font-size: 1.5em;
+        color: hsla(37, 18%, 45%, 1);
+        line-height: 1.8rem;
+      }
+    }
   }
-
-  tr:nth-child(odd) {
-    background-color: #fff8eb;
-  }
-
-  tr:nth-child(even) {
-    background-color: #fff8eb;
-  }
-
-  th:first-child {
-    border-radius: 18.7px 0 0 0;
-  }
-
-  .dataframelast {
-    border-radius: 0 18.7px 0 0;
-  }
-
-  th:only-child {
-    border-radius: 20px 20px 0 0;
-  }
+}
+</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style lang="scss">
+@import "@/assets/scss/index.scss";
+$font-color: hsl(0, 0%, 0%);
+.multiselect__option--highlight,
+.multiselect__option--highlight::after {
+  color: $font-color !important;
+  background: none !important;
+}
+.multiselect__tag {
+  color: $font-color !important;
+  background-color: hsla(36, 100%, 95%, 1);
+}
+.multiselect__option--selected,
+.multiselect__option--selected::after {
+  color: $font-color !important;
+  background: none !important;
+}
+.option__title {
+  color: $dropdown-color;
+}
+.multiselect__tag-icon:after {
+  color: $font-color;
+}
+.multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: $dropdown-color;
 }
 </style>

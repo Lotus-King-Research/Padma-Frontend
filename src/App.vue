@@ -9,23 +9,69 @@
 
 <script>
 import { mapState } from "vuex";
+import smartlookClient from "smartlook-client";
 
 export default {
   name: "mainview",
 
   computed: {
     ...mapState(["loading"])
+  },
+  created() {
+    const optionsData = JSON.parse(localStorage.getItem("options"));
+    if (optionsData !== null) {
+      this.$store.commit("storeDicOptions", optionsData);
+    }
+
+    smartlookClient.init(process.env.SL_KEY);
   }
 };
 </script>
 
 <style lang="scss">
-body {
-  margin-top: 12px !important;
-  font-size: 24px !important;
-  background: #fff8eb !important;
-  font-family: "Tinos", serif !important;
+@import "@/assets/scss/index.scss";
+@font-face {
+  font-family: "ZillaSlab";
+  src: local("ZillaSlab"),
+    url("~@/assets/fonts/ZillaSlab-Regular.ttf") format("truetype");
 }
+@font-face {
+  font-family: "Jomolhari";
+  src: local("Jomolhari"),
+    url("~@/assets/fonts/Jomolhari-Regular.ttf") format("truetype");
+}
+body {
+  padding: 0;
+  font-size: 1em !important;
+  font-family: ZillaSlab !important;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("assets/images/old-paper-bg.png") !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+// button,
+// input[type="submit"],
+// input[type="reset"] {
+//   background: none;
+//   color: inherit;
+//   border: none;
+//   padding: 0;
+//   font: inherit;
+//   cursor: pointer;
+//   outline: inherit;
+//   opacity: 0.2;
+//   transition: opacity 0.2s ease-in-out;
+//   padding-top: 15px;
+// }
 
 .loader {
   position: absolute;

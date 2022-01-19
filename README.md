@@ -30,6 +30,18 @@ Repository for Padma frontend.
 - [@blahmonkey](https://github.com/blahmonkey)
 - [@rabtenster](https://github.com/rabtenster)
 
+## Requirements for dev server
+
+- install mkcert (use brew on macos)
+- run `mkcert -install` from the repo folder
+- run `mkcert localhost` from the repo folder
+
+## Env variables
+`VUE_APP_API_KEY`
+`VUE_APP_SMARTLOOK_KEY`
+
+Both must be set
+
 ## Integrations
 
 - [Padma-Backend](https://github.com/Lotus-King-Research/Padma-Backend)

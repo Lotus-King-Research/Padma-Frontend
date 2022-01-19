@@ -1,40 +1,59 @@
 <template>
-  <div class="container-fixed landing">
-    <center>
-      <div class="row justify-content-center mt-5 mb-2 ml-3">
-        <form
-          class="form-inline"
-          action=""
-          method="post"
-          id="form"
-          onsubmit="parseQuery()"
-          autofocus
-        >
-          <div class="col-12 my-auto">
-            <textarea
-              type="text"
-              class="form-control cursor form-css"
-              v-model="queryString"
-              rows="15"
-              placeholder="Start by entering a Tibetan word or a segment of text..."
-            ></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="row h-100 justify-content-center">
-        <div class="col-12 my-auto">
-          <button
-            id="rawr"
-            type="image"
-            class="button-image mx-auto d-block"
-            @click="doDictionaryLookup"
-          >
-            <img src="@/assets/images/padma.png" width="80px;" />
-          </button>
+  <b-container class="landing" fluid>
+    <b-row class="padma-logo-mobile">
+      <b-col>
+        <img src="@/assets/images/padma.png" />
+      </b-col>
+    </b-row>
+    <b-row class="row input-area">
+      <b-col md="4">
+        <textarea
+          type="text"
+          class="form-control cursor form-css"
+          v-model="queryString"
+          placeholder="Start by entering a Tibetan word or a segment of text..."
+        ></textarea>
+      </b-col>
+      <b-col class="padma-logo justify-content-center" md="2">
+        <img src="@/assets/images/padma.png" />
+      </b-col>
+      <b-col class="menu-list">
+        <b-row>
+          <b-col cols="2">
+            <label @click="doDictionaryLookup"> Dictionary </label>
+          </b-col>
+          <b-col cols="2">
+            <label> Texts </label>
+          </b-col>
+          <b-col cols="3">
+            <label> Similar Words </label>
+          </b-col>
+          <b-col cols="2">
+            <label> Statistics </label>
+          </b-col>
+          <b-col cols="2">
+            <label> Tokenize </label>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            Main content here
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
+    <b-row class="menu-dropdown">
+      <b-col class="for-mobile">
+        <div>
+          <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
+            <b-dropdown-item>First Action</b-dropdown-item>
+            <b-dropdown-item>Second Action</b-dropdown-item>
+            <b-dropdown-item>Third Action</b-dropdown-item>
+          </b-dropdown>
         </div>
-      </div>
-    </center>
-  </div>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -57,77 +76,83 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.form-css {
-  display: block;
-  font-size: 34px;
-  font-family: "Tinos", serif;
-  font-weight: 400;
-  color: #444;
-  line-height: 1.3;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #aaa;
-  border-radius: 1.5em;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
-  border: 1px solid #bfbfbf;
-  line-height: normal;
-  padding-top: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-bottom: 30px;
-  align-content: center;
-
-  &::-ms-expand {
-    display: none;
+@import "@/assets/scss/index.scss";
+.landing {
+  padding: 2.5rem 2.5rem 0 2.5rem;
+  .padma-logo-mobile {
+    img {
+      width: 4rem;
+    }
+    @include breakpoint(medium) {
+      display: none;
+    }
   }
-
-  &:hover,
-  &:focus {
-    border-color: #888;
-    border: 1px solid #bfbfbf;
-    background-color: white;
-    box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.014), 0 0 1px rgba(0, 0, 0, 0.028),
-      0 0 2px rgba(0, 0, 0, 0.04), 0 0 4px rgba(0, 0, 0, 0.052),
-      0 0 8px rgba(0, 0, 0, 0.066), 0 0 16px rgba(0, 0, 0, 0.1);
+  .input-area {
+    textarea {
+      height: 20rem;
+    }
+    .padma-logo {
+      display: none;
+    }
+    .menu-list {
+      display: none;
+    }
+    @include breakpoint(medium) {
+      textarea {
+        height: 40rem;
+      }
+      .padma-logo {
+        display: block;
+        img {
+          width: 4rem;
+        }
+      }
+      .menu-list {
+        display: block;
+        font-size: 0.8em;
+        text-transform: uppercase;
+      }
+    }
   }
-
-  &:focus,
-  &:active {
-    outline: none;
+  .menu-dropdown {
+    @include breakpoint(medium) {
+      .for-mobile {
+        display: none;
+      }
+    }
   }
 }
+// .form-css {
+//   display: block;
+//   font-family: "Tinos", serif;
+//   font-weight: 400;
+//   color: #ccc;
+//   line-height: 1.3;
+//   border: 1px solid #bfbfbf;
+//   align-content: center;
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: none !important;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-}
+//   &::-ms-expand {
+//     display: none;
+//   }
 
-button,
-input[type="submit"],
-input[type="reset"] {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  opacity: 0.2;
-  transition: opacity 0.2s ease-in-out;
-  padding-top: 15px;
-}
+//   &:hover,
+//   &:focus {
+//     border-color: #888;
+//     border: 1px solid #bfbfbf;
+//     background-color: white;
+//     box-shadow: 0 0 0.5px rgba(0, 0, 0, 0.014), 0 0 1px rgba(0, 0, 0, 0.028),
+//       0 0 2px rgba(0, 0, 0, 0.04), 0 0 4px rgba(0, 0, 0, 0.052),
+//       0 0 8px rgba(0, 0, 0, 0.066), 0 0 16px rgba(0, 0, 0, 0.1);
+//   }
 
-button:hover {
-  opacity: 0.5;
-}
+//   &:focus,
+//   &:active {
+//     outline: none;
+//   }
+// }
 
-.form-control::placeholder {
-  font-size: 0.8em !important;
-  font-style: italic;
-}
+// .form-control::placeholder {
+//   font-size: 0.8em !important;
+//   font-style: italic;
+// }
 </style>

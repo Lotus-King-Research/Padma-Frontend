@@ -1,56 +1,90 @@
 <template>
-  <div class="d-flex">
-    <div>
-      <table class="dataframe">
-        <th class="dataframe">common</th>
-        <th class="dataframelast"></th>
-        <template v-for="(mcv, idx) in results.most_common_value">
-          <tr :key="idx">
-            <td class="td-key">{{ results.most_common_key[idx] }}</td>
-            <td class="td-value">{{ results.most_common_value[idx] }}</td>
-          </tr>
-        </template>
-      </table>
-    </div>
-    <div>
-      <table class="dataframe">
-        <th class="dataframe">prominence</th>
-        <th class="dataframelast"></th>
-        <template v-for="(pv, idx) in results.prominence_value">
-          <tr :key="idx">
-            <td class="td-key prominence" @click="gotoProminenceLink(idx)">
-              {{ results.prominence_name[idx] }}
-            </td>
-            <td class="td-value">{{ results.prominence_value[idx] }}</td>
-          </tr>
-        </template>
-      </table>
-    </div>
-    <div>
-      <table class="dataframe">
-        <th class="dataframe">proximity</th>
-        <th class="dataframelast"></th>
-        <template v-for="(cov, idx) in results.co_occurance_value">
-          <tr :key="idx">
-            <td class="td-key">{{ results.co_occurance_key[idx] }}</td>
-            <td class="td-value">{{ results.co_occurance_value[idx] }}</td>
-          </tr>
-        </template>
-      </table>
-    </div>
-  </div>
+  <b-container class="wrapper">
+    <b-row>
+      <b-col class="co-occurence" cols="4">
+        <label class="title"> Co-occurence </label>
+        <div>
+          <template v-for="(mcv, idx) in results.most_common_value">
+            <div :key="idx">
+              <label class="text">
+                {{ results.most_common_key[idx] }}
+              </label>
+              <label class="count">
+                ( {{ results.most_common_value[idx] }} )</label
+              >
+            </div>
+          </template>
+        </div>
+      </b-col>
+      <b-col class="frequency" cols="8">
+        <label class="title"> Frequency by: </label>
+        <label class="tabs">
+          <span
+            @click="title = true"
+            class="titleText"
+            :class="{ activeTab: title }"
+          >
+            TITLE
+          </span>
+          <span
+            @click="title = false"
+            class="verbatim"
+            :class="{ activeTab: !title }"
+          >
+            VERBATIM
+          </span>
+        </label>
+        <b-container v-if="title">
+          <template v-for="(pv, idx) in results.prominence_value">
+            <b-row :key="idx" class="byTitle">
+              <b-col class="icon" cols="1">
+                <SquareRounded :fillColor="color(pv)" :size="15" />
+              </b-col>
+              <b-col class="value" cols="11">
+                <label @click="renderText(results.prominence_key[idx])">
+                  {{ results.prominence_name[idx] }}
+                </label>
+              </b-col>
+            </b-row>
+          </template>
+        </b-container>
+        <b-container v-else>
+          <template v-for="(cov, idx) in results.co_occurance_value">
+            <b-row :key="idx">
+              <b-col>
+                <label class="text">
+                  <span v-html="highLightQuery(results.co_occurance_key[idx])">
+                  </span>
+                </label>
+                <label class="count">
+                  ( {{ results.co_occurance_value[idx] }} )
+                </label>
+              </b-col>
+            </b-row>
+          </template>
+        </b-container>
+      </b-col>
+    </b-row>
+    <textModal :titleText="titleText" :searchQuery="searchQuery" />
+  </b-container>
 </template>
 
 <script>
 import { Services } from "@/services/services";
+import SquareRounded from "vue-material-design-icons/SquareRounded.vue";
 
 export default {
   name: "wordstatistics",
-  components: {},
+  components: {
+    SquareRounded,
+    textModal: () => import("@/components/Sub/textModal.vue")
+  },
 
   data() {
     return {
-      results: {}
+      results: {},
+      title: true,
+      titleText: ""
     };
   },
 
@@ -85,76 +119,94 @@ export default {
       this.$router.push(
         `/render_text?title=${this.results.prominence_key[idx]}`
       );
+    },
+    color(value) {
+      console.log("color =", parseInt(value));
+      return "rgba(134,27,21," + parseFloat(value) + ")";
+    },
+    highLightQuery(text) {
+      return text.replaceAll(
+        this.searchQuery,
+        `<span class="highlight">${this.searchQuery}</span>`
+      );
+    },
+    renderText(title) {
+      this.titleText = title;
+      this.$root.$emit("bv::show::modal", "textModal");
+      this.$root.$emit("renderTextStatistics");
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.d-flex {
-  gap: 20px;
-}
-
-.dataframe {
-  margin: 10px;
-  border-collapse: separate;
-  border-spacing: 0px;
-  border: 0px solid #bfbfbf;
-  border-radius: 20px 20px 0 0;
-  border-width: 1.5px;
-  border-color: rgb(179, 179, 179);
-  box-shadow: 0 0 5.5px rgba(0, 0, 0, 0.014), 0 0 11px rgba(0, 0, 0, 0.028),
-    0 0 22px rgba(0, 0, 0, 0.04), 0 0 34px rgba(0, 0, 0, 0.052),
-    0 0 48px rgba(0, 0, 0, 0.066), 0 0 56px rgba(0, 0, 0, 0.1);
-
-  th,
-  td {
-    text-align: left;
-    border-width: 0px;
-    padding: 14px;
-    padding-left: 20px;
-    font-size: x-large;
-    color: #2c2c2c;
-    font-family: "Tinos", serif;
-  }
-
-  th {
-    background-color: #5f1c26;
-    color: white;
-  }
-
-  td {
-    border-bottom-width: 1px;
-    border-color: rgba(0, 0, 0, 0.26);
-    border-radius: 0px;
-
-    &.prominence {
-      cursor: pointer;
-
-      &:hover {
-        color: rgba(42, 42, 42, 0.6);
-      }
+@import "@/assets/scss/index.scss";
+.wrapper {
+  height: 31rem;
+  overflow-y: scroll;
+  padding-right: 2rem;
+  $title-size: 0.8em;
+  $bottom-padding-value: 1.2rem;
+  $text-font-size: 2.3em;
+  .co-occurence {
+    border-right: solid 0.3rem $secondary-color;
+    .title {
+      font-size: $title-size;
+      padding-bottom: $bottom-padding-value;
+    }
+    .text {
+      display: inline;
+      font-size: $text-font-size;
+    }
+    .count {
+      color: hsla(37, 18%, 45%, 1);
     }
   }
-
-  tr:nth-child(odd) {
-    background-color: #fff8eb;
-  }
-
-  tr:nth-child(even) {
-    background-color: #fff8eb;
-  }
-
-  th:first-child {
-    border-radius: 18.7px 0 0 0;
-  }
-
-  .dataframelast {
-    border-radius: 0 18.7px 0 0;
-  }
-
-  th:only-child {
-    border-radius: 20px 20px 0 0;
+  .frequency {
+    padding-left: 3rem;
+    .title {
+      font-size: $title-size;
+      padding-bottom: $bottom-padding-value;
+      padding-right: 1rem;
+    }
+    .tabs {
+      @extend .title;
+      font-weight: bold;
+      .titleText {
+        padding-right: 1rem;
+        cursor: pointer;
+      }
+      .verbatim {
+        cursor: pointer;
+      }
+      .activeTab {
+        color: $dropdown-color;
+        text-decoration: underline;
+        text-underline-offset: 0.4em;
+        text-decoration-thickness: 0.2em;
+      }
+    }
+    .container {
+      padding: 0;
+      .byTitle {
+        .value {
+          font-size: 1.5em;
+          label {
+            cursor: pointer;
+          }
+        }
+      }
+      .text {
+        display: inline;
+        font-size: $text-font-size;
+        ::v-deep .highlight {
+          color: $secondary-color;
+        }
+      }
+      .count {
+        color: hsla(37, 18%, 45%, 1);
+      }
+    }
   }
 }
 </style>
