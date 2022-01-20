@@ -17,6 +17,7 @@ COPY . .
 
 # Set environmental variable
 ARG VUE_APP_API_URL=https://api.padma.io
+ARG VUE_APP_SMARTLOOK_KEY=c270bc61269cadec125852dcbb96e50b470d6c99
 
 # build app for production with minification
 RUN yarn build
