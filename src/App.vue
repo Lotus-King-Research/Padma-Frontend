@@ -23,7 +23,9 @@ export default {
       this.$store.commit("storeDicOptions", optionsData);
     }
 
-    smartlookClient.init(process.env.SL_KEY);
+    if (process.env.NODE_ENV === "production") {
+      smartlookClient.init(process.env.SMARTLOOK_KEY);
+    }
   }
 };
 </script>
