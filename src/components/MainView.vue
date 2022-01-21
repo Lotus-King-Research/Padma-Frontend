@@ -260,7 +260,7 @@ $search-area-width: 500px;
 
         .btn {
           position: absolute;
-          right: 29px;
+          right: 19px;
           top: -16px;
           width: 7rem;
           height: 2rem;
@@ -312,7 +312,7 @@ $search-area-width: 500px;
   .content-area {
     width: 100%;
     height: 100%;
-    padding-top: 1.7rem;
+    padding-top: 5.5rem;
     padding-left: 3rem;
 
     @include breakpoint(medium) {

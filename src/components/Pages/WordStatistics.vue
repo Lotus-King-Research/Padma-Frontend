@@ -143,7 +143,7 @@ export default {
 @import "@/assets/scss/index.scss";
 .wrapper {
   width: 100%;
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 10rem);
   overflow-y: scroll;
   padding-right: 1rem;
   padding-left: 0;

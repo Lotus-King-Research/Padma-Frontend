@@ -148,9 +148,10 @@ export default {
 @import "@/assets/scss/index.scss";
 
 .container-fluid {
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 10rem);
   overflow-y: scroll;
   padding-right: 3.5rem;
+  padding-top: 0.3rem;
   @include breakpoint(medium) {
     padding-right: 2rem;
   }
