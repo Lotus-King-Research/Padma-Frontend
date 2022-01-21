@@ -148,9 +148,12 @@ export default {
 @import "@/assets/scss/index.scss";
 
 .container-fluid {
-  height: 31rem;
+  height: calc(100vh - 6rem);
   overflow-y: scroll;
-  padding-right: 2rem;
+  padding-right: 3.5rem;
+  @include breakpoint(medium) {
+    padding-right: 2rem;
+  }
   .text-container {
     .tibetan-text {
       font-family: $tib-font;

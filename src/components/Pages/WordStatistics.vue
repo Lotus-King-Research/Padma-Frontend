@@ -142,12 +142,19 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .wrapper {
-  height: 31rem;
+  width: 100%;
+  height: calc(100vh - 6rem);
   overflow-y: scroll;
-  padding-right: 2rem;
+  padding-right: 1rem;
+  padding-left: 0;
   $title-size: 0.8em;
   $bottom-padding-value: 1.2rem;
   $text-font-size: 2.3em;
+  margin: 0;
+
+  @include breakpoint(medium) {
+    padding-right: 2rem;
+  }
   .co-occurence {
     border-right: solid 0.3rem $secondary-color;
     .title {

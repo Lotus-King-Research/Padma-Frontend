@@ -7,8 +7,8 @@ node_modules
 .env.*.local
 
 #https certificates
-localhost+2-key.pem
-localhost+2.pem
+localhost-key.pem
+localhost.pem
 
 # Log files
 npm-debug.log*
