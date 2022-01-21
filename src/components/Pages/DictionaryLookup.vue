@@ -173,6 +173,7 @@ export default {
 @import "@/assets/scss/index.scss";
 .dictionarylookup {
   height: calc(100vh - 6rem);
+  padding-top: 0.5rem;
   text-transform: lowercase;
   .container-fluid {
     height: 100%;

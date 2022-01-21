@@ -318,6 +318,7 @@ $search-area-width: 500px;
     @include breakpoint(medium) {
       width: calc(100vw - $search-area-width);
       padding-left: 0;
+      padding-right: 3rem;
     }
   }
 

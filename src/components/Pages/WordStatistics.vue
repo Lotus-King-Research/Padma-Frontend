@@ -2,7 +2,7 @@
   <b-container class="wrapper">
     <b-row>
       <b-col class="co-occurence" cols="4">
-        <label class="title"> Co-occurence </label>
+        <label class="title"> Co-occurrence </label>
         <div>
           <template v-for="(mcv, idx) in results.most_common_value">
             <div :key="idx">
