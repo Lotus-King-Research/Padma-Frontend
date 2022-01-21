@@ -38,7 +38,6 @@ Repository for Padma frontend.
 
 ## Env variables
 `VUE_APP_API_KEY`
-`VUE_APP_SMARTLOOK_KEY`
 
 Both must be set
 
