@@ -156,9 +156,9 @@ export default {
     padding-right: 2rem;
   }
   .co-occurence {
-    min-height: 100vh;
     border-right: solid 0.3rem $secondary-color;
     .title {
+      text-transform: uppercase;
       font-size: $title-size;
       padding-bottom: $bottom-padding-value;
     }
@@ -173,6 +173,7 @@ export default {
   .frequency {
     padding-left: 3rem;
     .title {
+      text-transform: uppercase;
       font-size: $title-size;
       padding-bottom: $bottom-padding-value;
       padding-right: 1rem;
