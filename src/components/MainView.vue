@@ -1,12 +1,38 @@
 <template>
   <b-container class="home" fluid>
-    <b-row class="padma-logo-mobile">
-      <b-col class="padma-logo-img justify-content-center">
-        <img src="@/assets/images/padma.png" @click="goHome" />
-      </b-col>
-    </b-row>
-    <b-row class="row input-area">
-      <b-col md="4">
+    <div class="search-area" md="4">
+      <div class="menu-list-items">
+        <label
+          :class="{ active: tabSelected === 'dictionary' }"
+          @click="tabSelected = 'dictionary'"
+        >
+          Dictionary
+        </label>
+        <label
+          :class="{ active: tabSelected === 'texts' }"
+          @click="tabSelected = 'texts'"
+        >
+          Texts
+        </label>
+        <!-- <label
+          :class="{ active: tabSelected === 'similarWords' }"
+        >
+          Similar Words
+        </label> -->
+        <label
+          :class="{ active: tabSelected === 'statistics' }"
+          @click="tabSelected = 'statistics'"
+        >
+          Statistics
+        </label>
+        <label
+          :class="{ active: tabSelected === 'tokenize' }"
+          @click="tabSelected = 'tokenize'"
+        >
+          Tokenize
+        </label>
+      </div>
+      <div class="textArea">
         <div class="place-holder-text">
           <label> Enter Tibetan Text </label>
         </div>
@@ -15,95 +41,23 @@
           :routeQuery="routeQuery"
           :tokenizeQuery="tokenizeQuery"
         />
-        <label>
-          <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
-          <span>Tokenize query</span>
-        </label>
-        <b-button @click="lookup()">
-          LOOKUP <span class="greater-than-arrow"> > </span>
-        </b-button>
-      </b-col>
-      <b-col class="padma-logo justify-content-center" md="1">
-        <img src="@/assets/images/padma.png" @click="goHome" />
-      </b-col>
-      <b-col class="menu-list" md="7">
-        <b-row class="menu-list-items">
-          <b-col>
-            <label
-              :class="{ active: tabSelected === 'dictionary' }"
-              @click="tabSelected = 'dictionary'"
-            >
-              Dictionary
-            </label>
-            <label
-              :class="{ active: tabSelected === 'texts' }"
-              @click="tabSelected = 'texts'"
-            >
-              Texts
-            </label>
-            <!-- <label
-              :class="{ active: tabSelected === 'similarWords' }"
-            >
-              Similar Words
-            </label> -->
-            <label
-              :class="{ active: tabSelected === 'statistics' }"
-              @click="tabSelected = 'statistics'"
-            >
-              Statistics
-            </label>
-            <label
-              :class="{ active: tabSelected === 'tokenize' }"
-              @click="tabSelected = 'tokenize'"
-            >
-              Tokenize
-            </label>
-          </b-col>
-        </b-row>
-        <b-row class="main-content-area">
-          <b-col>
-            <!-- Main content here -->
-            <router-view />
-          </b-col>
-        </b-row>
-        <b-row class="footer">
-          <b-col>
-            <label> About </label>
-            <label> Privacy </label>
-            <label> Terms & Condition </label>
-          </b-col>
-        </b-row>
-      </b-col>
-    </b-row>
-    <b-row class="menu-dropdown">
-      <b-col class="for-mobile">
-        <b-row class="select">
-          <b-col>
-            <v-select
-              :options="options"
-              @input="setSelectedfunction"
-              v-model="selectedMenu"
-              class="selectMenu"
-              :clearable="false"
-            >
-            </v-select>
-          </b-col>
-        </b-row>
-        <b-row class="main-content-mobile">
-          <b-col>
-            <!-- Main content here for mobile -->
-            <router-view name="mobile-contents" />
-          </b-col>
-        </b-row>
-        <b-row class="footer-mobile">
-          <b-col>
-            <label> About </label>
-            <label> Privacy </label>
-            <label> Terms & Condition </label>
-          </b-col>
-        </b-row>
-      </b-col>
-    </b-row>
+        <div class="textArea-footer">
+          <label>
+            <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
+            <span>Tokenize query</span>
+          </label>
+          <b-button @click="lookup()">
+            LOOKUP <span class="greater-than-arrow"> > </span>
+          </b-button>
+        </div>
+      </div>
+    </div>
+    <div class="content-area" md="7">
+      <div>
+        <!-- Main content here -->
+        <router-view />
+      </div>
+    </div>
   </b-container>
 </template>
 
@@ -247,171 +201,156 @@ export default {
 <style lang="scss" scoped>
 @import "vue-select/src/scss/vue-select.scss";
 @import "@/assets/scss/index.scss";
+
+$search-area-width: 500px;
 .home {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   justify-content: center;
-  padding: 0rem 2.5rem 0 2.5rem;
+  padding: 0;
   label {
     cursor: pointer;
   }
   @include breakpoint(medium) {
-    display: flex;
-    height: 100vh;
-    align-items: center;
-  }
-  .padma-logo-mobile {
-    margin-bottom: 2rem;
-    .padma-logo-img {
-      display: grid;
-      img {
-        width: 4rem;
-        opacity: 0.5;
-        transition: opacity 2s;
-      }
-      img:hover {
-        opacity: 1;
-        cursor: pointer;
-      }
-    }
-    @include breakpoint(medium) {
-      display: none;
+    flex-direction: row;
+    .content-area {
+      width: 100%;
     }
   }
-  .input-area {
-    width: 100%;
+  .search-area {
+    width: $search-area-width;
+    height: 100%;
+    // border-right: solid 1px #000;
+    padding-top: 2rem;
 
-    .place-holder-text {
-      text-transform: uppercase;
-      color: $dropdown-color;
-      position: absolute;
-      top: 1.5rem;
-      left: 2.5rem;
-      font-weight: bold;
-    }
-    .btn {
-      float: right;
-      margin-right: 1rem;
-      margin-top: 0.6rem;
-      width: 7rem;
-      height: 2rem;
+    @include breakpointMax(small) {
+      width: 100%;
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
-      background-color: $secondary-color;
-      border: none;
     }
-    .greater-than-arrow {
-      padding-left: 0.5rem;
-      font-weight: bold;
-      padding-bottom: 0.07rem;
+
+    .menu-list-items {
+      padding-left: 3rem;
+      font-size: 1.1em;
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+
+      @include breakpointMax(small) {
+        width: 88%;
+        padding-left: 0;
+        font-size: 0.8em;
+      }
+
+      label {
+        padding-right: 1.1rem;
+        font-weight: 600;
+      }
+      .active {
+        color: $dropdown-color;
+        text-decoration: underline;
+        text-underline-offset: 0.4em;
+        text-decoration-thickness: 0.2em;
+      }
     }
-    label {
-      span {
+    .textArea {
+      justify-content: center;
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+
+      .place-holder-text {
+        text-transform: uppercase;
         color: $dropdown-color;
+        position: absolute;
+        top: 18px;
+        left: 80px;
+        font-weight: bold;
       }
-      input[type="checkbox"] {
-        display: none;
+      @include breakpointMax(small) {
+        width: 88%;
+
+        .place-holder-text {
+          left: 29px;
+          font-size: 0.8em;
+        }
       }
-      input[type="checkbox"] + *::before {
-        content: "";
-        width: 1rem;
-        height: 1rem;
-        margin-right: 0.5rem;
-        border-radius: 10%;
-        border: solid 0.13rem $dropdown-color;
-      }
-      input[type="checkbox"]:checked + *::before {
-        content: "✓";
-        color: $dropdown-color;
+      .textArea-footer {
         display: flex;
-        align-items: center;
-      }
-      input[type="checkbox"]:checked + * {
-        color: $dropdown-color;
-      }
-      input[type="checkbox"] + * {
-        display: flex;
-        align-items: center;
+        justify-content: space-between;
         padding-top: 1rem;
-      }
-    }
-    .padma-logo {
-      display: none;
-    }
-    .menu-list {
-      display: none;
-    }
-    @include breakpoint(medium) {
-      textarea {
-        height: 37rem;
-        padding: 2rem;
-        text-transform: uppercase;
-      }
-      .padma-logo {
-        display: grid;
         align-items: center;
-        img {
-          width: 5rem;
-        }
-        img:hover {
-          opacity: 1;
-          cursor: pointer;
-        }
-      }
-      .menu-list {
-        display: block;
-        font-size: 1.1em;
-        text-transform: uppercase;
+        width: 25.5rem;
+        position: relative;
 
-        label {
-          padding-right: 2rem;
-          font-weight: 600;
+        @include breakpointMax(small) {
+          width: 98%;
         }
-        .menu-list-items {
-          .active {
-            color: $dropdown-color;
-            text-decoration: underline;
-            text-underline-offset: 0.4em;
-            text-decoration-thickness: 0.2em;
-          }
-        }
-        .main-content-area {
+
+        .btn {
+          width: 7rem;
+          height: 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: $secondary-color;
           border: none;
-          padding-top: 2rem;
         }
-        .footer {
-          text-transform: none;
-          color: $footer-text-color;
-          padding-top: 2.8rem;
-          display: grid;
-          justify-content: start;
-
-          label {
-            font-weight: normal;
+        .greater-than-arrow {
+          padding-left: 0.5rem;
+          font-weight: bold;
+          padding-bottom: 0.07rem;
+        }
+        label {
+          margin-bottom: 0;
+          span {
+            color: $dropdown-color;
+          }
+          input[type="checkbox"] {
+            display: none;
+          }
+          input[type="checkbox"] + *::before {
+            content: "";
+            width: 1rem;
+            height: 1rem;
+            margin-right: 0.5rem;
+            border-radius: 10%;
+            border: solid 0.13rem $dropdown-color;
+          }
+          input[type="checkbox"]:checked + *::before {
+            content: "✓";
+            color: $dropdown-color;
+            display: flex;
+            align-items: center;
+          }
+          input[type="checkbox"]:checked + * {
+            color: $dropdown-color;
+          }
+          input[type="checkbox"] + * {
+            display: flex;
+            align-items: center;
           }
         }
       }
     }
   }
-  .menu-dropdown {
-    padding-top: 1.5rem;
-    .for-mobile {
-      .main-content-mobile {
-        padding-top: 2rem;
-      }
-      .footer-mobile {
-        color: $footer-text-color;
-        padding-top: 2rem;
-        label {
-          padding-right: 2rem;
-        }
-      }
-    }
+
+  .content-area {
+    width: 100%;
+    height: 100%;
+    padding-top: 5.5rem;
+    padding-left: 3rem;
 
     @include breakpoint(medium) {
-      .for-mobile {
-        display: none;
-      }
+      width: calc(100vw - $search-area-width);
+      padding-left: 0;
+      padding-right: 3rem;
+    }
+    @include breakpointMax(small) {
+      padding-top: 2rem;
+      padding-left: 2.4rem;
+      height: 100%;
     }
   }
 }

@@ -60,7 +60,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .container-fixed {
-  height: 31rem;
+  height: calc(100vh - 10rem);
   overflow-y: scroll;
   padding-right: 2rem;
 

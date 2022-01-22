@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="customTextArea-Wrapper">
     <div
       class="customTextArea"
       ref="textarea"
       contenteditable="true"
+      @keydown.enter.prevent
       @input="updateHTML"
     >
       <span
@@ -77,21 +78,43 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 
-.customTextArea {
-  width: 25.5rem;
-  height: 37rem;
-  color: hsla(17, 39%, 15%, 1);
-  outline: none;
-  padding: 2rem;
-  padding-top: 4rem;
-  font-size: 2.5rem;
-  font-family: $tib-font;
-  border-radius: 0.2rem;
-  box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
-  background-color: hsla(36, 100%, 95%, 1);
+.customTextArea-Wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 
-  span {
-    display: inline-block;
+  .customTextArea {
+    width: 25.5rem;
+    height: 37rem;
+    color: hsla(17, 39%, 15%, 1);
+    outline: none;
+    padding-top: 60px;
+    padding-left: 30px;
+    font-size: 2.5em;
+    font-family: $tib-font;
+    border-radius: 0.2rem;
+    box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
+    background-color: hsla(36, 100%, 95%, 1);
+
+    @include breakpointMax(small) {
+      width: 100%;
+      height: 7.2rem;
+      white-space: nowrap;
+      display: inline;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      font-size: 2em;
+      overflow: -moz-scrollbars-none;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    span {
+      display: inline-block;
+    }
   }
 }
 </style>

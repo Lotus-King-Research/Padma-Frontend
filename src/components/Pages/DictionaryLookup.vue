@@ -45,7 +45,7 @@
         </p>
       </div>
       <template v-for="(token, idx) in results.tokens" v-else>
-        <div :key="idx">
+        <div class="dictionary-results" :key="idx">
           <h1>{{ token }}</h1>
           <!-- <template v-for="(item, idx2) in results.text[idx]">
             <p :key="idx2">
@@ -172,10 +172,13 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 .dictionarylookup {
-  height: 31rem;
-  overflow-y: scroll;
-  padding-right: 2rem;
+  height: calc(100vh - 10rem);
   text-transform: lowercase;
+
+  @include breakpointMax(small) {
+    padding-right: 1rem;
+    height: 100%;
+  }
   .container-fluid {
     height: 100%;
     padding-left: 0;
@@ -258,6 +261,16 @@ export default {
         font-size: 1.5em;
         color: hsla(37, 18%, 45%, 1);
         line-height: 1.8rem;
+      }
+    }
+    .dictionary-results {
+      height: calc(100vh - 14.5rem);
+      overflow-y: scroll;
+      padding-right: 2rem;
+
+      @include breakpointMax(small) {
+        height: 100%;
+        overflow-y: none;
       }
     }
   }
