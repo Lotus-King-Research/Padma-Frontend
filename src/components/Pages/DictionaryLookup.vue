@@ -260,7 +260,7 @@ export default {
     }
     .dictionary-results {
       height: calc(100vh - 14.5rem);
-      overflow: scroll;
+      overflow-y: scroll;
       padding-right: 2rem;
     }
   }

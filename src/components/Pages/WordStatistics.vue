@@ -156,6 +156,7 @@ export default {
     padding-right: 2rem;
   }
   .co-occurence {
+    min-height: 100vh;
     border-right: solid 0.3rem $secondary-color;
     .title {
       font-size: $title-size;

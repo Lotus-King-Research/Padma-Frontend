@@ -260,7 +260,7 @@ $search-area-width: 500px;
 
         .btn {
           position: absolute;
-          right: 19px;
+          right: 27px;
           top: -16px;
           width: 7rem;
           height: 2rem;
