@@ -277,6 +277,10 @@ $search-area-width: 500px;
         }
       }
       .textArea-footer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1rem;
+        align-items: center;
         width: 25.5rem;
         position: relative;
 
@@ -285,9 +289,6 @@ $search-area-width: 500px;
         }
 
         .btn {
-          position: absolute;
-          right: 27px;
-          top: -16px;
           width: 7rem;
           height: 2rem;
           display: flex;
@@ -302,6 +303,7 @@ $search-area-width: 500px;
           padding-bottom: 0.07rem;
         }
         label {
+          margin-bottom: 0;
           span {
             color: $dropdown-color;
           }
@@ -328,7 +330,6 @@ $search-area-width: 500px;
           input[type="checkbox"] + * {
             display: flex;
             align-items: center;
-            padding-top: 1rem;
           }
         }
       }
@@ -349,99 +350,9 @@ $search-area-width: 500px;
     @include breakpointMax(small) {
       padding-top: 2rem;
       padding-left: 2.4rem;
+      height: 100%;
     }
   }
-
-  // @include breakpoint(medium) {
-  //   display: flex;
-  //   height: 100vh;
-  //   align-items: center;
-  // }
-  // .input-area {
-  //   width: 100%;
-
-  //   .greater-than-arrow {
-  //     padding-left: 0.5rem;
-  //     font-weight: bold;
-  //     padding-bottom: 0.07rem;
-  //   }
-  //   label {
-  //     span {
-  //       color: $dropdown-color;
-  //     }
-  //     input[type="checkbox"] {
-  //       display: none;
-  //     }
-  //     input[type="checkbox"] + *::before {
-  //       content: "";
-  //       width: 1rem;
-  //       height: 1rem;
-  //       margin-right: 0.5rem;
-  //       border-radius: 10%;
-  //       border: solid 0.13rem $dropdown-color;
-  //     }
-  //     input[type="checkbox"]:checked + *::before {
-  //       content: "✓";
-  //       color: $dropdown-color;
-  //       display: flex;
-  //       align-items: center;
-  //     }
-  //     input[type="checkbox"]:checked + * {
-  //       color: $dropdown-color;
-  //     }
-  //     input[type="checkbox"] + * {
-  //       display: flex;
-  //       align-items: center;
-  //       padding-top: 1rem;
-  //     }
-  //   }
-  //   .menu-list {
-  //     display: none;
-  //   }
-  //   @include breakpoint(medium) {
-  //     textarea {
-  //       height: 37rem;
-  //       padding: 2rem;
-  //       text-transform: uppercase;
-  //     }
-  //     .menu-list {
-  //       display: block;
-  //       font-size: 1.1em;
-  //       text-transform: uppercase;
-
-  //       label {
-  //         padding-right: 2rem;
-  //         font-weight: 600;
-  //       }
-  //       .menu-list-items {
-  //         .active {
-  //           color: $dropdown-color;
-  //           text-decoration: underline;
-  //           text-underline-offset: 0.4em;
-  //           text-decoration-thickness: 0.2em;
-  //         }
-  //       }
-  //       .main-content-area {
-  //         border: none;
-  //         padding-top: 2rem;
-  //       }
-  //     }
-  //   }
-  // }
-  // .menu-dropdown {
-  //   padding-top: 1.5rem;
-  //   .for-mobile {
-  //     .main-content-mobile {
-  //       padding-top: 2rem;
-  //     }
-  //   }
-
-  //   @include breakpoint(medium) {
-  //     .for-mobile {
-  //       display: none;
-  //     }
-  //   }
-  // }
 }
 </style>
 <style lang="scss">

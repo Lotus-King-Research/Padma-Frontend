@@ -177,6 +177,7 @@ export default {
 
   @include breakpointMax(small) {
     padding-right: 1rem;
+    height: 100%;
   }
   .container-fluid {
     height: 100%;
@@ -266,6 +267,11 @@ export default {
       height: calc(100vh - 14.5rem);
       overflow-y: scroll;
       padding-right: 2rem;
+
+      @include breakpointMax(small) {
+        height: 100%;
+        overflow-y: none;
+      }
     }
   }
 }

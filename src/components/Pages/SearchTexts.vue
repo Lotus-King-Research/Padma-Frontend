@@ -157,6 +157,8 @@ export default {
   }
   @include breakpointMax(small) {
     padding-right: 3rem;
+    height: 100%;
+    overflow-y: none;
   }
   .text-container {
     .tibetan-text {
@@ -204,6 +206,9 @@ export default {
         margin: 0;
         height: 0.1rem;
         background-color: $secondary-color;
+      }
+      @include breakpointMax(small) {
+        margin-bottom: 2.5rem;
       }
     }
   }

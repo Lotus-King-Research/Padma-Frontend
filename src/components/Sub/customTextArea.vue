@@ -4,6 +4,7 @@
       class="customTextArea"
       ref="textarea"
       contenteditable="true"
+      @keydown.enter.prevent
       @input="updateHTML"
     >
       <span
@@ -103,6 +104,12 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       font-size: 2em;
+      overflow: -moz-scrollbars-none;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     span {

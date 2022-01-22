@@ -157,6 +157,8 @@ export default {
   }
   @include breakpointMax(small) {
     font-size: 0.7em;
+    height: 100%;
+    overflow-y: none;
   }
   .co-occurence {
     border-right: solid 0.3rem $secondary-color;
