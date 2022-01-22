@@ -155,10 +155,19 @@ export default {
   @include breakpoint(medium) {
     padding-right: 2rem;
   }
+  @include breakpointMax(small) {
+    padding-right: 3rem;
+  }
   .text-container {
     .tibetan-text {
       font-family: $tib-font;
       padding-left: 0;
+
+      @include breakpointMax(small) {
+        h1 {
+          font-size: 2em;
+        }
+      }
     }
     .tibetan-source {
       font-family: $tib-font;
@@ -168,6 +177,10 @@ export default {
       padding-right: 1.5rem;
       padding-bottom: 0.8rem;
       color: $secondary-color;
+
+      @include breakpointMax(small) {
+        font-size: 1.2em;
+      }
     }
     .arrow-icon {
       display: grid;

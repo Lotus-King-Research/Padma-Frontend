@@ -224,11 +224,24 @@ $search-area-width: 500px;
     // border-right: solid 1px #000;
     padding-top: 2rem;
 
+    @include breakpointMax(small) {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .menu-list-items {
       padding-left: 3rem;
       font-size: 1.1em;
       margin-bottom: 1.2rem;
       text-transform: uppercase;
+
+      @include breakpointMax(small) {
+        width: 88%;
+        padding-left: 0;
+        font-size: 0.8em;
+      }
 
       label {
         padding-right: 1.1rem;
@@ -246,6 +259,7 @@ $search-area-width: 500px;
       display: flex;
       flex-wrap: wrap;
       position: relative;
+
       .place-holder-text {
         text-transform: uppercase;
         color: $dropdown-color;
@@ -254,9 +268,21 @@ $search-area-width: 500px;
         left: 80px;
         font-weight: bold;
       }
+      @include breakpointMax(small) {
+        width: 88%;
+
+        .place-holder-text {
+          left: 29px;
+          font-size: 0.8em;
+        }
+      }
       .textArea-footer {
         width: 25.5rem;
         position: relative;
+
+        @include breakpointMax(small) {
+          width: 98%;
+        }
 
         .btn {
           position: absolute;
@@ -319,6 +345,10 @@ $search-area-width: 500px;
       width: calc(100vw - $search-area-width);
       padding-left: 0;
       padding-right: 3rem;
+    }
+    @include breakpointMax(small) {
+      padding-top: 2rem;
+      padding-left: 2.4rem;
     }
   }
 

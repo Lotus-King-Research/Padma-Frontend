@@ -78,6 +78,7 @@ export default {
 @import "@/assets/scss/index.scss";
 
 .customTextArea-Wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
 
@@ -88,11 +89,21 @@ export default {
     outline: none;
     padding-top: 60px;
     padding-left: 30px;
-    font-size: 2.5rem;
+    font-size: 2.5em;
     font-family: $tib-font;
     border-radius: 0.2rem;
     box-shadow: 0px 9px 14px -7px rgba(55, 33, 24, 0.3);
     background-color: hsla(36, 100%, 95%, 1);
+
+    @include breakpointMax(small) {
+      width: 100%;
+      height: 7.2rem;
+      white-space: nowrap;
+      display: inline;
+      overflow-x: scroll;
+      overflow-y: hidden;
+      font-size: 2em;
+    }
 
     span {
       display: inline-block;

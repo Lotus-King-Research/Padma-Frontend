@@ -174,6 +174,10 @@ export default {
 .dictionarylookup {
   height: calc(100vh - 10rem);
   text-transform: lowercase;
+
+  @include breakpointMax(small) {
+    padding-right: 1rem;
+  }
   .container-fluid {
     height: 100%;
     padding-left: 0;

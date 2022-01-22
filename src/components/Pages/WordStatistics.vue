@@ -155,6 +155,9 @@ export default {
   @include breakpoint(medium) {
     padding-right: 2rem;
   }
+  @include breakpointMax(small) {
+    font-size: 0.7em;
+  }
   .co-occurence {
     border-right: solid 0.3rem $secondary-color;
     .title {
