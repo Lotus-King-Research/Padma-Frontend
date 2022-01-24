@@ -11,7 +11,7 @@
     <template #modal-header>
       <b-container fluid>
         <b-row>
-          <b-col cols="3">
+          <b-col class="arrow-col" cols="3">
             <div
               class="arrow-section"
               v-if="!hideModalBody"
@@ -28,12 +28,12 @@
               </div>
             </div>
           </b-col>
-          <b-col cols="6">
+          <b-col class="title-col" cols="6">
             <div class="title-text" :class="{ 'title-wrap': hideModalBody }">
-              {{ resultTitle }} {{ resultTitle }}
+              {{ resultTitle }}
             </div>
           </b-col>
-          <b-col cols="3">
+          <b-col class="close-col" cols="3">
             <div class="btn-section">
               <div
                 class="minimize-arrow"
@@ -229,6 +229,14 @@ export default {
         }
         .maximize-arrow {
           @extend .minimize-arrow;
+        }
+      }
+      @include breakpointMax(small) {
+        .arrow-col {
+          padding: 0;
+        }
+        .close-col {
+          padding: 0;
         }
       }
     }
