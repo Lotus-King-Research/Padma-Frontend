@@ -44,29 +44,34 @@
           textarea on the left ...
         </p>
       </div>
-      <template v-for="(token, idx) in results.tokens" v-else>
-        <div class="dictionary-results" :key="idx">
-          <h1>{{ token }}</h1>
-          <!-- <template v-for="(item, idx2) in results.text[idx]">
+      <div class="dic-results-wrapper" v-else>
+        <template v-for="(token, idx) in results.tokens">
+          <div class="dictionary-results" :key="idx">
+            <h1>{{ token }}</h1>
+            <!-- <template v-for="(item, idx2) in results.text[idx]">
             <p :key="idx2">
               {{ item }}
             </p>
           </template> -->
-          <template v-for="(item, idx2) in resultArray">
-            <p :key="idx2">
-              <span class="dic_source_wrapper">
-                <span class="dic_source">
-                  {{ item.source.split("_").join(" ") }}
+            <template v-for="(item, idx2) in resultArray">
+              <p :key="idx2">
+                <span class="dic_source_wrapper">
+                  <span class="dic_source">
+                    {{ item.source.split("_").join(" ") }}
+                  </span>
+                  <span class="close-btn" @click="removeSelectedDic(item)">
+                    <img
+                      src="@/assets/images/close-icon-dic.svg"
+                      alt="remove"
+                    />
+                  </span>
                 </span>
-                <span class="close-btn" @click="removeSelectedDic(item)">
-                  <img src="@/assets/images/close-icon-dic.svg" alt="remove" />
-                </span>
-              </span>
-              {{ item.text }}
-            </p>
-          </template>
-        </div>
-      </template>
+                {{ item.text }}
+              </p>
+            </template>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -263,11 +268,12 @@ export default {
         line-height: 1.8rem;
       }
     }
-    .dictionary-results {
+    .dic-results-wrapper {
       height: calc(100vh - 14.5rem);
       overflow-y: scroll;
-      padding-right: 2rem;
-
+      .dictionary-results {
+        padding-right: 2rem;
+      }
       @include breakpointMax(small) {
         height: 100%;
         overflow-y: none;
