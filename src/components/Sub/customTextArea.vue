@@ -51,7 +51,7 @@ export default {
     routeQuery() {
       if (!this.routeQuery) {
         this.$refs.textarea.innerText = "";
-      } else if (this.routeQuery && this.$refs.textarea.innerText === "") {
+      } else if (this.routeQuery) {
         this.$refs.textarea.innerText = this.routeQuery;
       }
     }
