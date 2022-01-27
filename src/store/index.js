@@ -7,14 +7,14 @@ export default new Vuex.Store({
   state: {
     loading: false,
     options: [
-      { id: 0, name: "Mahavyutpatti", checked: false },
-      { id: 1, name: "Erik pema kunsang", checked: false },
-      { id: 2, name: "Ives waldo", checked: false },
-      { id: 3, name: "Jeffrey hopkins", checked: false },
-      { id: 4, name: "Lobsang monlam", checked: false },
-      { id: 5, name: "Tibetan multi", checked: false },
-      { id: 6, name: "Tibetan medicine", checked: false },
-      { id: 7, name: "Verb lexicon", checked: false }
+      { id: 0, name: "Mahavyutpatti", checked: true },
+      { id: 1, name: "Erik pema kunsang", checked: true },
+      { id: 2, name: "Ives waldo", checked: true },
+      { id: 3, name: "Jeffrey hopkins", checked: true },
+      { id: 4, name: "Lobsang monlam", checked: true },
+      { id: 5, name: "Tibetan multi", checked: true },
+      { id: 6, name: "Tibetan medicine", checked: true },
+      { id: 7, name: "Verb lexicon", checked: true }
     ]
   },
   mutations: {

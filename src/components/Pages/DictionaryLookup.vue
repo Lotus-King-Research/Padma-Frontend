@@ -44,29 +44,29 @@
           textarea on the left ...
         </p>
       </div>
-      <template v-for="(token, idx) in results.tokens" v-else>
-        <div class="dictionary-results" :key="idx">
-          <h1>{{ token }}</h1>
-          <!-- <template v-for="(item, idx2) in results.text[idx]">
-            <p :key="idx2">
-              {{ item }}
-            </p>
-          </template> -->
-          <template v-for="(item, idx2) in resultArray">
-            <p :key="idx2">
-              <span class="dic_source_wrapper">
-                <span class="dic_source">
-                  {{ item.source.split("_").join(" ") }}
+      <div class="dic-results-wrapper" v-else>
+        <template v-for="[key, value] of Object.entries(resultsArray)">
+          <div class="dictionary-results" :key="key">
+            <h1>{{ key }}</h1>
+            <template v-for="(item, idx2) in value[0]">
+              <p :key="idx2">
+                <span class="dic_source_wrapper">
+                  <span class="dic_source">
+                    {{ item.source.split("_").join(" ") }}
+                  </span>
+                  <span class="close-btn" @click="removeSelectedDic(item)">
+                    <img
+                      src="@/assets/images/close-icon-dic.svg"
+                      alt="remove"
+                    />
+                  </span>
                 </span>
-                <span class="close-btn" @click="removeSelectedDic(item)">
-                  <img src="@/assets/images/close-icon-dic.svg" alt="remove" />
-                </span>
-              </span>
-              {{ item.text }}
-            </p>
-          </template>
-        </div>
-      </template>
+                {{ item.text }}
+              </p>
+            </template>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -94,17 +94,28 @@ export default {
     searchQuery() {
       return this.$route.query.query;
     },
-    resultArray() {
-      let ar1 = [].concat.apply([], this.results.source[0]);
-      let ar2 = [].concat.apply([], this.results.text[0]);
-      let res = [];
-      ar1.forEach(function(v, i) {
-        var obj = {};
-        obj.source = v;
-        obj.text = ar2[i];
-        res.push(obj);
-      });
-      return res;
+    resultsArray() {
+      if (Object.keys(this.results).length > 0) {
+        let convertedArray = [].concat(this.results);
+        const res = convertedArray.reduce((grouped, item) => {
+          item.tokens.map((a, i) => {
+            if (grouped[a] == null) grouped[a] = [];
+            let text = item.text[i];
+            let result = item.source[i].map((sourceValue, id) => {
+              const textValue = text[id];
+              return {
+                source: sourceValue,
+                text: textValue
+              };
+            });
+            grouped[a].push(result);
+          });
+          return grouped;
+        }, {});
+        return res;
+      } else {
+        return {};
+      }
     }
   },
 
@@ -263,11 +274,13 @@ export default {
         line-height: 1.8rem;
       }
     }
-    .dictionary-results {
+    .dic-results-wrapper {
       height: calc(100vh - 14.5rem);
       overflow-y: scroll;
-      padding-right: 2rem;
-
+      .dictionary-results {
+        padding-right: 2rem;
+        margin-bottom: 2rem;
+      }
       @include breakpointMax(small) {
         height: 100%;
         overflow-y: none;
