@@ -79,9 +79,10 @@ export default {
       // Execute search query
       const res = await Services.searchTexts(this.searchQuery, this.tokenize);
       this.results = res && res.data ? res.data : {};
-      this.loadMoreData();
       if (!Object.keys(this.results).length || !this.results.title.length) {
         this.$toasted.error("No results found", { duration: 5000 });
+      } else {
+        this.loadMoreData();
       }
     },
     fetchMoreData($state) {
