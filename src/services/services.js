@@ -9,19 +9,21 @@ const similarWordsUrl = "/find_similar";
 const apiInstance = API();
 
 export const Services = {
-  async dictionaryLookup(query, dictionaries) {
+  async dictionaryLookup(query, dictionaries, tokenize) {
     try {
       return await apiInstance.get(
-        `${dictLookupUrl}?query=${query}&mode=api&dictionaries=${dictionaries}`
+        `${dictLookupUrl}?query=${query}&dictionaries=${dictionaries}&tokenize=${tokenize}&mode=api`
       );
     } catch (err) {
       return null;
     }
   },
 
-  async searchTexts(query) {
+  async searchTexts(query, tokenize) {
     try {
-      return await apiInstance.get(`${searchTextsUrl}?query=${query}&mode=api`);
+      return await apiInstance.get(
+        `${searchTextsUrl}?query=${query}&tokenize=${tokenize}&mode=api`
+      );
     } catch (err) {
       return null;
     }
@@ -51,10 +53,10 @@ export const Services = {
     }
   },
 
-  async wordStatistics(query) {
+  async wordStatistics(query, tokenize) {
     try {
       return await apiInstance.get(
-        `${wordStatisticsUrl}?query=${query}&mode=api`
+        `${wordStatisticsUrl}?query=${query}&tokenize=${tokenize}&mode=api`
       );
     } catch (err) {
       return null;
