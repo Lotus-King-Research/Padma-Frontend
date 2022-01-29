@@ -46,13 +46,18 @@ export default {
     tokenizeQuery() {
       if (this.tokenizeQuery) {
         this.doTokenizeQuery();
+      } else {
+        this.$refs.textarea.innerText = this.tokens.join("");
+        this.tokens = [];
       }
     },
     routeQuery() {
       if (!this.routeQuery) {
         this.$refs.textarea.innerText = "";
       } else if (this.routeQuery) {
-        this.$refs.textarea.innerText = this.routeQuery;
+        if (!this.tokenizeQuery) {
+          this.$refs.textarea.innerText = this.routeQuery;
+        }
       }
     }
   },
@@ -70,7 +75,6 @@ export default {
         this.$toasted.error("No results found", { duration: 5000 });
       }
       this.tokenize = true;
-      console.log("tokenized query =", this.tokens);
     }
   }
 };

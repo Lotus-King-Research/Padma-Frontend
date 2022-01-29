@@ -94,6 +94,9 @@ export default {
     searchQuery() {
       return this.$route.query.query;
     },
+    tokenize() {
+      return this.$route.query.tokenize;
+    },
     resultsArray() {
       if (Object.keys(this.results).length > 0) {
         let convertedArray = [].concat(this.results);
@@ -138,7 +141,8 @@ export default {
       );
       const res = await Services.dictionaryLookup(
         this.searchQuery,
-        selectedDictionaries
+        selectedDictionaries,
+        this.tokenize
       );
       this.results = res && res.data ? res.data : {};
       if (!Object.keys(this.results).length) {

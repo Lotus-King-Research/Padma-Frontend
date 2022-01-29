@@ -131,7 +131,9 @@ export default {
       const value = "dictionary";
       this.tabSelected = value;
       this.selectedMenu = value;
-      this.$router.push(`dictionary_lookup?query=${this.queryString}`);
+      this.$router.push(
+        `dictionary_lookup?query=${this.queryString}&tokenize=${this.tokenizeQuery}`
+      );
     },
     doSearchTexts() {
       const value = "texts";
@@ -193,7 +195,7 @@ export default {
       if (!this.tokens.length) {
         this.$toasted.error("No results found", { duration: 5000 });
       }
-      this.queryString = this.tokens;
+      this.queryString = this.tokens.join("");
     }
   }
 };

@@ -52,7 +52,8 @@ export default {
       start: "",
       end: "",
       limit: 4,
-      textData: {}
+      textData: {},
+      tokenize: false
     };
   },
 
@@ -76,7 +77,7 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
-      const res = await Services.searchTexts(this.searchQuery);
+      const res = await Services.searchTexts(this.searchQuery, this.tokenize);
       this.results = res && res.data ? res.data : {};
       this.loadMoreData();
       if (!Object.keys(this.results).length || !this.results.title.length) {

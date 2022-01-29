@@ -84,7 +84,8 @@ export default {
     return {
       results: {},
       title: true,
-      titleText: ""
+      titleText: "",
+      tokenize: false
     };
   },
 
@@ -108,7 +109,10 @@ export default {
   methods: {
     async doWordStatistics() {
       // Execute word statistics query
-      const res = await Services.wordStatistics(this.searchQuery);
+      const res = await Services.wordStatistics(
+        this.searchQuery,
+        this.tokenize
+      );
       this.results = res && res.data ? res.data : {};
       if (!Object.keys(this.results).length) {
         this.$toasted.error("No results found", { duration: 5000 });
@@ -121,7 +125,6 @@ export default {
       );
     },
     color(value) {
-      console.log("color =", parseInt(value));
       return "rgba(134,27,21," + parseFloat(value) + ")";
     },
     highLightQuery(text) {
