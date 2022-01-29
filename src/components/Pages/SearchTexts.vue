@@ -77,7 +77,7 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
-      const res = await Services.searchTexts(this.searchQuery);
+      const res = await Services.searchTexts(this.searchQuery, this.tokenize);
       if (res && res.data) {
         this.results = res.data;
         if (!Object.keys(this.results).length || !this.results.title.length) {
