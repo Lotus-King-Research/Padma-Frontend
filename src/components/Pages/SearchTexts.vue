@@ -77,12 +77,14 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
-      const res = await Services.searchTexts(this.searchQuery, this.tokenize);
-      this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length || !this.results.title.length) {
-        this.$toasted.error("No results found", { duration: 5000 });
-      } else {
-        this.loadMoreData();
+      const res = await Services.searchTexts(this.searchQuery);
+      if (res && res.data) {
+        this.results = res.data;
+        if (!Object.keys(this.results).length || !this.results.title.length) {
+          this.$toasted.error("No results found", { duration: 5000 });
+        } else {
+          this.loadMoreData();
+        }
       }
     },
     fetchMoreData($state) {
