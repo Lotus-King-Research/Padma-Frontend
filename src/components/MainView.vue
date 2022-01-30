@@ -43,8 +43,15 @@
         />
         <div class="textArea-footer">
           <label>
-            <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
-            <span>Tokenize query</span>
+            <input
+              type="checkbox"
+              name="tokenize"
+              v-model="tokenizeQuery"
+              :disabled="disableTokenization"
+            />
+            <span :class="{ disable: disableTokenization }"
+              >Tokenize query</span
+            >
           </label>
           <b-button @click="lookup()">
             LOOKUP <span class="greater-than-arrow"> > </span>
@@ -84,6 +91,7 @@ export default {
       tokens: [],
       colors: ["#372118", "#725144"],
       errorMessage: "",
+      disableTokenization: false,
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
         { label: "Texts", value: "texts", id: 2 },
@@ -101,12 +109,26 @@ export default {
     },
     "$route.query.query"() {
       this.detectedRouterQuery();
+    },
+    tabSelected() {
+      if (this.tabSelected === "texts" || this.tabSelected === "statistics") {
+        this.disableTokenization = true;
+      } else if (this.tabSelected === "tokenize") {
+        this.tokenizeQuery = true;
+        this.disableTokenization = true;
+      } else {
+        this.disableTokenization = false;
+      }
     }
   },
   mounted() {
     this.detectedRouterQuery();
     this.$root.$on("turnOffTokenization", () => {
-      this.tokenizeQuery = false;
+      if (this.tabSelected === "tokenize") {
+        this.tokenizeQuery = true;
+      } else {
+        this.tokenizeQuery = false;
+      }
     });
   },
   methods: {
@@ -283,6 +305,10 @@ $search-area-width: 500px;
 
         @include breakpointMax(small) {
           width: 98%;
+        }
+
+        .disable {
+          opacity: 0.5;
         }
 
         .btn {
