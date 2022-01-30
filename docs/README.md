@@ -1,4 +1,18 @@
 # padma-frontend
+
+## Requirements for dev server
+
+- install mkcert (use brew on macos)
+- run `mkcert -install` from the repo folder
+- run `mkcert localhost` from the repo folder
+
+## Env variables
+`VUE_APP_API_KEY`
+
+Both must be set
+
+# [OLD] (may not make sense anymore)
+
 VueJS web + electron frontend for http://padma.io
 
 Electron allows cross platform (Mac, Windows, Linux) packaging of this frontend
