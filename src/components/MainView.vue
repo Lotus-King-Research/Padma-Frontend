@@ -4,13 +4,13 @@
       <div class="menu-list-items">
         <label
           :class="{ active: tabSelected === 'dictionary' }"
-          @click="tabSelected = 'dictionary'"
+          @click="selectedTab('dictionary')"
         >
           Dictionary
         </label>
         <label
           :class="{ active: tabSelected === 'texts' }"
-          @click="tabSelected = 'texts'"
+          @click="selectedTab('texts')"
         >
           Texts
         </label>
@@ -21,13 +21,13 @@
         </label> -->
         <label
           :class="{ active: tabSelected === 'statistics' }"
-          @click="tabSelected = 'statistics'"
+          @click="selectedTab('statistics')"
         >
           Statistics
         </label>
         <label
           :class="{ active: tabSelected === 'tokenize' }"
-          @click="tabSelected = 'tokenize'"
+          @click="selectedTab('tokenize')"
         >
           Tokenize
         </label>
@@ -58,27 +58,32 @@
         <router-view />
       </div>
     </div>
+    <messageBox :message="errorMessage" />
   </b-container>
 </template>
 
 <script>
 import { Services } from "@/services/services";
 import customTextArea from "@/components/Sub/customTextArea.vue";
+import messageBox from "@/components/Sub/messageBox.vue";
 
 export default {
   name: "mainview",
   components: {
-    customTextArea
+    customTextArea,
+    messageBox
   },
   data() {
     return {
       queryString: "",
       routeQuery: "",
       tabSelected: "dictionary",
+      previousTab: "",
       selectedMenu: "Select Action",
       tokenizeQuery: false,
       tokens: [],
       colors: ["#372118", "#725144"],
+      errorMessage: "",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
         { label: "Texts", value: "texts", id: 2 },
@@ -88,13 +93,6 @@ export default {
       ]
     };
   },
-  computed: {
-    inputStyles() {
-      return {
-        color: "red"
-      };
-    }
-  },
   watch: {
     tokenizeQuery() {
       if (this.tokenizeQuery) {
@@ -103,19 +101,41 @@ export default {
     },
     "$route.query.query"() {
       this.detectedRouterQuery();
-    },
-    tabSelected() {
-      this.setSelectedfunction();
     }
   },
   mounted() {
-    if (this.$route.query.query) {
-      this.detectedRouterQuery();
-    }
+    this.detectedRouterQuery();
+    this.$root.$on("turnOffTokenization", () => {
+      this.tokenizeQuery = false;
+    });
   },
   methods: {
     lookup() {
       this.setSelectedfunction();
+    },
+    selectedTab(val) {
+      this.previousTab = this.tabSelected;
+      this.tabSelected = val;
+      this.callSelectedTabFunction();
+    },
+    callSelectedTabFunction() {
+      if (this.tokenizeQuery) {
+        if (this.tabSelected === "texts") {
+          this.tabSelected = this.previousTab;
+          this.errorMessage =
+            "You have to turn Tokenize query off before searching texts";
+          this.showMessageBox();
+        } else if (this.tabSelected === "statistics") {
+          this.tabSelected = this.previousTab;
+          this.errorMessage =
+            "You have to turn Tokenize query off before analyzing word statistics";
+          this.showMessageBox();
+        } else {
+          this.setSelectedfunction();
+        }
+      } else {
+        this.setSelectedfunction();
+      }
     },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
@@ -128,46 +148,18 @@ export default {
       }
     },
     doDictionaryLookup() {
-      const value = "dictionary";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(
         `dictionary_lookup?query=${this.queryString}&tokenize=${this.tokenizeQuery}`
       );
     },
     doSearchTexts() {
-      const value = "texts";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`search_texts?query=${this.queryString}`);
     },
-
-    // doSimilarWords() {
-    //   const value = "similarWords";
-    //   this.tabSelected = value;
-    //   this.selectedMenu = value;
-    //   this.$router.push(`find_similar?query=${this.queryString}`);
-    // },
-
     doWordStats() {
-      const value = "statistics";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`word_statistics?query=${this.queryString}`);
     },
-
     doTokenize() {
-      const value = "tokenize";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`tokenize?query=${this.queryString}`);
-    },
-    goHome() {
-      this.queryString = "";
-      this.tabSelected = "dictionary";
-      this.selectedMenu = "Select Action";
-      this.tokenizeQuery = false;
-      this.$router.push("/");
     },
     setSelectedfunction() {
       switch (this.selectedMenu.value || this.tabSelected) {
@@ -196,6 +188,9 @@ export default {
         this.$toasted.error("No results found", { duration: 5000 });
       }
       this.queryString = this.tokens.join("");
+    },
+    showMessageBox() {
+      this.$root.$emit("bv::show::modal", "messageBox");
     }
   }
 };
