@@ -157,10 +157,10 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/scss/index.scss";
 
-.modal-dialog {
+::v-deep .modal-dialog {
   width: 100%;
   margin: 0;
   .modal-content {

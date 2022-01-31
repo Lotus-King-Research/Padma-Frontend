@@ -85,13 +85,13 @@ export default {
       queryString: "",
       routeQuery: "",
       tabSelected: "dictionary",
-      previousTab: "",
       selectedMenu: "Select Action",
       tokenizeQuery: false,
       tokens: [],
       colors: ["#372118", "#725144"],
       errorMessage: "",
       disableTokenization: false,
+      previousTab: "",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
         { label: "Texts", value: "texts", id: 2 },
@@ -126,9 +126,14 @@ export default {
     this.$root.$on("turnOffTokenization", () => {
       if (this.tabSelected === "tokenize") {
         this.tokenizeQuery = true;
+        this.callSelectedTabFunction();
       } else {
         this.tokenizeQuery = false;
+        this.callSelectedTabFunction();
       }
+    });
+    this.$root.$on("closeModal", () => {
+      this.tabSelected = this.previousTab;
     });
   },
   methods: {
@@ -143,12 +148,10 @@ export default {
     callSelectedTabFunction() {
       if (this.tokenizeQuery) {
         if (this.tabSelected === "texts") {
-          this.tabSelected = this.previousTab;
           this.errorMessage =
             "You have to turn Tokenize query off before searching texts";
           this.showMessageBox();
         } else if (this.tabSelected === "statistics") {
-          this.tabSelected = this.previousTab;
           this.errorMessage =
             "You have to turn Tokenize query off before analyzing word statistics";
           this.showMessageBox();
