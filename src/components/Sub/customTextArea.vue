@@ -38,7 +38,7 @@ export default {
     return {
       content: "",
       tokens: [],
-      colors: ["#372118", "#725144"],
+      colors: ["#372118", "#87775E"],
       tokenize: false
     };
   },

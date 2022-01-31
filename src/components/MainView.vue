@@ -4,13 +4,13 @@
       <div class="menu-list-items">
         <label
           :class="{ active: tabSelected === 'dictionary' }"
-          @click="tabSelected = 'dictionary'"
+          @click="selectedTab('dictionary')"
         >
           Dictionary
         </label>
         <label
           :class="{ active: tabSelected === 'texts' }"
-          @click="tabSelected = 'texts'"
+          @click="selectedTab('texts')"
         >
           Texts
         </label>
@@ -21,13 +21,13 @@
         </label> -->
         <label
           :class="{ active: tabSelected === 'statistics' }"
-          @click="tabSelected = 'statistics'"
+          @click="selectedTab('statistics')"
         >
           Statistics
         </label>
         <label
           :class="{ active: tabSelected === 'tokenize' }"
-          @click="tabSelected = 'tokenize'"
+          @click="selectedTab('tokenize')"
         >
           Tokenize
         </label>
@@ -43,8 +43,15 @@
         />
         <div class="textArea-footer">
           <label>
-            <input type="checkbox" name="tokenize" v-model="tokenizeQuery" />
-            <span>Tokenize query</span>
+            <input
+              type="checkbox"
+              name="tokenize"
+              v-model="tokenizeQuery"
+              :disabled="disableTokenization"
+            />
+            <span :class="{ disable: disableTokenization }"
+              >Tokenize query</span
+            >
           </label>
           <b-button @click="lookup()">
             LOOKUP <span class="greater-than-arrow"> > </span>
@@ -58,17 +65,20 @@
         <router-view />
       </div>
     </div>
+    <messageBox :message="errorMessage" />
   </b-container>
 </template>
 
 <script>
 import { Services } from "@/services/services";
 import customTextArea from "@/components/Sub/customTextArea.vue";
+import messageBox from "@/components/Sub/messageBox.vue";
 
 export default {
   name: "mainview",
   components: {
-    customTextArea
+    customTextArea,
+    messageBox
   },
   data() {
     return {
@@ -79,6 +89,9 @@ export default {
       tokenizeQuery: false,
       tokens: [],
       colors: ["#372118", "#725144"],
+      errorMessage: "",
+      disableTokenization: false,
+      previousTab: "",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
         { label: "Texts", value: "texts", id: 2 },
@@ -87,13 +100,6 @@ export default {
         { label: "Tokenize", value: "tokenize", id: 5 }
       ]
     };
-  },
-  computed: {
-    inputStyles() {
-      return {
-        color: "red"
-      };
-    }
   },
   watch: {
     tokenizeQuery() {
@@ -105,17 +111,56 @@ export default {
       this.detectedRouterQuery();
     },
     tabSelected() {
-      this.setSelectedfunction();
+      if (this.tabSelected === "texts" || this.tabSelected === "statistics") {
+        this.disableTokenization = true;
+      } else if (this.tabSelected === "tokenize") {
+        this.tokenizeQuery = true;
+        this.disableTokenization = true;
+      } else {
+        this.disableTokenization = false;
+      }
     }
   },
   mounted() {
-    if (this.$route.query.query) {
-      this.detectedRouterQuery();
-    }
+    this.detectedRouterQuery();
+    this.$root.$on("turnOffTokenization", () => {
+      if (this.tabSelected === "tokenize") {
+        this.tokenizeQuery = true;
+        this.callSelectedTabFunction();
+      } else {
+        this.tokenizeQuery = false;
+        this.callSelectedTabFunction();
+      }
+    });
+    this.$root.$on("closeModal", () => {
+      this.tabSelected = this.previousTab;
+    });
   },
   methods: {
     lookup() {
       this.setSelectedfunction();
+    },
+    selectedTab(val) {
+      this.previousTab = this.tabSelected;
+      this.tabSelected = val;
+      this.callSelectedTabFunction();
+    },
+    callSelectedTabFunction() {
+      if (this.tokenizeQuery) {
+        if (this.tabSelected === "texts") {
+          this.errorMessage =
+            "You have to turn Tokenize query off before searching texts";
+          this.showMessageBox();
+        } else if (this.tabSelected === "statistics") {
+          this.errorMessage =
+            "You have to turn Tokenize query off before analyzing word statistics";
+          this.showMessageBox();
+        } else {
+          this.setSelectedfunction();
+        }
+      } else {
+        this.setSelectedfunction();
+      }
     },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
@@ -128,46 +173,18 @@ export default {
       }
     },
     doDictionaryLookup() {
-      const value = "dictionary";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(
         `dictionary_lookup?query=${this.queryString}&tokenize=${this.tokenizeQuery}`
       );
     },
     doSearchTexts() {
-      const value = "texts";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`search_texts?query=${this.queryString}`);
     },
-
-    // doSimilarWords() {
-    //   const value = "similarWords";
-    //   this.tabSelected = value;
-    //   this.selectedMenu = value;
-    //   this.$router.push(`find_similar?query=${this.queryString}`);
-    // },
-
     doWordStats() {
-      const value = "statistics";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`word_statistics?query=${this.queryString}`);
     },
-
     doTokenize() {
-      const value = "tokenize";
-      this.tabSelected = value;
-      this.selectedMenu = value;
       this.$router.push(`tokenize?query=${this.queryString}`);
-    },
-    goHome() {
-      this.queryString = "";
-      this.tabSelected = "dictionary";
-      this.selectedMenu = "Select Action";
-      this.tokenizeQuery = false;
-      this.$router.push("/");
     },
     setSelectedfunction() {
       switch (this.selectedMenu.value || this.tabSelected) {
@@ -196,6 +213,9 @@ export default {
         this.$toasted.error("No results found", { duration: 5000 });
       }
       this.queryString = this.tokens.join("");
+    },
+    showMessageBox() {
+      this.$root.$emit("bv::show::modal", "messageBox");
     }
   }
 };
@@ -288,6 +308,10 @@ $search-area-width: 500px;
 
         @include breakpointMax(small) {
           width: 98%;
+        }
+
+        .disable {
+          opacity: 0.5;
         }
 
         .btn {
