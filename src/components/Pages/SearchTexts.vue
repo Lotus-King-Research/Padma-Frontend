@@ -83,6 +83,7 @@ export default {
         if (!Object.keys(this.results).length || !this.results.title.length) {
           this.$toasted.error("No results found", { duration: 5000 });
         } else {
+          this.textData = {};
           this.loadMoreData();
         }
       }
