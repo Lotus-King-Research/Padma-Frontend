@@ -60,7 +60,7 @@ export default {
       title: "",
       start: "",
       end: "",
-      limit: 4,
+      limit: 10,
       textData: {},
       tokenize: false,
       noResultsFound: false,
