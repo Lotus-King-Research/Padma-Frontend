@@ -25,7 +25,7 @@ export const Services = {
         `${searchTextsUrl}?query=${query}&tokenize=${tokenize}&mode=api`
       );
     } catch (err) {
-      return null;
+      return err;
     }
   },
 
