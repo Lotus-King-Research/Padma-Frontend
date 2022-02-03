@@ -26,9 +26,18 @@
           <hr align="left" />
         </b-col>
       </template>
+      <div class="noResultsFoundMessage" v-if="noResultsFound">
+        <p>
+          No results were found with the given input.
+        </p>
+      </div>
       <textModal :title="title" :start="start" :end="end" />
-      <infinite-loading @infinite="fetchMoreData" spinner="spiral">
-        <div slot="no-more">No more Text</div>
+      <infinite-loading
+        @infinite="fetchMoreData"
+        ref="infiniteLoadingCom"
+        spinner="spiral"
+      >
+        <span slot="no-more">{{ endOfResultText }}</span>
       </infinite-loading>
     </b-row>
   </b-container>
@@ -51,9 +60,11 @@ export default {
       title: "",
       start: "",
       end: "",
-      limit: 4,
+      limit: 10,
       textData: {},
-      tokenize: false
+      tokenize: false,
+      noResultsFound: false,
+      endOfResultText: ""
     };
   },
 
@@ -77,18 +88,28 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
+      this.endOfResultText = "";
+      this.noResultsFound = false;
+      this.textData = {};
       const res = await Services.searchTexts(this.searchQuery, this.tokenize);
       if (res && res.data) {
         this.results = res.data;
-        if (!Object.keys(this.results).length || !this.results.title.length) {
-          this.$toasted.error("No results found", { duration: 5000 });
-        } else {
+        if (Object.keys(this.results).length && this.results.title.length) {
+          this.$refs.infiniteLoadingCom.stateChanger.reset();
           this.loadMoreData();
+        }
+      } else if (res.response && res.response.data) {
+        if (res.response.data.detail === "Not Found") {
+          this.noResultsFound = true;
         }
       }
     },
     fetchMoreData($state) {
-      setTimeout(() => this.loadMoreData($state), 400);
+      setTimeout(() => {
+        if (Object.keys(this.results).length && this.results.title.length) {
+          this.loadMoreData($state);
+        }
+      }, 300);
     },
     loadMoreData($state) {
       const data = {};
@@ -116,6 +137,7 @@ export default {
           this.textData.text.push(data.text[index]);
         });
         if (this.results.location.length === this.textData.location.length) {
+          this.endOfResultText = "You have reached the end of the results.";
           $state.complete();
         } else {
           $state.loaded();
@@ -161,8 +183,7 @@ export default {
   }
   @include breakpointMax(small) {
     padding-right: 3rem;
-    height: 100%;
-    overflow-y: none;
+    height: calc(100vh - 15rem);
   }
   .text-container {
     .tibetan-text {
@@ -173,6 +194,20 @@ export default {
         h1 {
           font-size: 2em;
         }
+      }
+    }
+    .noResultsFoundMessage {
+      width: 100%;
+      height: 100%;
+      padding-top: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        font-size: 1.5em;
+        color: hsla(37, 18%, 45%, 1);
+        line-height: 1.8rem;
       }
     }
     .tibetan-source {
