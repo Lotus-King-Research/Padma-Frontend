@@ -3,7 +3,7 @@
     <div
       class="customTextArea"
       ref="textarea"
-      contenteditable="true"
+      contenteditable="plaintext-only"
       @keydown.enter.prevent
       @input="updateHTML"
     >
