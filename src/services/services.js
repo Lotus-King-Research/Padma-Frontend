@@ -15,7 +15,7 @@ export const Services = {
         `${dictLookupUrl}?query=${query}&dictionaries=${dictionaries}&tokenize=${tokenize}&mode=api`
       );
     } catch (err) {
-      return null;
+      return err;
     }
   },
 
@@ -49,7 +49,7 @@ export const Services = {
     try {
       return await apiInstance.get(`${tokenizeUrl}?query=${query}&mode=api`);
     } catch (err) {
-      return null;
+      return err;
     }
   },
 

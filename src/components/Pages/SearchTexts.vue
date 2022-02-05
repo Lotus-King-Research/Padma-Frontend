@@ -26,11 +26,7 @@
           <hr align="left" />
         </b-col>
       </template>
-      <div class="noResultsFoundMessage" v-if="noResultsFound">
-        <p>
-          No results were found with the given input.
-        </p>
-      </div>
+      <noResultsFound v-if="noResultsFound" />
       <textModal :title="title" :start="start" :end="end" />
       <infinite-loading
         @infinite="fetchMoreData"
@@ -46,12 +42,14 @@
 <script>
 import { Services } from "@/services/services";
 import InfiniteLoading from "vue-infinite-loading";
+import noResultsFound from "@/components/Sub/noResultsFound.vue";
 
 export default {
   name: "searchtexts",
   components: {
     textModal: () => import("@/components/Sub/textModal.vue"),
-    InfiniteLoading
+    InfiniteLoading,
+    noResultsFound
   },
 
   data() {
@@ -194,20 +192,6 @@ export default {
         h1 {
           font-size: 2em;
         }
-      }
-    }
-    .noResultsFoundMessage {
-      width: 100%;
-      height: 100%;
-      padding-top: 30%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      p {
-        font-size: 1.5em;
-        color: hsla(37, 18%, 45%, 1);
-        line-height: 1.8rem;
       }
     }
     .tibetan-source {

@@ -64,11 +64,7 @@
           </template>
         </b-container>
       </b-col>
-      <div class="noResultsFoundMessage" v-if="noResultsFound">
-        <p>
-          No results were found with the given input.
-        </p>
-      </div>
+      <noResultsFound v-if="noResultsFound" />
     </b-row>
     <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
@@ -77,12 +73,14 @@
 <script>
 import { Services } from "@/services/services";
 import SquareRounded from "vue-material-design-icons/SquareRounded.vue";
+import noResultsFound from "@/components/Sub/noResultsFound.vue";
 
 export default {
   name: "wordstatistics",
   components: {
     SquareRounded,
-    textModal: () => import("@/components/Sub/textModal.vue")
+    textModal: () => import("@/components/Sub/textModal.vue"),
+    noResultsFound
   },
 
   data() {
@@ -172,20 +170,6 @@ export default {
     font-size: 0.7em;
     height: 100%;
     overflow-y: none;
-  }
-  .noResultsFoundMessage {
-    width: 100%;
-    height: 100%;
-    padding-top: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    p {
-      font-size: 1.5em;
-      color: hsla(37, 18%, 45%, 1);
-      line-height: 1.8rem;
-    }
   }
   .co-occurence {
     border-right: solid 0.3rem $secondary-color;

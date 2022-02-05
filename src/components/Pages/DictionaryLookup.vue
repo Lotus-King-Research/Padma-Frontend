@@ -38,6 +38,11 @@
           </span>
         </template>
       </multiselect>
+      <div class="default-text" v-if="noResultsFound">
+        <p>
+          No results were found with the given input.
+        </p>
+      </div>
       <div class="default-text" v-if="!searchQuery">
         <p>
           Start by entering a word or a segment of text in Tibetan or Wylie
@@ -84,7 +89,8 @@ export default {
   data() {
     return {
       results: {},
-      value: []
+      value: [],
+      noResultsFound: false
     };
   },
 
@@ -135,6 +141,7 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
+      this.noResultsFound = false;
       if (this.searchQuery) {
         let selectedDictionaries = this.value.map(a =>
           a.name.replace(/ /g, "_").toLowerCase()
@@ -144,9 +151,12 @@ export default {
           selectedDictionaries,
           this.tokenize
         );
-        this.results = res && res.data ? res.data : {};
-        if (!Object.keys(this.results).length) {
-          this.$toasted.error("No results found", { duration: 5000 });
+        if (res && res.data) {
+          this.results = res.data;
+        } else if (res.response && res.response.data) {
+          if (res.response.data.detail === "Not Found") {
+            this.noResultsFound = true;
+          }
         }
       }
     },
@@ -272,6 +282,7 @@ export default {
       height: 78%;
       display: flex;
       align-items: center;
+      justify-content: center;
 
       p {
         font-size: 1.5em;
