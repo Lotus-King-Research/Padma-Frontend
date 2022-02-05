@@ -136,17 +136,19 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
-      let selectedDictionaries = this.value.map(a =>
-        a.name.replace(/ /g, "_").toLowerCase()
-      );
-      const res = await Services.dictionaryLookup(
-        this.searchQuery,
-        selectedDictionaries,
-        this.tokenize
-      );
-      this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length) {
-        this.$toasted.error("No results found", { duration: 5000 });
+      if (this.searchQuery) {
+        let selectedDictionaries = this.value.map(a =>
+          a.name.replace(/ /g, "_").toLowerCase()
+        );
+        const res = await Services.dictionaryLookup(
+          this.searchQuery,
+          selectedDictionaries,
+          this.tokenize
+        );
+        this.results = res && res.data ? res.data : {};
+        if (!Object.keys(this.results).length) {
+          this.$toasted.error("No results found", { duration: 5000 });
+        }
       }
     },
     filterDictionaries() {
