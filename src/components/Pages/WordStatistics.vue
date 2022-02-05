@@ -64,6 +64,7 @@
           </template>
         </b-container>
       </b-col>
+      <noResultsFound v-if="noResultsFound" />
     </b-row>
     <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
@@ -72,12 +73,14 @@
 <script>
 import { Services } from "@/services/services";
 import SquareRounded from "vue-material-design-icons/SquareRounded.vue";
+import noResultsFound from "@/components/Sub/noResultsFound.vue";
 
 export default {
   name: "wordstatistics",
   components: {
     SquareRounded,
-    textModal: () => import("@/components/Sub/textModal.vue")
+    textModal: () => import("@/components/Sub/textModal.vue"),
+    noResultsFound
   },
 
   data() {
@@ -85,7 +88,8 @@ export default {
       results: {},
       title: true,
       titleText: "",
-      tokenize: false
+      tokenize: false,
+      noResultsFound: false
     };
   },
 
@@ -109,13 +113,17 @@ export default {
   methods: {
     async doWordStatistics() {
       // Execute word statistics query
+      this.noResultsFound = false;
       const res = await Services.wordStatistics(
         this.searchQuery,
         this.tokenize
       );
-      this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length) {
-        this.$toasted.error("No results found", { duration: 5000 });
+      if (res && res.data) {
+        this.results = res.data;
+      } else if (res.response && res.response.data) {
+        if (res.response.data.detail === "Not Found") {
+          this.noResultsFound = true;
+        }
       }
     },
 
@@ -125,7 +133,8 @@ export default {
       );
     },
     color(value) {
-      return "rgba(134,27,21," + parseFloat(value) + ")";
+      const opacity = 0.1 + value * 0.8;
+      return "rgba(134,27,21," + parseFloat(opacity) + ")";
     },
     highLightQuery(text) {
       return text.replaceAll(

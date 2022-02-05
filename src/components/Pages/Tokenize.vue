@@ -9,6 +9,11 @@
       }"
       >{{ token }}</font
     >
+    <div class="noResultsFoundMessage" v-if="noResultsFound">
+      <p>
+        No results were found with the given input.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -17,12 +22,11 @@ import { Services } from "@/services/services";
 
 export default {
   name: "tokenize",
-  components: {},
-
   data() {
     return {
       tokens: [],
-      colors: ["#372118", "#725144"]
+      colors: ["#372118", "#725144"],
+      noResultsFound: false
     };
   },
 
@@ -46,11 +50,14 @@ export default {
   methods: {
     async doTokenize() {
       // Execute tokenize query
-
+      this.noResultsFound = false;
       const res = await Services.tokenize(this.tokenizeQuery.replace(/,/g, ""));
-      this.tokens = res && res.data ? res.data.tokens : [];
-      if (!this.tokens.length) {
-        this.$toasted.error("No results found", { duration: 5000 });
+      if (res && res.data) {
+        this.tokens = res.data;
+      } else if (res.response && res.response.data) {
+        if (res.response.data.detail === "Not Found") {
+          this.noResultsFound = true;
+        }
       }
     }
   }
@@ -70,6 +77,19 @@ export default {
 
     @include breakpoint(medium) {
       font-size: 3em;
+    }
+  }
+  .noResultsFoundMessage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      font-size: 1.5em;
+      color: hsla(37, 18%, 45%, 1);
+      line-height: 1.8rem;
     }
   }
 }

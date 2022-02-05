@@ -38,10 +38,14 @@
           </span>
         </template>
       </multiselect>
+      <div class="default-text" v-if="noResultsFound">
+        <p>
+          No results were found with the given input.
+        </p>
+      </div>
       <div class="default-text" v-if="!searchQuery">
         <p>
-          Start by entering a Tibetan word or a segment of text inside the white
-          textarea on the left ...
+          Start by entering a word or a segment of text in Tibetan or Wylie
         </p>
       </div>
       <div class="dic-results-wrapper" v-else>
@@ -85,7 +89,8 @@ export default {
   data() {
     return {
       results: {},
-      value: []
+      value: [],
+      noResultsFound: false
     };
   },
 
@@ -136,17 +141,23 @@ export default {
   methods: {
     async doSearch() {
       // Execute search query
-      let selectedDictionaries = this.value.map(a =>
-        a.name.replace(/ /g, "_").toLowerCase()
-      );
-      const res = await Services.dictionaryLookup(
-        this.searchQuery,
-        selectedDictionaries,
-        this.tokenize
-      );
-      this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length) {
-        this.$toasted.error("No results found", { duration: 5000 });
+      this.noResultsFound = false;
+      if (this.searchQuery) {
+        let selectedDictionaries = this.value.map(a =>
+          a.name.replace(/ /g, "_").toLowerCase()
+        );
+        const res = await Services.dictionaryLookup(
+          this.searchQuery,
+          selectedDictionaries,
+          this.tokenize
+        );
+        if (res && res.data) {
+          this.results = res.data;
+        } else if (res.response && res.response.data) {
+          if (res.response.data.detail === "Not Found") {
+            this.noResultsFound = true;
+          }
+        }
       }
     },
     filterDictionaries() {
@@ -271,6 +282,7 @@ export default {
       height: 78%;
       display: flex;
       align-items: center;
+      justify-content: center;
 
       p {
         font-size: 1.5em;
