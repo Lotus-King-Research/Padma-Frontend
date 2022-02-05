@@ -40,8 +40,7 @@
       </multiselect>
       <div class="default-text" v-if="!searchQuery">
         <p>
-          Start by entering a Tibetan word or a segment of text inside the white
-          textarea on the left ...
+          Start by entering a word or a segment of text in Tibetan or Wylie
         </p>
       </div>
       <div class="dic-results-wrapper" v-else>

@@ -64,6 +64,11 @@
           </template>
         </b-container>
       </b-col>
+      <div class="noResultsFoundMessage" v-if="noResultsFound">
+        <p>
+          No results were found with the given input.
+        </p>
+      </div>
     </b-row>
     <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
@@ -85,7 +90,8 @@ export default {
       results: {},
       title: true,
       titleText: "",
-      tokenize: false
+      tokenize: false,
+      noResultsFound: false
     };
   },
 
@@ -109,13 +115,17 @@ export default {
   methods: {
     async doWordStatistics() {
       // Execute word statistics query
+      this.noResultsFound = false;
       const res = await Services.wordStatistics(
         this.searchQuery,
         this.tokenize
       );
-      this.results = res && res.data ? res.data : {};
-      if (!Object.keys(this.results).length) {
-        this.$toasted.error("No results found", { duration: 5000 });
+      if (res && res.data) {
+        this.results = res.data;
+      } else if (res.response && res.response.data) {
+        if (res.response.data.detail === "Not Found") {
+          this.noResultsFound = true;
+        }
       }
     },
 
@@ -162,6 +172,20 @@ export default {
     font-size: 0.7em;
     height: 100%;
     overflow-y: none;
+  }
+  .noResultsFoundMessage {
+    width: 100%;
+    height: 100%;
+    padding-top: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      font-size: 1.5em;
+      color: hsla(37, 18%, 45%, 1);
+      line-height: 1.8rem;
+    }
   }
   .co-occurence {
     border-right: solid 0.3rem $secondary-color;
