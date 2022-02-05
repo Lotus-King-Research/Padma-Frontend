@@ -133,7 +133,8 @@ export default {
       );
     },
     color(value) {
-      return "rgba(134,27,21," + parseFloat(value) + ")";
+      const opacity = 0.1 + value * 0.8;
+      return "rgba(134,27,21," + parseFloat(opacity) + ")";
     },
     highLightQuery(text) {
       return text.replaceAll(
