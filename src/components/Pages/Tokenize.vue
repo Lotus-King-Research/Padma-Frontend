@@ -14,6 +14,11 @@
         No results were found with the given input.
       </p>
     </div>
+    <div class="noResultsFoundMessage" v-if="noInputMessageFlag">
+      <p>
+        Start by entering a word or a segment of text in Tibetan or Wylie
+      </p>
+    </div>
   </div>
 </template>
 
@@ -26,7 +31,8 @@ export default {
     return {
       tokens: [],
       colors: ["#372118", "#725144"],
-      noResultsFound: false
+      noResultsFound: false,
+      noInputMessageFlag: false
     };
   },
 
@@ -51,13 +57,20 @@ export default {
     async doTokenize() {
       // Execute tokenize query
       this.noResultsFound = false;
-      const res = await Services.tokenize(this.tokenizeQuery.replace(/,/g, ""));
-      if (res && res.data) {
-        this.tokens = res.data;
-      } else if (res.response && res.response.data) {
-        if (res.response.data.detail === "Not Found") {
-          this.noResultsFound = true;
+      this.noInputMessageFlag = false;
+      if (this.tokenizeQuery) {
+        const res = await Services.tokenize(
+          this.tokenizeQuery.replace(/,/g, "")
+        );
+        if (res && res.data) {
+          this.tokens = res.data;
+        } else if (res.response && res.response.data) {
+          if (res.response.data.detail === "Not Found") {
+            this.noResultsFound = true;
+          }
         }
+      } else {
+        this.noInputMessageFlag = true;
       }
     }
   }
@@ -69,7 +82,7 @@ export default {
 .container-fixed {
   height: calc(100vh - 10rem);
   overflow-y: scroll;
-  padding-right: 2rem;
+  padding-right: 3rem;
 
   .tibetan-text-reader {
     font-size: 2em;
@@ -83,7 +96,6 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
 
     p {

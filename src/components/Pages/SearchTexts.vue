@@ -26,10 +26,12 @@
           <hr align="left" />
         </b-col>
       </template>
-      <noResultsFound v-if="noResultsFound" />
+      <noResultsFound :message="noResultMessage" v-if="noResultsFound" />
+      <noResultsFound :message="noInputMessage" v-if="noInputMessageFlag" />
       <textModal :title="title" :start="start" :end="end" />
       <infinite-loading
         @infinite="fetchMoreData"
+        v-if="searchQuery"
         ref="infiniteLoadingCom"
         spinner="spiral"
       >
@@ -62,7 +64,11 @@ export default {
       textData: {},
       tokenize: false,
       noResultsFound: false,
-      endOfResultText: ""
+      endOfResultText: "",
+      noInputMessageFlag: false,
+      noResultMessage: "No results were found with the given input.",
+      noInputMessage:
+        "Start by entering a word or a segment of text in Tibetan or Wylie"
     };
   },
 
@@ -88,18 +94,23 @@ export default {
       // Execute search query
       this.endOfResultText = "";
       this.noResultsFound = false;
+      this.noInputMessageFlag = false;
       this.textData = {};
-      const res = await Services.searchTexts(this.searchQuery, this.tokenize);
-      if (res && res.data) {
-        this.results = res.data;
-        if (Object.keys(this.results).length && this.results.title.length) {
-          this.$refs.infiniteLoadingCom.stateChanger.reset();
-          this.loadMoreData();
+      if (this.searchQuery) {
+        const res = await Services.searchTexts(this.searchQuery, this.tokenize);
+        if (res && res.data) {
+          this.results = res.data;
+          if (Object.keys(this.results).length && this.results.title.length) {
+            this.$refs.infiniteLoadingCom.stateChanger.reset();
+            this.loadMoreData();
+          }
+        } else if (res.response && res.response.data) {
+          if (res.response.data.detail === "Not Found") {
+            this.noResultsFound = true;
+          }
         }
-      } else if (res.response && res.response.data) {
-        if (res.response.data.detail === "Not Found") {
-          this.noResultsFound = true;
-        }
+      } else {
+        this.noInputMessageFlag = true;
       }
     },
     fetchMoreData($state) {
@@ -177,7 +188,7 @@ export default {
   padding-right: 3.5rem;
   padding-top: 0.3rem;
   @include breakpoint(medium) {
-    padding-right: 2rem;
+    padding-right: 3rem;
   }
   @include breakpointMax(small) {
     padding-right: 3rem;

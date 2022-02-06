@@ -208,6 +208,7 @@ export default {
   .container-fluid {
     height: 100%;
     padding-left: 0;
+    padding-right: 0;
 
     input[type="checkbox"] {
       appearance: none;
@@ -249,6 +250,7 @@ export default {
 
       @include breakpoint(medium) {
         width: 44%;
+        max-width: 300px;
       }
     }
     .dic_source_wrapper {
@@ -282,7 +284,6 @@ export default {
       height: 78%;
       display: flex;
       align-items: center;
-      justify-content: center;
 
       p {
         font-size: 1.5em;
@@ -294,7 +295,7 @@ export default {
       height: calc(100vh - 14.5rem);
       overflow-y: scroll;
       .dictionary-results {
-        padding-right: 2rem;
+        padding-right: 3rem;
         margin-bottom: 2rem;
       }
       @include breakpointMax(small) {
