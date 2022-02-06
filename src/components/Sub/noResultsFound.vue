@@ -1,12 +1,18 @@
 <template>
   <div class="noResultsFoundMessage">
     <p>
-      No results were found with the given input.
+      {{ message }}
     </p>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: {
+    message: {
+      type: String
+    }
+  }
+};
 </script>
 <style lang="scss" scoped>
 .noResultsFoundMessage {

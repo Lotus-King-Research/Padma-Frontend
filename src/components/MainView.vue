@@ -39,14 +39,14 @@
         <customTextArea
           v-model="queryString"
           :routeQuery="routeQuery"
-          :tokenizeQuery="tokenizeQuery"
+          :setTokenizeQuery="setTokenizeQuery"
         />
         <div class="textArea-footer">
           <label>
             <input
               type="checkbox"
               name="tokenize"
-              v-model="tokenizeQuery"
+              v-model="setTokenizeQuery"
               :disabled="disableTokenization"
             />
             <span :class="{ disable: disableTokenization }"
@@ -86,7 +86,7 @@ export default {
       routeQuery: "",
       tabSelected: "dictionary",
       selectedMenu: "Select Action",
-      tokenizeQuery: false,
+      setTokenizeQuery: false,
       tokens: [],
       colors: ["#372118", "#725144"],
       errorMessage: "",
@@ -102,8 +102,8 @@ export default {
     };
   },
   watch: {
-    tokenizeQuery() {
-      if (this.tokenizeQuery) {
+    setTokenizeQuery() {
+      if (this.setTokenizeQuery && this.queryString) {
         this.doTokenizeQuery();
       }
     },
@@ -114,7 +114,7 @@ export default {
       if (this.tabSelected === "texts" || this.tabSelected === "statistics") {
         this.disableTokenization = true;
       } else if (this.tabSelected === "tokenize") {
-        this.tokenizeQuery = true;
+        this.setTokenizeQuery = true;
         this.disableTokenization = true;
       } else {
         this.disableTokenization = false;
@@ -125,10 +125,10 @@ export default {
     this.detectedRouterQuery();
     this.$root.$on("turnOffTokenization", () => {
       if (this.tabSelected === "tokenize") {
-        this.tokenizeQuery = true;
+        this.setTokenizeQuery = true;
         this.callSelectedTabFunction();
       } else {
-        this.tokenizeQuery = false;
+        this.setTokenizeQuery = false;
         this.callSelectedTabFunction();
       }
     });
@@ -146,7 +146,7 @@ export default {
       this.callSelectedTabFunction();
     },
     callSelectedTabFunction() {
-      if (this.tokenizeQuery) {
+      if (this.setTokenizeQuery) {
         if (this.tabSelected === "texts") {
           this.errorMessage =
             "You have to turn Tokenize query off before searching texts";
@@ -174,7 +174,7 @@ export default {
     },
     doDictionaryLookup() {
       this.$router.push(
-        `dictionary_lookup?query=${this.queryString}&tokenize=${this.tokenizeQuery}`
+        `dictionary_lookup?query=${this.queryString}&tokenize=${this.setTokenizeQuery}`
       );
     },
     doSearchTexts() {

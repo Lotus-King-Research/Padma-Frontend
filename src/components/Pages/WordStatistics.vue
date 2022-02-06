@@ -64,7 +64,8 @@
           </template>
         </b-container>
       </b-col>
-      <noResultsFound v-if="noResultsFound" />
+      <noResultsFound :message="noResultMessage" v-if="noResultsFound" />
+      <noResultsFound :message="noInputMessage" v-if="noInputMessageFlag" />
     </b-row>
     <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
@@ -89,7 +90,11 @@ export default {
       title: true,
       titleText: "",
       tokenize: false,
-      noResultsFound: false
+      noResultsFound: false,
+      noInputMessageFlag: false,
+      noResultMessage: "No results were found with the given input.",
+      noInputMessage:
+        "Start by entering a word or a segment of text in Tibetan or Wylie"
     };
   },
 
@@ -114,16 +119,21 @@ export default {
     async doWordStatistics() {
       // Execute word statistics query
       this.noResultsFound = false;
-      const res = await Services.wordStatistics(
-        this.searchQuery,
-        this.tokenize
-      );
-      if (res && res.data) {
-        this.results = res.data;
-      } else if (res.response && res.response.data) {
-        if (res.response.data.detail === "Not Found") {
-          this.noResultsFound = true;
+      this.noInputMessageFlag = false;
+      if (this.searchQuery) {
+        const res = await Services.wordStatistics(
+          this.searchQuery,
+          this.tokenize
+        );
+        if (res && res.data) {
+          this.results = res.data;
+        } else if (res.response && res.response.data) {
+          if (res.response.data.detail === "Not Found") {
+            this.noResultsFound = true;
+          }
         }
+      } else {
+        this.noInputMessageFlag = true;
       }
     },
 
