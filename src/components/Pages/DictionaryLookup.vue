@@ -250,6 +250,7 @@ export default {
 
       @include breakpoint(medium) {
         width: 44%;
+        max-width: 300px;
       }
     }
     .dic_source_wrapper {
