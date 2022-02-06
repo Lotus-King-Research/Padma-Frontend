@@ -14,13 +14,13 @@ export default {};
   height: 100%;
   padding-top: 30%;
   display: flex;
-  justify-content: center;
   align-items: center;
 
   p {
     font-size: 1.5em;
     color: hsla(37, 18%, 45%, 1);
     line-height: 1.8rem;
+    padding-left: 1rem;
   }
 }
 </style>

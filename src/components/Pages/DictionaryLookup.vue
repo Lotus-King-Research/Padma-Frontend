@@ -284,7 +284,6 @@ export default {
       height: 78%;
       display: flex;
       align-items: center;
-      justify-content: center;
 
       p {
         font-size: 1.5em;
