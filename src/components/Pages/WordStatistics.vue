@@ -1,7 +1,7 @@
 <template>
-  <b-container class="wrapper">
+  <b-container class="wrapper" fluid>
     <b-row>
-      <b-col class="co-occurence" cols="4">
+      <b-col class="co-occurence" cols="3">
         <label class="title"> Co-occurrence </label>
         <div>
           <template v-for="(mcv, idx) in results.most_common_value">
@@ -16,7 +16,7 @@
           </template>
         </div>
       </b-col>
-      <b-col class="frequency" cols="8">
+      <b-col class="frequency" cols="9">
         <label class="title"> Frequency by: </label>
         <label class="tabs">
           <span
@@ -165,7 +165,7 @@ export default {
   margin: 0;
 
   @include breakpoint(medium) {
-    padding-right: 2rem;
+    padding-right: 3rem;
   }
   @include breakpointMax(small) {
     font-size: 0.7em;

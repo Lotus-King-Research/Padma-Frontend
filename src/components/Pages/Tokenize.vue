@@ -69,7 +69,7 @@ export default {
 .container-fixed {
   height: calc(100vh - 10rem);
   overflow-y: scroll;
-  padding-right: 2rem;
+  padding-right: 3rem;
 
   .tibetan-text-reader {
     font-size: 2em;

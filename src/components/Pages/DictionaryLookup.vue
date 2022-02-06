@@ -208,6 +208,7 @@ export default {
   .container-fluid {
     height: 100%;
     padding-left: 0;
+    padding-right: 0;
 
     input[type="checkbox"] {
       appearance: none;
@@ -294,7 +295,7 @@ export default {
       height: calc(100vh - 14.5rem);
       overflow-y: scroll;
       .dictionary-results {
-        padding-right: 2rem;
+        padding-right: 3rem;
         margin-bottom: 2rem;
       }
       @include breakpointMax(small) {

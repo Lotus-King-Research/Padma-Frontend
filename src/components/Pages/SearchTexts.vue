@@ -177,7 +177,7 @@ export default {
   padding-right: 3.5rem;
   padding-top: 0.3rem;
   @include breakpoint(medium) {
-    padding-right: 2rem;
+    padding-right: 3rem;
   }
   @include breakpointMax(small) {
     padding-right: 3rem;
