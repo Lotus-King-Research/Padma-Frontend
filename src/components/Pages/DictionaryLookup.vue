@@ -11,7 +11,7 @@
         :show-labels="false"
         placeholder="Select Dictionary"
         label="name"
-        track-by="name"
+        track-by="id"
         @select="onSelect($event)"
         @remove="onRemove($event)"
       >
@@ -130,15 +130,45 @@ export default {
   watch: {
     $route() {
       this.results = {};
+      this.addNewDic();
       this.doSearch();
     }
   },
 
   mounted() {
+    this.value = [];
     this.filterDictionaries();
+    this.addNewDic();
     this.doSearch();
   },
   methods: {
+    addNewDic() {
+      const list = [
+        {
+          id: 6,
+          name: "Tibetan multi",
+          checked: true
+        },
+        {
+          id: 7,
+          name: "Tibetan medicine",
+          checked: true
+        }
+      ];
+      if (this.$route.name === "lkt") {
+        this.$store.commit("updateDictionaryList", list);
+        this.filterDicList();
+      } else {
+        this.filterDicList();
+      }
+    },
+    filterDicList() {
+      const filteredOptionsList = this.options.filter(
+        el => el.checked === true
+      );
+      this.value = [];
+      this.value = [...filteredOptionsList];
+    },
     async doSearch() {
       // Execute search query
       this.noResultsFound = false;

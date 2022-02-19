@@ -102,6 +102,26 @@ export default {
     };
   },
   watch: {
+    $route(to, from) {
+      if (this.$route.name === "lkt") {
+        this.tabSelected = "lkt";
+      }
+      if (from.name === "lkt" && to !== "lkt") {
+        const list = [
+          {
+            id: 6,
+            name: "Tibetan multi",
+            checked: true
+          },
+          {
+            id: 7,
+            name: "Tibetan medicine",
+            checked: true
+          }
+        ];
+        this.$store.commit("setDicToDefaultList", list);
+      }
+    },
     setTokenizeQuery() {
       if (this.setTokenizeQuery && this.queryString) {
         this.doTokenizeQuery();
@@ -170,7 +190,14 @@ export default {
         this.tabSelected = "statistics";
       } else if (this.$route.name === "tokenize") {
         this.tabSelected = "tokenize";
+      } else if (this.$route.name === "lkt") {
+        this.tabSelected = "lkt";
       }
+    },
+    doLktLookup() {
+      this.$router.push(
+        `lkt?query=${this.queryString}&tokenize=${this.setTokenizeQuery}`
+      );
     },
     doDictionaryLookup() {
       this.$router.push(
@@ -187,7 +214,10 @@ export default {
       this.$router.push(`tokenize?query=${this.queryString}`);
     },
     setSelectedfunction() {
-      switch (this.selectedMenu.value || this.tabSelected) {
+      switch (this.tabSelected) {
+        case "lkt":
+          this.doLktLookup();
+          break;
         case "dictionary":
           this.doDictionaryLookup();
           break;

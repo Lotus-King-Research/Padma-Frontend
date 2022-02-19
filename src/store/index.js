@@ -12,9 +12,7 @@ export default new Vuex.Store({
       { id: 2, name: "Ives waldo", checked: true },
       { id: 3, name: "Jeffrey hopkins", checked: true },
       { id: 4, name: "Lobsang monlam", checked: true },
-      { id: 5, name: "Tibetan multi", checked: true },
-      { id: 6, name: "Tibetan medicine", checked: true },
-      { id: 7, name: "Verb lexicon", checked: true }
+      { id: 5, name: "Verb lexicon", checked: true }
     ]
   },
   mutations: {
@@ -30,6 +28,26 @@ export default new Vuex.Store({
         state.options[payload[0].id].checked = payload[0].checked;
         localStorage.setItem("options", JSON.stringify(state.options));
       }
+    },
+    updateDictionaryList(state, payload) {
+      const filterArray = state.options.filter(
+        el =>
+          el !==
+          payload.some(f => {
+            return f.name === el.name;
+          })
+      );
+      console.log("filter array =", filterArray);
+      filterArray.push.apply(filterArray, payload);
+      state.options = [...filterArray];
+    },
+    setDicToDefaultList(state, payload) {
+      const myArrayFiltered = state.options.filter(el => {
+        return !payload.some(f => {
+          return f.name === el.name;
+        });
+      });
+      state.options = [...myArrayFiltered];
     },
     storeDicOptions(state, payload) {
       state.options = [...payload];
