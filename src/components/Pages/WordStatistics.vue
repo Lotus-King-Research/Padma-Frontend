@@ -225,6 +225,9 @@ export default {
     .container {
       padding: 0;
       .byTitle {
+        .icon {
+          padding-top: 0.3rem;
+        }
         .value {
           font-size: 1.5em;
           label {
