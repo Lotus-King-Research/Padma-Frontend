@@ -7,7 +7,7 @@
         :multiple="true"
         :close-on-select="false"
         :clear-on-select="false"
-        :preserve-search="true"
+        :preserve-search="false"
         :show-labels="false"
         placeholder="Select Dictionary"
         label="name"
@@ -340,14 +340,33 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/index.scss";
 $font-color: hsl(0, 0%, 0%);
+.multiselect {
+  color: hsla(17, 39%, 15%, 1);
+}
 .multiselect__option--highlight,
 .multiselect__option--highlight::after {
   color: $font-color !important;
   background: none !important;
 }
 .multiselect__tag {
-  color: $font-color !important;
+  color: hsla(17, 39%, 15%, 1) !important;
   background-color: hsla(36, 100%, 95%, 1);
+}
+.multiselect__tags {
+  color: hsla(17, 39%, 15%, 1) !important;
+  background-color: hsla(36, 100%, 95%, 1);
+  box-shadow: 0px 6px 9px -4px rgba(55, 33, 24, 0.3) !important;
+}
+.multiselect__single {
+  background-color: hsla(36, 100%, 95%, 1);
+}
+.multiselect__input {
+  ::placeholder {
+    color: $font-color !important;
+  }
+}
+.multiselect__input {
+  color: $font-color !important;
 }
 .multiselect__option--selected,
 .multiselect__option--selected::after {

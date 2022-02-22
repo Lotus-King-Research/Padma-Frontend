@@ -352,6 +352,7 @@ $search-area-width: 500px;
           justify-content: center;
           background-color: $secondary-color;
           border: none;
+          box-shadow: 0px 2px 2px rgba(55, 33, 24, 0.25);
         }
         .greater-than-arrow {
           padding-left: 0.5rem;
