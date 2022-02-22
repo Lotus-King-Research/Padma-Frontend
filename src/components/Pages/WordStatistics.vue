@@ -243,6 +243,7 @@ export default {
         }
       }
       .count {
+        padding-left: 0.4rem;
         color: hsla(37, 18%, 45%, 1);
       }
     }
