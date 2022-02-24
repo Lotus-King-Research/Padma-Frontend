@@ -17,19 +17,6 @@ import(/* webpackPreload: true */ "typeface-jomolhari/index.css");
 import Toasted from "vue-toasted";
 Vue.use(Toasted);
 
-// Font-awesome 5
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faAngleDoubleRight,
-  faArrowCircleLeft
-} from "@fortawesome/free-solid-svg-icons";
-
-library.add(faAngleDoubleRight);
-library.add(faArrowCircleLeft);
-
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-Vue.component("font-awesome-icon", FontAwesomeIcon);
-
 // Install BootstrapVue
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;

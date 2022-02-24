@@ -383,4 +383,17 @@ $font-color: hsl(0, 0%, 0%);
 .multiselect__tag-icon:hover {
   background: $dropdown-color;
 }
+.multiselect__select:before {
+  display: inline-block;
+  border-bottom: 2px solid $dropdown-color !important;
+  border-right: 2px solid $dropdown-color !important;
+  border-color: transparent;
+  border-style: inherit;
+  border-width: inherit;
+  margin-top: 0;
+  top: 38%;
+  height: 11px;
+  width: 11px;
+  transform: rotate(-137deg);
+}
 </style>
