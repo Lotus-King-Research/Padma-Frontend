@@ -50,7 +50,7 @@
               :disabled="disableTokenization"
             />
             <span :class="{ disable: disableTokenization }"
-              >Tokenize query</span
+              >Tokenize Query</span
             >
           </label>
           <b-button @click="lookup()">
@@ -343,7 +343,7 @@ $search-area-width: 500px;
         }
 
         .disable {
-          opacity: 0.5;
+          opacity: 0.3;
         }
 
         .btn {
