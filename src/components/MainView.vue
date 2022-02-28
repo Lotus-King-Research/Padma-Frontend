@@ -109,13 +109,15 @@ export default {
       if (from.name === "lkt" && to !== "lkt") {
         const list = [
           {
-            id: 6,
-            name: "Tibetan multi",
+            id: 8,
+            name: "Tony duff",
+            value: "tony_duff",
             checked: true
           },
           {
-            id: 7,
-            name: "Tibetan medicine",
+            id: 9,
+            name: "Lotus king",
+            value: "lotus_king_trust",
             checked: true
           }
         ];

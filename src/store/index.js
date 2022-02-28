@@ -7,12 +7,29 @@ export default new Vuex.Store({
   state: {
     loading: false,
     options: [
-      { id: 0, name: "Mahavyutpatti", checked: true },
-      { id: 1, name: "Erik pema kunsang", checked: true },
-      { id: 2, name: "Ives waldo", checked: true },
-      { id: 3, name: "Jeffrey hopkins", checked: true },
-      { id: 4, name: "Lobsang monlam", checked: true },
-      { id: 5, name: "Verb lexicon", checked: true }
+      { id: 0, name: "Mahavyutpatti", value: "Mahavyutpatti", checked: true },
+      {
+        id: 1,
+        name: "Erik pema kunsang",
+        value: "Erik_pema_kunsang",
+        checked: true
+      },
+      { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
+      {
+        id: 3,
+        name: "Jeffrey hopkins",
+        value: "Jeffrey_hopkins",
+        checked: true
+      },
+      { id: 4, name: "Lobsang monlam", value: "Lobsang_monlam", checked: true },
+      { id: 5, name: "Verb lexicon", value: "Verb_lexicon", checked: true },
+      { id: 6, name: "Tibetan multi", value: "Tibetan_multi", checked: true },
+      {
+        id: 7,
+        name: "Tibetan medicine",
+        value: "Tibetan_medicine",
+        checked: true
+      }
     ]
   },
   mutations: {
@@ -37,9 +54,35 @@ export default new Vuex.Store({
             return f.name === el.name;
           })
       );
-      console.log("filter array =", filterArray);
+      const delArray = [
+        {
+          id: 1,
+          name: "Erik pema kunsang",
+          value: "Erik_pema_kunsang",
+          checked: true
+        },
+        { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
+        {
+          id: 3,
+          name: "Jeffrey hopkins",
+          value: "Jeffrey_hopkins",
+          checked: true
+        },
+        {
+          id: 4,
+          name: "Lobsang monlam",
+          value: "Lobsang_monlam",
+          checked: true
+        }
+      ];
       filterArray.push.apply(filterArray, payload);
       state.options = [...filterArray];
+      const finalArray = state.options.filter(val => {
+        return !delArray.find(item => {
+          return val.id === item.id;
+        });
+      });
+      state.options = [...finalArray];
     },
     setDicToDefaultList(state, payload) {
       const myArrayFiltered = state.options.filter(el => {
@@ -48,6 +91,28 @@ export default new Vuex.Store({
         });
       });
       state.options = [...myArrayFiltered];
+      const delArray = [
+        {
+          id: 1,
+          name: "Erik pema kunsang",
+          value: "Erik_pema_kunsang",
+          checked: true
+        },
+        { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
+        {
+          id: 3,
+          name: "Jeffrey hopkins",
+          value: "Jeffrey_hopkins",
+          checked: true
+        },
+        {
+          id: 4,
+          name: "Lobsang monlam",
+          value: "Lobsang_monlam",
+          checked: true
+        }
+      ];
+      state.options.push.apply(state.options, delArray);
     },
     storeDicOptions(state, payload) {
       state.options = [...payload];

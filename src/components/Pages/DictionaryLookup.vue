@@ -145,13 +145,15 @@ export default {
     addNewDic() {
       const list = [
         {
-          id: 6,
-          name: "Tibetan multi",
+          id: 8,
+          name: "Tony duff",
+          value: "tony_duff",
           checked: true
         },
         {
-          id: 7,
-          name: "Tibetan medicine",
+          id: 9,
+          name: "Lotus king",
+          value: "lotus_king_trust",
           checked: true
         }
       ];
@@ -173,9 +175,7 @@ export default {
       // Execute search query
       this.noResultsFound = false;
       if (this.searchQuery) {
-        let selectedDictionaries = this.value.map(a =>
-          a.name.replace(/ /g, "_").toLowerCase()
-        );
+        let selectedDictionaries = this.value.map(a => a.value.toLowerCase());
         const res = await Services.dictionaryLookup(
           this.searchQuery,
           selectedDictionaries,
