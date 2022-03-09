@@ -17,14 +17,14 @@
               v-if="!hideModalBody"
               v-show="hideRenderingBtn"
             >
-              <div class="next-arrow single-arrow" @click="expandRender()">
-                <img src="@/assets/images/single-arrow.svg" alt="render text" />
-              </div>
               <div class="next-arrow double-arrow" @click="renderFullText()">
                 <img
                   src="@/assets/images/double-cross.svg"
                   alt="show full text"
                 />
+              </div>
+              <div class="next-arrow single-arrow" @click="expandRender()">
+                <img src="@/assets/images/single-arrow.svg" alt="render text" />
               </div>
             </div>
           </b-col>
@@ -197,6 +197,7 @@ export default {
           cursor: pointer;
           img {
             width: 32%;
+            transform: rotate(90deg);
           }
         }
       }
