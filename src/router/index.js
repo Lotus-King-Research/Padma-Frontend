@@ -32,6 +32,11 @@ export default new Router({
           component: require("@/components/Pages/DictionaryLookup").default
         },
         {
+          path: "lkt",
+          name: "lkt",
+          component: require("@/components/Pages/DictionaryLookup").default
+        },
+        {
           path: "search_texts",
           name: "searchtexts",
           component: require("@/components/Pages/SearchTexts").default

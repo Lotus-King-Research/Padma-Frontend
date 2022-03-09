@@ -7,11 +7,11 @@
         :multiple="true"
         :close-on-select="false"
         :clear-on-select="false"
-        :preserve-search="true"
+        :preserve-search="false"
         :show-labels="false"
         placeholder="Select Dictionary"
         label="name"
-        track-by="name"
+        track-by="id"
         @select="onSelect($event)"
         @remove="onRemove($event)"
       >
@@ -130,22 +130,52 @@ export default {
   watch: {
     $route() {
       this.results = {};
+      this.addNewDic();
       this.doSearch();
     }
   },
 
   mounted() {
+    this.value = [];
     this.filterDictionaries();
+    this.addNewDic();
     this.doSearch();
   },
   methods: {
+    addNewDic() {
+      const list = [
+        {
+          id: 8,
+          name: "Tony duff",
+          value: "tony_duff",
+          checked: true
+        },
+        {
+          id: 9,
+          name: "Lotus king",
+          value: "lotus_king_trust",
+          checked: true
+        }
+      ];
+      if (this.$route.name === "lkt") {
+        this.$store.commit("updateDictionaryList", list);
+        this.filterDicList();
+      } else {
+        this.filterDicList();
+      }
+    },
+    filterDicList() {
+      const filteredOptionsList = this.options.filter(
+        el => el.checked === true
+      );
+      this.value = [];
+      this.value = [...filteredOptionsList];
+    },
     async doSearch() {
       // Execute search query
       this.noResultsFound = false;
       if (this.searchQuery) {
-        let selectedDictionaries = this.value.map(a =>
-          a.name.replace(/ /g, "_").toLowerCase()
-        );
+        let selectedDictionaries = this.value.map(a => a.value.toLowerCase());
         const res = await Services.dictionaryLookup(
           this.searchQuery,
           selectedDictionaries,
@@ -310,14 +340,33 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/index.scss";
 $font-color: hsl(0, 0%, 0%);
+.multiselect {
+  color: hsla(17, 39%, 15%, 1);
+}
 .multiselect__option--highlight,
 .multiselect__option--highlight::after {
   color: $font-color !important;
   background: none !important;
 }
 .multiselect__tag {
-  color: $font-color !important;
+  color: hsla(17, 39%, 15%, 1) !important;
   background-color: hsla(36, 100%, 95%, 1);
+}
+.multiselect__tags {
+  color: hsla(17, 39%, 15%, 1) !important;
+  background-color: hsla(36, 100%, 95%, 1);
+  box-shadow: 0px 6px 9px -4px rgba(55, 33, 24, 0.3) !important;
+}
+.multiselect__single {
+  background-color: hsla(36, 100%, 95%, 1);
+}
+.multiselect__input {
+  ::placeholder {
+    color: $font-color !important;
+  }
+}
+.multiselect__input {
+  color: $font-color !important;
 }
 .multiselect__option--selected,
 .multiselect__option--selected::after {
@@ -333,5 +382,18 @@ $font-color: hsl(0, 0%, 0%);
 .multiselect__tag-icon:focus,
 .multiselect__tag-icon:hover {
   background: $dropdown-color;
+}
+.multiselect__select:before {
+  display: inline-block;
+  border-bottom: 2px solid $dropdown-color !important;
+  border-right: 2px solid $dropdown-color !important;
+  border-color: transparent;
+  border-style: inherit;
+  border-width: inherit;
+  margin-top: 0;
+  top: 38%;
+  height: 11px;
+  width: 11px;
+  transform: rotate(-137deg);
 }
 </style>

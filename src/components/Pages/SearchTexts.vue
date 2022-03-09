@@ -238,7 +238,7 @@ export default {
       padding-left: 0;
       hr {
         margin: 0;
-        height: 0.1rem;
+        height: 2px;
         background-color: $secondary-color;
       }
       @include breakpointMax(small) {
