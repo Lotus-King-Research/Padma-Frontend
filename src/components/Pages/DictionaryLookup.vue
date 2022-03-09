@@ -349,6 +349,7 @@ $font-color: hsl(0, 0%, 0%);
   background: none !important;
 }
 .multiselect__tag {
+  display: block !important;
   color: hsla(17, 39%, 15%, 1) !important;
   background-color: hsla(36, 100%, 95%, 1);
 }
@@ -357,6 +358,9 @@ $font-color: hsl(0, 0%, 0%);
   background-color: hsla(36, 100%, 95%, 1);
   box-shadow: 0px 6px 9px -4px rgba(55, 33, 24, 0.3) !important;
 }
+// .multiselect__tags-wrap {
+//   display: block !important;
+// }
 .multiselect__single {
   background-color: hsla(36, 100%, 95%, 1);
 }
