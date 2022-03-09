@@ -311,9 +311,9 @@ export default {
       }
     }
     .default-text {
-      height: 78%;
+      height: 100%;
       display: flex;
-      align-items: center;
+      padding-top: 15rem;
 
       p {
         font-size: 1.5em;
