@@ -39,9 +39,7 @@
         </template>
       </multiselect>
       <div class="default-text" v-if="noResultsFound">
-        <p>
-          No results were found with the given input.
-        </p>
+        <p>No results were found for {{ searchQuery }}</p>
       </div>
       <div class="default-text" v-if="!searchQuery">
         <p>
@@ -52,6 +50,9 @@
         <template v-for="[key, value] of Object.entries(resultsArray)">
           <div class="dictionary-results" :key="key">
             <h1>{{ key }}</h1>
+            <span v-if="value[0].length <= 0">
+              No results were found for {{ key }}
+            </span>
             <template v-for="(item, idx2) in value[0]">
               <p :key="idx2">
                 <span class="dic_source_wrapper">
@@ -311,9 +312,9 @@ export default {
       }
     }
     .default-text {
-      height: 78%;
+      height: 100%;
       display: flex;
-      align-items: center;
+      padding-top: 15rem;
 
       p {
         font-size: 1.5em;
@@ -349,6 +350,7 @@ $font-color: hsl(0, 0%, 0%);
   background: none !important;
 }
 .multiselect__tag {
+  display: block !important;
   color: hsla(17, 39%, 15%, 1) !important;
   background-color: hsla(36, 100%, 95%, 1);
 }
@@ -357,6 +359,9 @@ $font-color: hsl(0, 0%, 0%);
   background-color: hsla(36, 100%, 95%, 1);
   box-shadow: 0px 6px 9px -4px rgba(55, 33, 24, 0.3) !important;
 }
+// .multiselect__tags-wrap {
+//   display: block !important;
+// }
 .multiselect__single {
   background-color: hsla(36, 100%, 95%, 1);
 }

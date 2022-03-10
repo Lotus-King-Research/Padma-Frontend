@@ -1,8 +1,6 @@
 <template>
   <div class="noResultsFoundMessage">
-    <p>
-      {{ message }}
-    </p>
+    <p>No results found for {{ message }}</p>
   </div>
 </template>
 <script>
