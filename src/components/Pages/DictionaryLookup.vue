@@ -39,9 +39,7 @@
         </template>
       </multiselect>
       <div class="default-text" v-if="noResultsFound">
-        <p>
-          No results were found with the given input.
-        </p>
+        <p>No results were found for {{ searchQuery }}</p>
       </div>
       <div class="default-text" v-if="!searchQuery">
         <p>
@@ -52,6 +50,9 @@
         <template v-for="[key, value] of Object.entries(resultsArray)">
           <div class="dictionary-results" :key="key">
             <h1>{{ key }}</h1>
+            <span v-if="value[0].length <= 0">
+              No results were found for {{ key }}
+            </span>
             <template v-for="(item, idx2) in value[0]">
               <p :key="idx2">
                 <span class="dic_source_wrapper">

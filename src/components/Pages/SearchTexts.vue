@@ -26,7 +26,7 @@
           <hr align="left" />
         </b-col>
       </template>
-      <noResultsFound :message="noResultMessage" v-if="noResultsFound" />
+      <noResultsFound :message="searchQuery" v-if="noResultsFound" />
       <noResultsFound :message="noInputMessage" v-if="noInputMessageFlag" />
       <textModal :title="title" :start="start" :end="end" />
       <infinite-loading
@@ -66,7 +66,6 @@ export default {
       noResultsFound: false,
       endOfResultText: "",
       noInputMessageFlag: false,
-      noResultMessage: "No results were found with the given input.",
       noInputMessage:
         "Start by entering a word or a segment of text in Tibetan or Wylie"
     };
@@ -103,6 +102,8 @@ export default {
           if (Object.keys(this.results).length && this.results.title.length) {
             this.$refs.infiniteLoadingCom.stateChanger.reset();
             this.loadMoreData();
+          } else {
+            this.noResultsFound = true;
           }
         } else if (res.response && res.response.data) {
           if (res.response.data.detail === "Not Found") {
