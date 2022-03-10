@@ -129,7 +129,7 @@ export default {
         this.tabSelected = "lkt";
         this.lktSessionStart = true;
         this.$toasted.error(
-          "Lkt session will get expired after 3 seconds of inactive",
+          "Lkt session will get expired after 10 seconds of inactive",
           { duration: 5000 }
         );
       }
@@ -209,7 +209,7 @@ export default {
         this.tabSelected = "lkt";
         this.lktSessionStart = true;
         this.$toasted.error(
-          "Lkt session will get expired after 3 seconds of inactive",
+          "Lkt session will get expired after 10 seconds of inactive",
           { duration: 5000 }
         );
       }
