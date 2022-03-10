@@ -22,7 +22,7 @@ Vue.use(Toasted);
 
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: 100000
+  idleTime: 60000
 });
 
 // Install BootstrapVue
