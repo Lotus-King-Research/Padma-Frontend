@@ -91,6 +91,7 @@ export default {
       colors: ["#372118", "#725144"],
       errorMessage: "",
       disableTokenization: false,
+      lktSessionStart: false,
       previousTab: "",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
@@ -101,28 +102,40 @@ export default {
       ]
     };
   },
+  onIdle() {
+    if (this.lktSessionStart) {
+      const list = [
+        {
+          id: 8,
+          name: "Tony duff",
+          value: "tony_duff",
+          checked: true
+        },
+        {
+          id: 9,
+          name: "Lotus king",
+          value: "lotus_king_trust",
+          checked: true
+        }
+      ];
+      this.$store.commit("setDicToDefaultList", list);
+      this.$toasted.error("Lkt session expired", { duration: 5000 });
+      this.lktSessionStart = false;
+    }
+  },
   watch: {
-    $route(to, from) {
+    $route() {
       if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
+        this.lktSessionStart = true;
+        this.$toasted.error(
+          "Lkt session will get expired after 3 seconds of inactive",
+          { duration: 5000 }
+        );
       }
-      if (from.name === "lkt" && to !== "lkt") {
-        const list = [
-          {
-            id: 8,
-            name: "Tony duff",
-            value: "tony_duff",
-            checked: true
-          },
-          {
-            id: 9,
-            name: "Lotus king",
-            value: "lotus_king_trust",
-            checked: true
-          }
-        ];
-        this.$store.commit("setDicToDefaultList", list);
-      }
+      // if (from.name === "lkt" && to !== "lkt") {
+
+      // }
     },
     setTokenizeQuery() {
       if (this.setTokenizeQuery && this.queryString) {
@@ -194,6 +207,11 @@ export default {
         this.tabSelected = "tokenize";
       } else if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
+        this.lktSessionStart = true;
+        this.$toasted.error(
+          "Lkt session will get expired after 3 seconds of inactive",
+          { duration: 5000 }
+        );
       }
     },
     doLktLookup() {
