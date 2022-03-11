@@ -73,6 +73,7 @@
 import { Services } from "@/services/services";
 import customTextArea from "@/components/Sub/customTextArea.vue";
 import messageBox from "@/components/Sub/messageBox.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "mainview",
@@ -101,27 +102,15 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState(["lktSessionStart"])
+  },
   watch: {
-    $route(to, from) {
+    $route() {
       if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
-      }
-      if (from.name === "lkt" && to !== "lkt") {
-        const list = [
-          {
-            id: 8,
-            name: "Tony duff",
-            value: "tony_duff",
-            checked: true
-          },
-          {
-            id: 9,
-            name: "Lotus king",
-            value: "lotus_king_trust",
-            checked: true
-          }
-        ];
-        this.$store.commit("setDicToDefaultList", list);
+        this.$store.commit("updateLktSession", true);
+        this.setDefaultDic();
       }
     },
     setTokenizeQuery() {
@@ -157,6 +146,9 @@ export default {
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
     });
+    if (!this.lktSessionStart) {
+      this.setDefaultDic();
+    }
   },
   methods: {
     lookup() {
@@ -184,6 +176,23 @@ export default {
         this.setSelectedfunction();
       }
     },
+    setDefaultDic() {
+      const list = [
+        {
+          id: 8,
+          name: "Tony duff",
+          value: "tony_duff",
+          checked: true
+        },
+        {
+          id: 9,
+          name: "Lotus king",
+          value: "lotus_king_trust",
+          checked: true
+        }
+      ];
+      this.$store.commit("setDicToDefaultList", list);
+    },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
       if (this.$route.name === "searchtexts") {
@@ -194,6 +203,7 @@ export default {
         this.tabSelected = "tokenize";
       } else if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
+        this.$store.commit("updateLktSession", true);
       }
     },
     doLktLookup() {

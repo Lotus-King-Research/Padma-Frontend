@@ -64,8 +64,11 @@
           </template>
         </b-container>
       </b-col>
-      <noResultsFound :message="searchQuery" v-if="noResultsFound" />
-      <noResultsFound :message="noInputMessage" v-if="noInputMessageFlag" />
+      <noResultsFound
+        :message="noResultsFoundMsg + searchQuery"
+        v-if="noResultsFound"
+      />
+      <noResultsFound :message="noInputMsg" v-if="noInputMessageFlag" />
     </b-row>
     <textModal :titleText="titleText" :searchQuery="searchQuery" />
   </b-container>
@@ -91,7 +94,10 @@ export default {
       titleText: "",
       tokenize: false,
       noResultsFound: false,
-      noInputMessageFlag: false
+      noInputMessageFlag: false,
+      noResultsFoundMsg: "No results found for ",
+      noInputMsg:
+        "Start by entering a word or a segment of text in Tibetan or Wylie"
     };
   },
 
