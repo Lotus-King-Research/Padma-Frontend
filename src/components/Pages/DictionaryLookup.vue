@@ -96,7 +96,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["options"]),
+    ...mapState(["options", "lktSessionStart"]),
     searchQuery() {
       return this.$route.query.query;
     },

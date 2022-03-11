@@ -73,6 +73,7 @@
 import { Services } from "@/services/services";
 import customTextArea from "@/components/Sub/customTextArea.vue";
 import messageBox from "@/components/Sub/messageBox.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "mainview",
@@ -91,7 +92,6 @@ export default {
       colors: ["#372118", "#725144"],
       errorMessage: "",
       disableTokenization: false,
-      lktSessionStart: false,
       previousTab: "",
       options: [
         { label: "Dictionary", value: "dictionary", id: 1 },
@@ -102,40 +102,16 @@ export default {
       ]
     };
   },
-  onIdle() {
-    if (this.lktSessionStart) {
-      const list = [
-        {
-          id: 8,
-          name: "Tony duff",
-          value: "tony_duff",
-          checked: true
-        },
-        {
-          id: 9,
-          name: "Lotus king",
-          value: "lotus_king_trust",
-          checked: true
-        }
-      ];
-      this.$store.commit("setDicToDefaultList", list);
-      this.$toasted.error("Lkt session expired", { duration: 5000 });
-      this.lktSessionStart = false;
-    }
+  computed: {
+    ...mapState(["lktSessionStart"])
   },
   watch: {
     $route() {
       if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
-        this.lktSessionStart = true;
-        this.$toasted.error(
-          "Lkt session will get expired after 60 seconds of inactive",
-          { duration: 5000 }
-        );
+        this.$store.commit("updateLktSession", true);
+        this.setDefaultDic();
       }
-      // if (from.name === "lkt" && to !== "lkt") {
-
-      // }
     },
     setTokenizeQuery() {
       if (this.setTokenizeQuery && this.queryString) {
@@ -170,6 +146,9 @@ export default {
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
     });
+    if (!this.lktSessionStart) {
+      this.setDefaultDic();
+    }
   },
   methods: {
     lookup() {
@@ -197,6 +176,23 @@ export default {
         this.setSelectedfunction();
       }
     },
+    setDefaultDic() {
+      const list = [
+        {
+          id: 8,
+          name: "Tony duff",
+          value: "tony_duff",
+          checked: true
+        },
+        {
+          id: 9,
+          name: "Lotus king",
+          value: "lotus_king_trust",
+          checked: true
+        }
+      ];
+      this.$store.commit("setDicToDefaultList", list);
+    },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
       if (this.$route.name === "searchtexts") {
@@ -207,12 +203,7 @@ export default {
         this.tabSelected = "tokenize";
       } else if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
-        if (!this.lktSessionStart) {
-          this.$toasted.error(
-            "Lkt session will get expired after 60 seconds of inactive",
-            { duration: 5000 }
-          );
-        }
+        this.$store.commit("updateLktSession", true);
       }
     },
     doLktLookup() {

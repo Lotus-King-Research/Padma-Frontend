@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loading: false,
+    lktSessionStart: false,
     options: [
       { id: 0, name: "Mahavyutpatti", value: "Mahavyutpatti", checked: true },
       {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
 
     requestComplete(state) {
       state.loading = false;
+    },
+    updateLktSession(state, payload) {
+      state.lktSessionStart = payload;
     },
     updateDictionary(state, payload) {
       if (payload.length > 0) {
@@ -91,28 +95,6 @@ export default new Vuex.Store({
         });
       });
       state.options = [...myArrayFiltered];
-      const delArray = [
-        {
-          id: 1,
-          name: "Erik pema kunsang",
-          value: "Erik_pema_kunsang",
-          checked: true
-        },
-        { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-        {
-          id: 3,
-          name: "Jeffrey hopkins",
-          value: "Jeffrey_hopkins",
-          checked: true
-        },
-        {
-          id: 4,
-          name: "Lobsang monlam",
-          value: "Lobsang_monlam",
-          checked: true
-        }
-      ];
-      state.options.push.apply(state.options, delArray);
     },
     storeDicOptions(state, payload) {
       state.options = [...payload];
