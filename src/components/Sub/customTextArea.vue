@@ -6,6 +6,7 @@
       contenteditable="plaintext-only"
       @keydown.enter.prevent
       @input="updateHTML"
+      @keyup.enter="onEnter"
     >
       <span
         v-for="(token, idx) in tokens"
@@ -75,6 +76,9 @@ export default {
         this.$toasted.error("No results found", { duration: 5000 });
       }
       this.tokenize = true;
+    },
+    onEnter() {
+      this.$root.$emit("onEnterSearch");
     }
   }
 };

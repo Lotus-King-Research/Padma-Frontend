@@ -146,6 +146,9 @@ export default {
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
     });
+    this.$root.$on("onEnterSearch", () => {
+      this.lookup();
+    });
     if (!this.lktSessionStart) {
       this.setDefaultDic();
     }
