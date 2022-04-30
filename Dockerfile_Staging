@@ -22,4 +22,4 @@ ARG VUE_APP_API_URL=https://staging-api.padma.io
 RUN yarn build
 
 EXPOSE 8080
-CMD [ "http-server", "dist" ]
+CMD [ "http-server -c-1", "dist" ]
