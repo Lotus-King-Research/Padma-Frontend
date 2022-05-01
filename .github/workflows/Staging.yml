@@ -24,10 +24,12 @@ jobs:
         script: |
           sudo docker login docker.pkg.github.com --username mikkokotila --password ${{ secrets.MIKKOKOTILA_TOKEN }}
           sudo docker pull docker.pkg.github.com/lotus-king-research/padma-frontend/frontend:staging
+          
           RUNNING_IMAGE=$(sudo docker ps | grep docker-entrypoint | cut -d ' ' -f1)
           if [ ${#RUNNING_IMAGE} -gt 1 ]
           then
             sudo docker stop $RUNNING_IMAGE
           fi
+          
           NEW_IMAGE_ID=$(sudo docker images | grep frontend | grep staging | head -1 | tr -s ' ' | cut -d ' ' -f3)
           sudo docker run --memory=200m --restart unless-stopped --name Padma-Frontend -p 8080:8080 --detach $NEW_IMAGE_ID
