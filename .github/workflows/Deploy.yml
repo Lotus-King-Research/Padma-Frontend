@@ -33,3 +33,9 @@ jobs:
 
           NEW_IMAGE_ID=$(sudo docker images | grep frontend | grep master | head -1 | tr -s ' ' | cut -d ' ' -f3)
           sudo docker run --memory=200m --restart unless-stopped -p 8080:8080 --detach $NEW_IMAGE_ID
+    - name: Purge Cloudflare Cache
+      uses: MrHakala/cloudflare-purge-action@master
+      env:
+        CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+        CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+        PURGE_HOSTS: '["padma.io"]'
