@@ -53,9 +53,13 @@
               >Tokenize Query</span
             >
           </label>
-          <b-button @click="lookup()">
+          <!-- <b-button @click="lookup()">
             LOOKUP <span class="greater-than-arrow"> > </span>
-          </b-button>
+          </b-button> -->
+          <b-dropdown @click="lookup()" split text="LOOKUP" class="look-up-btn m-2">
+            <b-dropdown-item href="#" @click="console.log('action btn')">Exact matching</b-dropdown-item>
+            <b-dropdown-item href="#">Partial matching</b-dropdown-item>
+          </b-dropdown>
         </div>
       </div>
     </div>
@@ -359,14 +363,11 @@ $search-area-width: 500px;
           opacity: 0.3;
         }
 
-        .btn {
-          width: 7rem;
+        .look-up-btn {
+          width: 9rem;
           height: 2rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: $secondary-color;
           border: none;
+          margin-right: 0 !important;
           box-shadow: 0px 2px 2px rgba(55, 33, 24, 0.25);
         }
         .greater-than-arrow {
@@ -428,6 +429,14 @@ $search-area-width: 500px;
 </style>
 <style lang="scss">
 @import "@/assets/scss/index.scss";
+.btn {
+  background-color: $secondary-color !important;
+  border-color: $footer-text-color !important;
+  height: 2rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
 .select {
   .selectMenu {
     .vs__search::placeholder,
