@@ -49,16 +49,27 @@
               v-model="setTokenizeQuery"
               :disabled="disableTokenization"
             />
-            <span :class="{ disable: disableTokenization }"
-              >Tokenize Query</span
-            >
+            <span :class="{ disable: disableTokenization }">Tokenize</span>
           </label>
           <!-- <b-button @click="lookup()">
             LOOKUP <span class="greater-than-arrow"> > </span>
           </b-button> -->
-          <b-dropdown @click="lookup()" split text="LOOKUP" class="look-up-btn m-2">
-            <b-dropdown-item href="#" @click="console.log('action btn')">Exact matching</b-dropdown-item>
-            <b-dropdown-item href="#">Partial matching</b-dropdown-item>
+          <!-- <b-dropdown @click="exactMatch()" split text="LOOKUP" class="look-up-btn m-2">
+            <b-dropdown-item href="#" @click="partialMatch()">Partial matching</b-dropdown-item>
+          </b-dropdown> -->
+          <b-dropdown
+            aria-role="list"
+            v-bind:text="
+              selectedSearch.id == 0 ? 'LOOKUP' : selectedSearch.name
+            "
+          >
+            <b-dropdown-item
+              v-for="(searchItem, index) in searchTypeList"
+              :key="index"
+              aria-role="listitem"
+              @click="setItem(searchItem)"
+              >{{ searchItem.name }}</b-dropdown-item
+            >
           </b-dropdown>
         </div>
       </div>
@@ -70,6 +81,7 @@
       </div>
     </div>
     <messageBox :message="errorMessage" />
+    <selectDictionary :message="selectedDictionary" />
   </b-container>
 </template>
 
@@ -77,13 +89,15 @@
 import { Services } from "@/services/services";
 import customTextArea from "@/components/Sub/customTextArea.vue";
 import messageBox from "@/components/Sub/messageBox.vue";
+import selectDictionary from "@/components/Sub/selectDictionary.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "mainview",
   components: {
     customTextArea,
-    messageBox
+    messageBox,
+    selectDictionary
   },
   data() {
     return {
@@ -97,17 +111,33 @@ export default {
       errorMessage: "",
       disableTokenization: false,
       previousTab: "",
-      options: [
-        { label: "Dictionary", value: "dictionary", id: 1 },
-        { label: "Texts", value: "texts", id: 2 },
-        { label: "Similar Words", value: "similarWords", id: 3 },
-        { label: "Statistics", value: "statistics", id: 4 },
-        { label: "Tokenize", value: "tokenize", id: 5 }
-      ]
+      partial_match: false,
+      selectedDictionary: [],
+      searchTypeList: [
+        {
+          id: 1,
+          name: "Exact Search"
+        },
+        {
+          id: 2,
+          name: "Partial Search"
+        }
+      ],
+      selectedSearch: {
+        id: 0,
+        name: ""
+      }
+      // options: [
+      //   { label: "Dictionary", value: "dictionary", id: 1 },
+      //   { label: "Texts", value: "texts", id: 2 },
+      //   { label: "Similar Words", value: "similarWords", id: 3 },
+      //   { label: "Statistics", value: "statistics", id: 4 },
+      //   { label: "Tokenize", value: "tokenize", id: 5 }
+      // ]
     };
   },
   computed: {
-    ...mapState(["lktSessionStart"])
+    ...mapState(["lktSessionStart", "options"])
   },
   watch: {
     $route() {
@@ -147,6 +177,10 @@ export default {
         this.callSelectedTabFunction();
       }
     });
+    this.$root.$on("partialSearch", val => {
+      console.log("main view partial =", val);
+      this.lookup();
+    });
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
     });
@@ -170,17 +204,17 @@ export default {
       if (this.setTokenizeQuery) {
         if (this.tabSelected === "texts") {
           this.errorMessage =
-            "You have to turn Tokenize query off before searching texts";
+            "You have to turn Tokenize off before searching texts";
           this.showMessageBox();
         } else if (this.tabSelected === "statistics") {
           this.errorMessage =
-            "You have to turn Tokenize query off before analyzing word statistics";
+            "You have to turn Tokenize off before analyzing word statistics";
           this.showMessageBox();
         } else {
           this.setSelectedfunction();
         }
       } else {
-        this.setSelectedfunction();
+        this.partial_match ? this.partialMatch() : this.setSelectedfunction();
       }
     },
     setDefaultDic() {
@@ -220,7 +254,7 @@ export default {
     },
     doDictionaryLookup() {
       this.$router.push(
-        `dictionary_lookup?query=${this.queryString}&tokenize=${this.setTokenizeQuery}`
+        `dictionary_lookup?query=${this.queryString}&partial_match=${this.partial_match}&tokenize=${this.setTokenizeQuery}`
       );
     },
     doSearchTexts() {
@@ -265,6 +299,25 @@ export default {
     },
     showMessageBox() {
       this.$root.$emit("bv::show::modal", "messageBox");
+    },
+    setItem(product) {
+      this.selectedProduct = product;
+      product.id === 1 ? this.exactMatch() : this.partialMatch();
+    },
+    partialMatch() {
+      this.partial_match = true;
+      this.selectedDictionary = this.options.filter(a => a.checked);
+      if (this.setTokenizeQuery) {
+        this.errorMessage =
+          "You have to turn Tokenize off before doing partial search";
+        this.showMessageBox();
+      } else {
+        this.$root.$emit("bv::show::modal", "selectDictionary");
+      }
+    },
+    exactMatch() {
+      this.partial_match = false;
+      this.lookup();
     }
   }
 };
@@ -436,6 +489,9 @@ $search-area-width: 500px;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+}
+.dropdown-toggle::after {
+  margin-left: 1em !important;
 }
 .select {
   .selectMenu {

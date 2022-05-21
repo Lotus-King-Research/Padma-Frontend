@@ -46,6 +46,22 @@
           Start by entering a word or a segment of text in Tibetan or Wylie
         </p>
       </div>
+      <div class="dic-results-wrapper" v-if="partial_match">
+        <template v-for="item in resultsArray">
+          <div class="dictionary-results" :key="item.id">
+            <h1>{{ item.search_query }}</h1>
+            <span v-if="value[0].length <= 0">
+              No results were found for {{ key }}
+            </span>
+            <span class="dic_source_wrapper">
+              <span class="dic_source">
+                {{ item.source[0] }}
+              </span>
+            </span>
+            {{ item.text }}
+          </div>
+        </template>
+      </div>
       <div class="dic-results-wrapper" v-else>
         <template v-for="[key, value] of Object.entries(resultsArray)">
           <div class="dictionary-results" :key="key">
@@ -91,7 +107,8 @@ export default {
     return {
       results: {},
       value: [],
-      noResultsFound: false
+      noResultsFound: false,
+      partialDictionarySelected: []
     };
   },
 
@@ -103,27 +120,34 @@ export default {
     tokenize() {
       return this.$route.query.tokenize;
     },
+    partial_match() {
+      return this.$route.query.partial_match === "true" ? true : false;
+    },
     resultsArray() {
-      if (Object.keys(this.results).length > 0) {
-        let convertedArray = [].concat(this.results);
-        const res = convertedArray.reduce((grouped, item) => {
-          item.tokens.map((a, i) => {
-            if (grouped[a] == null) grouped[a] = [];
-            let text = item.text[i];
-            let result = item.source[i].map((sourceValue, id) => {
-              const textValue = text[id];
-              return {
-                source: sourceValue,
-                text: textValue
-              };
-            });
-            grouped[a].push(result);
-          });
-          return grouped;
-        }, {});
-        return res;
+      if (this.partial_match) {
+        return this.results;
       } else {
-        return {};
+        if (Object.keys(this.results).length > 0) {
+          let convertedArray = [].concat(this.results);
+          const res = convertedArray.reduce((grouped, item) => {
+            item.tokens.map((a, i) => {
+              if (grouped[a] == null) grouped[a] = [];
+              let text = item.text[i];
+              let result = item.source[i].map((sourceValue, id) => {
+                const textValue = text[id];
+                return {
+                  source: sourceValue,
+                  text: textValue
+                };
+              });
+              grouped[a].push(result);
+            });
+            return grouped;
+          }, {});
+          return res;
+        } else {
+          return {};
+        }
       }
     }
   },
@@ -132,11 +156,15 @@ export default {
     $route() {
       this.results = {};
       this.addNewDic();
+      this.filterDictionaries();
       this.doSearch();
     }
   },
 
   mounted() {
+    this.$root.$on("partialSearch", val => {
+      this.partialDictionarySelected = [...val];
+    });
     this.value = [];
     this.filterDictionaries();
     this.addNewDic();
@@ -180,7 +208,8 @@ export default {
         const res = await Services.dictionaryLookup(
           this.searchQuery,
           selectedDictionaries,
-          this.tokenize
+          this.tokenize,
+          this.partial_match
         );
         if (res && res.data) {
           this.results = res.data;
@@ -193,9 +222,14 @@ export default {
     },
     filterDictionaries() {
       if (this.options.length > 0) {
-        let filteredDictionaries = this.options.filter(a => {
-          if (a.checked === true) return a;
-        });
+        let filteredDictionaries = [];
+        if (this.partial_match) {
+          filteredDictionaries = [...this.partialDictionarySelected];
+        } else {
+          filteredDictionaries = this.options.filter(a => {
+            if (a.checked === true) return a;
+          });
+        }
         this.value = [...filteredDictionaries];
       }
     },
