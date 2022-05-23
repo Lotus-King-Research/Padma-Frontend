@@ -51,9 +51,6 @@
             />
             <span :class="{ disable: disableTokenization }">Tokenize</span>
           </label>
-          <!-- <b-button @click="lookup()">
-            LOOKUP <span class="greater-than-arrow"> > </span>
-          </b-button> -->
           <!-- <b-dropdown @click="exactMatch()" split text="LOOKUP" class="look-up-btn m-2">
             <b-dropdown-item href="#" @click="partialMatch()">Partial matching</b-dropdown-item>
           </b-dropdown> -->
@@ -62,6 +59,7 @@
             v-bind:text="
               selectedSearch.id == 0 ? 'LOOKUP' : selectedSearch.name
             "
+            v-if="tabSelected === 'dictionary'"
           >
             <b-dropdown-item
               v-for="(searchItem, index) in searchTypeList"
@@ -71,6 +69,9 @@
               >{{ searchItem.name }}</b-dropdown-item
             >
           </b-dropdown>
+          <b-button @click="lookup()" v-else>
+            LOOKUP <span class="greater-than-arrow"> > </span>
+          </b-button>
         </div>
       </div>
     </div>
