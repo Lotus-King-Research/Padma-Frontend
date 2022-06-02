@@ -54,8 +54,9 @@
           <b-dropdown
             @click="lookup()"
             split
-            text="LOOKUP"
+            :text="btnLabel"
             class="look-up-btn m-2"
+            v-if="tabSelected === 'dictionary'"
           >
             <b-dropdown-item href="#" @click="searchType = 'exact'">
               <div class="selectedIcon">
@@ -76,6 +77,9 @@
               Partial Match
             </b-dropdown-item>
           </b-dropdown>
+          <b-button @click="lookup()" v-else>
+            LOOKUP <span class="greater-than-arrow"> > </span>
+          </b-button>
           <!-- <b-dropdown
             aria-role="list"
             v-bind:text="
@@ -138,6 +142,7 @@ export default {
       partial_match: false,
       selectedDictionary: [],
       searchType: "exact",
+      btnLabel: "LOOKUP",
       searchTypeList: [
         {
           id: 1,
@@ -158,6 +163,11 @@ export default {
     ...mapState(["lktSessionStart", "options"])
   },
   watch: {
+    searchType() {
+      this.searchType === "partial"
+        ? (this.btnLabel = "PARTIAL")
+        : (this.btnLabel = "LOOKUP");
+    },
     $route() {
       if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
@@ -211,11 +221,14 @@ export default {
   },
   methods: {
     lookup() {
-      console.log("look up runs");
-      if (this.searchType === "partial") {
-        this.partialMatch();
+      if (this.tabSelected === "dictionary") {
+        if (this.searchType === "partial") {
+          this.partialMatch();
+        } else {
+          this.partial_match = false;
+          this.setSelectedfunction();
+        }
       } else {
-        this.partial_match = false;
         this.setSelectedfunction();
       }
     },
@@ -237,8 +250,13 @@ export default {
         } else {
           this.setSelectedfunction();
         }
-      } else {
+      } else if (this.tabSelected === "dictionary") {
         this.partial_match ? this.partialMatch() : this.setSelectedfunction();
+      } else {
+        this.setSelectedfunction();
+        this.btnLabel = "LOOKUP";
+        this.searchType = "exact";
+        this.partial_match = false;
       }
     },
     setDefaultDic() {
