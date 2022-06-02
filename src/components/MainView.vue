@@ -142,7 +142,7 @@ export default {
       partial_match: false,
       selectedDictionary: [],
       searchType: "exact",
-      btnLabel: "LOOKUP",
+      btnLabel: "EXACT MATCH",
       searchTypeList: [
         {
           id: 1,
@@ -165,8 +165,8 @@ export default {
   watch: {
     searchType() {
       this.searchType === "partial"
-        ? (this.btnLabel = "PARTIAL")
-        : (this.btnLabel = "LOOKUP");
+        ? (this.btnLabel = "PARTIAL MATCH")
+        : (this.btnLabel = "EXACT MATCH");
     },
     $route() {
       if (this.$route.name === "lkt") {
@@ -254,7 +254,7 @@ export default {
         this.partial_match ? this.partialMatch() : this.setSelectedfunction();
       } else {
         this.setSelectedfunction();
-        this.btnLabel = "LOOKUP";
+        this.btnLabel = "EXACT MATCH";
         this.searchType = "exact";
         this.partial_match = false;
       }
@@ -456,7 +456,7 @@ $search-area-width: 500px;
         }
 
         .look-up-btn {
-          width: 9rem;
+          width: 12rem;
           height: 2rem;
           border: none;
           margin-right: 0 !important;
