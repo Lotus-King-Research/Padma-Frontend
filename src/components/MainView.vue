@@ -51,10 +51,32 @@
             />
             <span :class="{ disable: disableTokenization }">Tokenize</span>
           </label>
-          <!-- <b-dropdown @click="exactMatch()" split text="LOOKUP" class="look-up-btn m-2">
-            <b-dropdown-item href="#" @click="partialMatch()">Partial matching</b-dropdown-item>
-          </b-dropdown> -->
           <b-dropdown
+            @click="lookup()"
+            split
+            text="LOOKUP"
+            class="look-up-btn m-2"
+          >
+            <b-dropdown-item href="#" @click="searchType = 'exact'">
+              <div class="selectedIcon">
+                <img
+                  src="@/assets/images/done.svg"
+                  v-show="searchType === 'exact'"
+                />
+              </div>
+              Exact Match
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="searchType = 'partial'">
+              <div class="selectedIcon">
+                <img
+                  src="@/assets/images/done.svg"
+                  v-show="searchType === 'partial'"
+                />
+              </div>
+              Partial Match
+            </b-dropdown-item>
+          </b-dropdown>
+          <!-- <b-dropdown
             aria-role="list"
             v-bind:text="
               selectedSearch.id == 0 ? 'LOOKUP' : selectedSearch.name
@@ -71,7 +93,7 @@
           </b-dropdown>
           <b-button @click="lookup()" v-else>
             LOOKUP <span class="greater-than-arrow"> > </span>
-          </b-button>
+          </b-button> -->
         </div>
       </div>
     </div>
@@ -112,8 +134,10 @@ export default {
       errorMessage: "",
       disableTokenization: false,
       previousTab: "",
+      counter: 0,
       partial_match: false,
       selectedDictionary: [],
+      searchType: "exact",
       searchTypeList: [
         {
           id: 1,
@@ -128,13 +152,6 @@ export default {
         id: 0,
         name: ""
       }
-      // options: [
-      //   { label: "Dictionary", value: "dictionary", id: 1 },
-      //   { label: "Texts", value: "texts", id: 2 },
-      //   { label: "Similar Words", value: "similarWords", id: 3 },
-      //   { label: "Statistics", value: "statistics", id: 4 },
-      //   { label: "Tokenize", value: "tokenize", id: 5 }
-      // ]
     };
   },
   computed: {
@@ -180,7 +197,7 @@ export default {
     });
     this.$root.$on("partialSearch", val => {
       console.log("main view partial =", val);
-      this.lookup();
+      this.setSelectedfunction();
     });
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
@@ -194,7 +211,13 @@ export default {
   },
   methods: {
     lookup() {
-      this.setSelectedfunction();
+      console.log("look up runs");
+      if (this.searchType === "partial") {
+        this.partialMatch();
+      } else {
+        this.partial_match = false;
+        this.setSelectedfunction();
+      }
     },
     selectedTab(val) {
       this.previousTab = this.tabSelected;
@@ -254,8 +277,9 @@ export default {
       );
     },
     doDictionaryLookup() {
+      this.counter++;
       this.$router.push(
-        `dictionary_lookup?query=${this.queryString}&partial_match=${this.partial_match}&tokenize=${this.setTokenizeQuery}`
+        `dictionary_lookup?query=${this.queryString}&partial_match=${this.partial_match}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
       );
     },
     doSearchTexts() {
@@ -315,10 +339,6 @@ export default {
       } else {
         this.$root.$emit("bv::show::modal", "selectDictionary");
       }
-    },
-    exactMatch() {
-      this.partial_match = false;
-      this.lookup();
     }
   }
 };
@@ -423,6 +443,15 @@ $search-area-width: 500px;
           border: none;
           margin-right: 0 !important;
           box-shadow: 0px 2px 2px rgba(55, 33, 24, 0.25);
+
+          .selectedIcon {
+            display: inline-block;
+            width: 1.5rem;
+            img {
+              width: 1.5rem;
+              padding-right: 0.3rem;
+            }
+          }
         }
         .greater-than-arrow {
           padding-left: 0.5rem;
@@ -491,47 +520,10 @@ $search-area-width: 500px;
   align-items: center !important;
   justify-content: center !important;
 }
-.dropdown-toggle::after {
-  margin-left: 1em !important;
-}
-.select {
-  .selectMenu {
-    .vs__search::placeholder,
-    .vs__dropdown-toggle {
-      background: transparent;
-      border-radius: 0px;
-      border: none;
-      border-bottom: solid 1px $dropdown-color;
-      color: $dropdown-color;
-      font-size: 1.2em;
-      letter-spacing: 0.1rem;
-      text-transform: lowercase;
-      font-variant: small-caps;
-    }
-    .vs__dropdown-menu {
-      background-color: $off-white;
-    }
-    .vs__actions {
-      padding: 0.4rem 0.5rem;
-      background-color: $dropdown-color;
-    }
-    .vs__open-indicator {
-      fill: #fff;
-    }
-    .vs__selected {
-      color: $dropdown-color;
-    }
-    .vs__dropdown-option {
-      color: $primary-color;
-      letter-spacing: 0.1rem;
-      background-color: $off-white;
-    }
-    .vs__dropdown-option:hover {
-      color: $dropdown-color;
-    }
-    .vs__dropdown-option--highlight {
-      background: none;
-    }
-  }
+// .dropdown-toggle::after {
+//   margin-left: 1em !important;
+// }
+.dropdown-item {
+  padding-left: 0.6rem !important;
 }
 </style>
