@@ -362,6 +362,10 @@ export default {
       .dictionary-results {
         padding-right: 3rem;
         margin-bottom: 2rem;
+
+        h1 {
+          margin-bottom: 1rem;
+        }
       }
       @include breakpointMax(small) {
         height: 100%;
