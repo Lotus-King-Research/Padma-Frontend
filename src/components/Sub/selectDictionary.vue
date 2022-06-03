@@ -7,7 +7,7 @@
     </template>
     <div class="d-block dictionaryList">
       <b-form-group
-        label="Select any one dictionary from the list"
+        label="Partial match supports only one dictionary at a time, pick one:"
         v-slot="{ dictionaryList }"
       >
         <template v-for="item in message">
@@ -66,7 +66,7 @@ export default {
 
 ::v-deep .modal-dialog {
   .modalContent {
-    width: 22rem;
+    width: 25rem;
     margin: 0 auto;
     .modal-header {
       display: flex;
