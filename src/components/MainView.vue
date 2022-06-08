@@ -59,22 +59,64 @@
             v-if="tabSelected === 'dictionary'"
           >
             <b-dropdown-item href="#" @click="searchType = 'exact'">
-              <div class="selectedIcon">
-                <img
-                  src="@/assets/images/done.svg"
-                  v-show="searchType === 'exact'"
-                />
+              <div class="item-container">
+                <div class="selectedIcon">
+                  <img
+                    src="@/assets/images/done.svg"
+                    v-show="searchType === 'exact'"
+                  />
+                </div>
+                Exact Match
+                <p>
+                  Return the results that match exactly from one or more
+                  dictionaries.
+                </p>
               </div>
-              Exact Match
             </b-dropdown-item>
             <b-dropdown-item href="#" @click="searchType = 'partial'">
-              <div class="selectedIcon">
-                <img
-                  src="@/assets/images/done.svg"
-                  v-show="searchType === 'partial'"
-                />
+              <div class="item-container">
+                <div class="selectedIcon">
+                  <img
+                    src="@/assets/images/done.svg"
+                    v-show="searchType === 'partial'"
+                  />
+                </div>
+                Partial Match
+                <p>
+                  Return the results that match partially from a single
+                  dictionary.
+                </p>
               </div>
-              Partial Match
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="searchType = 'similar'">
+              <div class="item-container">
+                <div class="selectedIcon">
+                  <img
+                    src="@/assets/images/done.svg"
+                    v-show="searchType === 'similar'"
+                  />
+                </div>
+                Similar Match
+                <p>
+                  Return the results that have similar meaning from a single
+                  dictionary.
+                </p>
+              </div>
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="searchType = 'fuzzy'">
+              <div class="item-container">
+                <div class="selectedIcon">
+                  <img
+                    src="@/assets/images/done.svg"
+                    v-show="searchType === 'fuzzy'"
+                  />
+                </div>
+                Fuzzy Match
+                <p>
+                  Return the results that have a similar string from a single
+                  dictionary.
+                </p>
+              </div>
             </b-dropdown-item>
           </b-dropdown>
           <b-button @click="lookup()" v-else>
@@ -151,6 +193,14 @@ export default {
         {
           id: 2,
           name: "Partial Search"
+        },
+        {
+          id: 3,
+          name: "Similar Search"
+        },
+        {
+          id: 4,
+          name: "Fuzzy Search"
         }
       ],
       selectedSearch: {
@@ -164,9 +214,20 @@ export default {
   },
   watch: {
     searchType() {
-      this.searchType === "partial"
-        ? (this.btnLabel = "PARTIAL MATCH")
-        : (this.btnLabel = "EXACT MATCH");
+      switch (this.searchType) {
+        case "partial":
+          this.btnLabel = "PARTIAL MATCH";
+          break;
+        case "exact":
+          this.btnLabel = "EXACT MATCH";
+          break;
+        case "similar":
+          this.btnLabel = "SIMILAR MATCH";
+          break;
+        case "fuzzy":
+          this.btnLabel = "FUZZY MATCH";
+          break;
+      }
     },
     $route() {
       if (this.$route.name === "lkt") {
@@ -462,12 +523,15 @@ $search-area-width: 500px;
           margin-right: 0 !important;
           box-shadow: 0px 2px 2px rgba(55, 33, 24, 0.25);
 
-          .selectedIcon {
-            display: inline-block;
-            width: 1.5rem;
-            img {
+          .item-container {
+            height: 3rem;
+            .selectedIcon {
+              display: inline-block;
               width: 1.5rem;
-              padding-right: 0.3rem;
+              img {
+                width: 1.5rem;
+                padding-right: 0.3rem;
+              }
             }
           }
         }
@@ -541,7 +605,22 @@ $search-area-width: 500px;
 // .dropdown-toggle::after {
 //   margin-left: 1em !important;
 // }
-.dropdown-item {
-  padding-left: 0.6rem !important;
+.dropdown {
+  .dropdown-menu {
+    padding: 0;
+
+    a {
+      border-bottom: solid 1px rgb(142, 145, 146);
+    }
+    .dropdown-item {
+      padding-left: 0.6rem !important;
+
+      p {
+        padding-left: 1.7rem;
+        font-size: 0.9em;
+        color: rgb(142, 145, 146);
+      }
+    }
+  }
 }
 </style>
