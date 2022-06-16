@@ -58,12 +58,12 @@
             class="look-up-btn m-2"
             v-if="tabSelected === 'dictionary'"
           >
-            <b-dropdown-item href="#" @click="searchType = 'exact'">
+            <b-dropdown-item href="#" @click="matching = 'exact'">
               <div class="item-container">
                 <div class="selectedIcon">
                   <img
                     src="@/assets/images/done.svg"
-                    v-show="searchType === 'exact'"
+                    v-show="matching === 'exact'"
                   />
                 </div>
                 Exact Match
@@ -73,12 +73,12 @@
                 </p>
               </div>
             </b-dropdown-item>
-            <b-dropdown-item href="#" @click="searchType = 'partial'">
+            <b-dropdown-item href="#" @click="matching = 'partial'">
               <div class="item-container">
                 <div class="selectedIcon">
                   <img
                     src="@/assets/images/done.svg"
-                    v-show="searchType === 'partial'"
+                    v-show="matching === 'partial'"
                   />
                 </div>
                 Partial Match
@@ -88,12 +88,12 @@
                 </p>
               </div>
             </b-dropdown-item>
-            <b-dropdown-item href="#" @click="searchType = 'similar'">
+            <b-dropdown-item href="#" @click="matching = 'similar'">
               <div class="item-container">
                 <div class="selectedIcon">
                   <img
                     src="@/assets/images/done.svg"
-                    v-show="searchType === 'similar'"
+                    v-show="matching === 'similar'"
                   />
                 </div>
                 Similar Match
@@ -103,12 +103,12 @@
                 </p>
               </div>
             </b-dropdown-item>
-            <b-dropdown-item href="#" @click="searchType = 'fuzzy'">
+            <b-dropdown-item href="#" @click="matching = 'fuzzy'">
               <div class="item-container">
                 <div class="selectedIcon">
                   <img
                     src="@/assets/images/done.svg"
-                    v-show="searchType === 'fuzzy'"
+                    v-show="matching === 'fuzzy'"
                   />
                 </div>
                 Fuzzy Match
@@ -130,7 +130,7 @@
             v-if="tabSelected === 'dictionary'"
           >
             <b-dropdown-item
-              v-for="(searchItem, index) in searchTypeList"
+              v-for="(searchItem, index) in matchingList"
               :key="index"
               aria-role="listitem"
               @click="setItem(searchItem)"
@@ -181,11 +181,10 @@ export default {
       disableTokenization: false,
       previousTab: "",
       counter: 0,
-      partial_match: false,
       selectedDictionary: [],
-      searchType: "exact",
+      matching: "exact",
       btnLabel: "EXACT MATCH",
-      searchTypeList: [
+      matchingList: [
         {
           id: 1,
           name: "Exact Search"
@@ -213,8 +212,8 @@ export default {
     ...mapState(["lktSessionStart", "options"])
   },
   watch: {
-    searchType() {
-      switch (this.searchType) {
+    matching() {
+      switch (this.matching) {
         case "partial":
           this.btnLabel = "PARTIAL MATCH";
           break;
@@ -283,11 +282,10 @@ export default {
   methods: {
     lookup() {
       if (this.tabSelected === "dictionary") {
-        if (this.searchType === "partial") {
-          this.partialMatch();
-        } else {
-          this.partial_match = false;
+        if (this.matching === "exact") {
           this.setSelectedfunction();
+        } else {
+          this.partialMatch();
         }
       } else {
         this.setSelectedfunction();
@@ -312,12 +310,15 @@ export default {
           this.setSelectedfunction();
         }
       } else if (this.tabSelected === "dictionary") {
-        this.partial_match ? this.partialMatch() : this.setSelectedfunction();
+        if (this.matching === "exact") {
+          this.setSelectedfunction();
+        } else {
+          this.partialMatch();
+        }
       } else {
         this.setSelectedfunction();
         this.btnLabel = "EXACT MATCH";
-        this.searchType = "exact";
-        this.partial_match = false;
+        this.matching = "exact";
       }
     },
     setDefaultDic() {
@@ -358,7 +359,7 @@ export default {
     doDictionaryLookup() {
       this.counter++;
       this.$router.push(
-        `dictionary_lookup?query=${this.queryString}&partial_match=${this.partial_match}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
+        `dictionary_lookup?query=${this.queryString}&matching=${this.matching}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
       );
     },
     doSearchTexts() {
@@ -409,7 +410,6 @@ export default {
       product.id === 1 ? this.exactMatch() : this.partialMatch();
     },
     partialMatch() {
-      this.partial_match = true;
       this.selectedDictionary = this.options.filter(a => a.checked);
       if (this.setTokenizeQuery) {
         this.errorMessage =
