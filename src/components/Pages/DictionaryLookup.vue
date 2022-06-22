@@ -46,7 +46,7 @@
           Start by entering a word or a segment of text in Tibetan or Wylie
         </p>
       </div>
-      <div class="dic-results-wrapper">
+      <div class="dic-results-wrapper" v-if="matching === 'exact'">
         <template v-for="[key, value] of Object.entries(resultsArray)">
           <div class="dictionary-results" :key="key">
             <h1>{{ key }}</h1>
@@ -59,11 +59,7 @@
                   <span class="dic_source">
                     {{ item.source.split("_").join(" ") }}
                   </span>
-                  <span
-                    class="close-btn"
-                    @click="removeSelectedDic(item)"
-                    v-if="matching === 'exact'"
-                  >
+                  <span class="close-btn" @click="removeSelectedDic(item)">
                     <img
                       src="@/assets/images/close-icon-dic.svg"
                       alt="remove"
@@ -75,6 +71,27 @@
             </template>
           </div>
         </template>
+      </div>
+      <div class="dic-results-wrapper" v-else>
+        -
+        <template v-for="item in resultsArray">
+          -
+          <div class="dictionary-results" :key="item.id">
+            -
+            <h1>{{ item.search_query }}</h1>
+            -
+            <span v-if="value[0].length <= 0">
+              - No results were found for {{ key }} -
+            </span>
+            -
+            <span class="dic_source_wrapper">
+              - <span class="dic_source"> - {{ item.source[0] }} - </span> -
+            </span>
+            - {{ item.text }} -
+          </div>
+          -
+        </template>
+        -
       </div>
     </div>
   </div>
@@ -112,26 +129,30 @@ export default {
       return this.$route.query.matching;
     },
     resultsArray() {
-      if (Object.keys(this.results).length > 0) {
-        let convertedArray = [].concat(this.results);
-        const res = convertedArray.reduce((grouped, item) => {
-          item.tokens.map((a, i) => {
-            if (grouped[a] == null) grouped[a] = [];
-            let text = item.text[i];
-            let result = item.source[i].map((sourceValue, id) => {
-              const textValue = text[id];
-              return {
-                source: sourceValue,
-                text: textValue
-              };
+      if (this.matching === "exact") {
+        if (Object.keys(this.results).length > 0) {
+          let convertedArray = [].concat(this.results);
+          const res = convertedArray.reduce((grouped, item) => {
+            item.tokens.map((a, i) => {
+              if (grouped[a] == null) grouped[a] = [];
+              let text = item.text[i];
+              let result = item.source[i].map((sourceValue, id) => {
+                const textValue = text[id];
+                return {
+                  source: sourceValue,
+                  text: textValue
+                };
+              });
+              grouped[a].push(result);
             });
-            grouped[a].push(result);
-          });
-          return grouped;
-        }, {});
-        return res;
+            return grouped;
+          }, {});
+          return res;
+        } else {
+          return {};
+        }
       } else {
-        return {};
+        return this.results;
       }
     }
   },
