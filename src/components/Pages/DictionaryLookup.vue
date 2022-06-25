@@ -73,25 +73,18 @@
         </template>
       </div>
       <div class="dic-results-wrapper" v-else>
-        -
         <template v-for="item in resultsArray">
-          -
           <div class="dictionary-results" :key="item.id">
-            -
             <h1>{{ item.search_query }}</h1>
-            -
             <span v-if="value[0].length <= 0">
-              - No results were found for {{ key }} -
+              No results were found for {{ key }}
             </span>
-            -
             <span class="dic_source_wrapper">
-              - <span class="dic_source"> - {{ item.source[0] }} - </span> -
+              <span class="dic_source"> - {{ item.source[0] }}</span>
             </span>
-            - {{ item.text }} -
+            {{ item.text }}
           </div>
-          -
         </template>
-        -
       </div>
     </div>
   </div>
