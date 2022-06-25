@@ -80,7 +80,7 @@
               No results were found for {{ key }}
             </span>
             <span class="dic_source_wrapper">
-              <span class="dic_source"> - {{ item.source[0] }}</span>
+              <span class="dic_source"> {{ item.source[0] }}</span>
             </span>
             {{ item.text }}
           </div>
