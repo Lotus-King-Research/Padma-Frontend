@@ -9,10 +9,10 @@ const similarWordsUrl = "/find_similar";
 const apiInstance = API();
 
 export const Services = {
-  async dictionaryLookup(query, dictionaries, tokenize, partial_match) {
+  async dictionaryLookup(query, dictionaries, tokenize, matching) {
     try {
       return await apiInstance.get(
-        `${dictLookupUrl}?query=${query}&partial_match=${partial_match}&dictionaries=${dictionaries}&tokenize=${tokenize}&mode=api`
+        `${dictLookupUrl}?query=${query}&matching=${matching}&dictionaries=${dictionaries}&tokenize=${tokenize}&mode=api`
       );
     } catch (err) {
       return err;
