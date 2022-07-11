@@ -56,7 +56,7 @@
             split
             :text="btnLabel"
             class="look-up-btn m-2"
-            v-if="tabSelected === 'dictionary'"
+            v-if="tabSelected === 'dictionary' || tabSelected === 'lkt'"
           >
             <b-dropdown-item href="#" @click="matching = 'exact'">
               <div class="item-container">
@@ -281,7 +281,7 @@ export default {
   },
   methods: {
     lookup() {
-      if (this.tabSelected === "dictionary") {
+      if (this.tabSelected === "dictionary" || this.tabSelected === "lkt") {
         if (this.matching === "exact") {
           this.setSelectedfunction();
         } else {
@@ -353,7 +353,7 @@ export default {
     },
     doLktLookup() {
       this.$router.push(
-        `lkt?query=${this.queryString}&tokenize=${this.setTokenizeQuery}`
+        `lkt?query=${this.queryString}&matching=${this.matching}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
       );
     },
     doDictionaryLookup() {
