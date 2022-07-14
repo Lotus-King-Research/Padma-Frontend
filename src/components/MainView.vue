@@ -8,29 +8,6 @@
         >
           Dictionary
         </label>
-        <label
-          :class="{ active: tabSelected === 'texts' }"
-          @click="selectedTab('texts')"
-        >
-          Texts
-        </label>
-        <!-- <label
-          :class="{ active: tabSelected === 'similarWords' }"
-        >
-          Similar Words
-        </label> -->
-        <label
-          :class="{ active: tabSelected === 'statistics' }"
-          @click="selectedTab('statistics')"
-        >
-          Statistics
-        </label>
-        <label
-          :class="{ active: tabSelected === 'tokenize' }"
-          @click="selectedTab('tokenize')"
-        >
-          Tokenize
-        </label>
       </div>
       <div class="textArea">
         <div class="place-holder-text">
@@ -122,24 +99,6 @@
           <b-button @click="lookup()" v-else>
             LOOKUP <span class="greater-than-arrow"> > </span>
           </b-button>
-          <!-- <b-dropdown
-            aria-role="list"
-            v-bind:text="
-              selectedSearch.id == 0 ? 'LOOKUP' : selectedSearch.name
-            "
-            v-if="tabSelected === 'dictionary'"
-          >
-            <b-dropdown-item
-              v-for="(searchItem, index) in matchingList"
-              :key="index"
-              aria-role="listitem"
-              @click="setItem(searchItem)"
-              >{{ searchItem.name }}</b-dropdown-item
-            >
-          </b-dropdown>
-          <b-button @click="lookup()" v-else>
-            LOOKUP <span class="greater-than-arrow"> > </span>
-          </b-button> -->
         </div>
       </div>
     </div>
@@ -297,19 +256,7 @@ export default {
       this.callSelectedTabFunction();
     },
     callSelectedTabFunction() {
-      if (this.setTokenizeQuery) {
-        if (this.tabSelected === "texts") {
-          this.errorMessage =
-            "You have to turn Tokenize off before searching texts";
-          this.showMessageBox();
-        } else if (this.tabSelected === "statistics") {
-          this.errorMessage =
-            "You have to turn Tokenize off before analyzing word statistics";
-          this.showMessageBox();
-        } else {
-          this.setSelectedfunction();
-        }
-      } else if (this.tabSelected === "dictionary") {
+      if (this.tabSelected === "dictionary") {
         if (this.matching === "exact") {
           this.setSelectedfunction();
         } else {
@@ -340,13 +287,7 @@ export default {
     },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
-      if (this.$route.name === "searchtexts") {
-        this.tabSelected = "texts";
-      } else if (this.$route.name === "wordstatistics") {
-        this.tabSelected = "statistics";
-      } else if (this.$route.name === "tokenize") {
-        this.tabSelected = "tokenize";
-      } else if (this.$route.name === "lkt") {
+      if (this.$route.name === "lkt") {
         this.tabSelected = "lkt";
         this.$store.commit("updateLktSession", true);
       }
@@ -362,15 +303,6 @@ export default {
         `dictionary_lookup?query=${this.queryString}&matching=${this.matching}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
       );
     },
-    doSearchTexts() {
-      this.$router.push(`search_texts?query=${this.queryString}`);
-    },
-    doWordStats() {
-      this.$router.push(`word_statistics?query=${this.queryString}`);
-    },
-    doTokenize() {
-      this.$router.push(`tokenize?query=${this.queryString}`);
-    },
     setSelectedfunction() {
       switch (this.tabSelected) {
         case "lkt":
@@ -378,18 +310,6 @@ export default {
           break;
         case "dictionary":
           this.doDictionaryLookup();
-          break;
-        case "texts":
-          this.doSearchTexts();
-          break;
-        case "similarWords":
-          this.doSimilarWords();
-          break;
-        case "statistics":
-          this.doWordStats();
-          break;
-        case "tokenize":
-          this.doTokenize();
           break;
       }
     },
