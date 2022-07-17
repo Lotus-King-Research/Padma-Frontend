@@ -96,6 +96,7 @@
 import { Services } from "@/services/services";
 import multiselect from "vue-multiselect";
 import { mapState } from "vuex";
+import lktDicList from "@/components/docs/lktDictionaryList.json";
 
 export default {
   name: "dictionarylookup",
@@ -172,22 +173,8 @@ export default {
   },
   methods: {
     addNewDic() {
-      const list = [
-        {
-          id: 8,
-          name: "Tony duff",
-          value: "tony_duff",
-          checked: true
-        },
-        {
-          id: 9,
-          name: "Lotus king",
-          value: "lotus_king_trust",
-          checked: true
-        }
-      ];
       if (this.$route.name === "lkt") {
-        this.$store.commit("updateDictionaryList", list);
+        this.$store.commit("updateDictionaryList", lktDicList);
         this.filterDicList();
       } else {
         this.filterDicList();
