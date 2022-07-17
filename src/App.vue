@@ -44,7 +44,12 @@ body {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("assets/images/old-paper-bg.png") !important;
+  background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(241, 216, 195, 0.75) 0%,
+      rgba(241, 216, 195, 0) 100%
+    ),
+    url("assets/images/old-paper-bg.png") !important;
 }
 
 input:focus,
