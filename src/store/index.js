@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import nonLktDicList from "@/components/docs/nonLktDicList.json";
 
 Vue.use(Vuex);
 
@@ -58,31 +59,31 @@ export default new Vuex.Store({
             return f.name === el.name;
           })
       );
-      const delArray = [
-        {
-          id: 1,
-          name: "Erik pema kunsang",
-          value: "Erik_pema_kunsang",
-          checked: true
-        },
-        { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-        {
-          id: 3,
-          name: "Jeffrey hopkins",
-          value: "Jeffrey_hopkins",
-          checked: true
-        },
-        {
-          id: 4,
-          name: "Lobsang monlam",
-          value: "Lobsang_monlam",
-          checked: true
-        }
-      ];
+      // const delArray = [
+      //   {
+      //     id: 1,
+      //     name: "Erik pema kunsang",
+      //     value: "Erik_pema_kunsang",
+      //     checked: true
+      //   },
+      //   { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
+      //   {
+      //     id: 3,
+      //     name: "Jeffrey hopkins",
+      //     value: "Jeffrey_hopkins",
+      //     checked: true
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "Lobsang monlam",
+      //     value: "Lobsang_monlam",
+      //     checked: true
+      //   }
+      // ];
       filterArray.push.apply(filterArray, payload);
       state.options = [...filterArray];
       const finalArray = state.options.filter(val => {
-        return !delArray.find(item => {
+        return !nonLktDicList.find(item => {
           return val.id === item.id;
         });
       });

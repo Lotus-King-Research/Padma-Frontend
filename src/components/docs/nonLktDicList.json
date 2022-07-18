@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Erik pema kunsang",
+      "value": "Erik_pema_kunsang",
+      "checked": true
+    },
+    { "id": 2, "name": "Ives waldo", "value": "Ives_waldo", "checked": true },
+    {
+      "id": 3,
+      "name": "Jeffrey hopkins",
+      "value": "Jeffrey_hopkins",
+      "checked": true
+    },
+    {
+      "id": 4,
+      "name": "Lobsang monlam",
+      "value": "Lobsang_monlam",
+      "checked": true
+    }
+  ]

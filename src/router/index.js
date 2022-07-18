@@ -35,32 +35,6 @@ export default new Router({
           path: "lkt",
           name: "lkt",
           component: require("@/components/Pages/DictionaryLookup").default
-        },
-        {
-          path: "search_texts",
-          name: "searchtexts",
-          component: require("@/components/Pages/SearchTexts").default
-          // component: () => import("@/components/Pages/SearchTexts")
-        },
-        {
-          path: "render_text",
-          name: "rendertext",
-          component: require("@/components/Pages/RenderText").default
-        },
-        {
-          path: "find_similar",
-          name: "similarwords",
-          component: require("@/components/Pages/SimilarWords").default
-        },
-        {
-          path: "tokenize",
-          name: "tokenize",
-          component: require("@/components/Pages/Tokenize").default
-        },
-        {
-          path: "word_statistics",
-          name: "wordstatistics",
-          component: require("@/components/Pages/WordStatistics").default
         }
       ]
     },
