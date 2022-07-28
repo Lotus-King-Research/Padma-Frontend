@@ -6,20 +6,26 @@
           :class="{ active: tabSelected === 'dictionary' }"
           @click="selectedTab('dictionary')"
         >
-          Dictionary
+          Tibetan
         </label>
         <label
+          :class="{ active: tabSelected === 'description' }"
+          @click="selectedTab('description')"
+        >
+          Description
+        </label>
+        <!-- <label
           :class="{ active: tabSelected === 'texts' }"
           @click="selectedTab('texts')"
         >
           Texts
-        </label>
+        </label> -->
         <!-- <label
           :class="{ active: tabSelected === 'similarWords' }"
         >
           Similar Words
         </label> -->
-        <label
+        <!-- <label
           :class="{ active: tabSelected === 'statistics' }"
           @click="selectedTab('statistics')"
         >
@@ -30,7 +36,7 @@
           @click="selectedTab('tokenize')"
         >
           Tokenize
-        </label>
+        </label> -->
       </div>
       <div class="textArea">
         <div class="place-holder-text">
@@ -119,6 +125,9 @@
               </div>
             </b-dropdown-item>
           </b-dropdown>
+          <b-button @click="lookup()" v-else-if="tabSelected === 'description'">
+            PARTIAL <span class="greater-than-arrow"> > </span>
+          </b-button>
           <b-button @click="lookup()" v-else>
             LOOKUP <span class="greater-than-arrow"> > </span>
           </b-button>
@@ -287,6 +296,9 @@ export default {
         } else {
           this.partialMatch();
         }
+      } else if (this.tabSelected === "description") {
+        this.matching = "description";
+        this.partialMatch();
       } else {
         this.setSelectedfunction();
       }
@@ -294,6 +306,9 @@ export default {
     selectedTab(val) {
       this.previousTab = this.tabSelected;
       this.tabSelected = val;
+      if (this.tabSelected === "dictionary") {
+        this.matching = "exact";
+      }
       this.callSelectedTabFunction();
     },
     callSelectedTabFunction() {
@@ -315,6 +330,9 @@ export default {
         } else {
           this.partialMatch();
         }
+      } else if (this.tabSelected === "description") {
+        this.matching = "description";
+        this.partialMatch();
       } else {
         this.setSelectedfunction();
         this.btnLabel = "EXACT MATCH";
@@ -377,6 +395,9 @@ export default {
           this.doLktLookup();
           break;
         case "dictionary":
+          this.doDictionaryLookup();
+          break;
+        case "description":
           this.doDictionaryLookup();
           break;
         case "texts":
