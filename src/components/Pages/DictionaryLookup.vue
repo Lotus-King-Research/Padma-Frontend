@@ -166,6 +166,14 @@ export default {
     this.$root.$on("partialSearch", val => {
       this.partialDictionarySelected = [...val];
     });
+    this.$root.$on("clearInputTextArea", val => {
+      if (val === "description") {
+        this.results = {};
+        this.$router.replace({
+          query: ""
+        });
+      }
+    });
     this.value = [];
     this.filterDictionaries();
     this.addNewDic();

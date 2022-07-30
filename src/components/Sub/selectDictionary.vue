@@ -7,7 +7,7 @@
     </template>
     <div class="d-block dictionaryList">
       <b-form-group
-        label="Partial match supports only one dictionary at a time, pick one:"
+        label="Please select only one dictionary for current search only:"
         v-slot="{ dictionaryList }"
       >
         <template v-for="item in message">

@@ -126,7 +126,7 @@
             </b-dropdown-item>
           </b-dropdown>
           <b-button @click="lookup()" v-else-if="tabSelected === 'description'">
-            PARTIAL <span class="greater-than-arrow"> > </span>
+            Search Descriptions <span class="greater-than-arrow"> > </span>
           </b-button>
           <b-button @click="lookup()" v-else>
             LOOKUP <span class="greater-than-arrow"> > </span>
@@ -309,7 +309,16 @@ export default {
       if (this.tabSelected === "dictionary") {
         this.matching = "exact";
       }
-      this.callSelectedTabFunction();
+      if (this.tabSelected === "description") {
+        if (this.queryString === "") {
+          this.routeQuery = "";
+          this.$root.$emit("clearInputTextArea", "description");
+        } else {
+          this.callSelectedTabFunction();
+        }
+      } else {
+        this.callSelectedTabFunction();
+      }
     },
     callSelectedTabFunction() {
       if (this.setTokenizeQuery) {
