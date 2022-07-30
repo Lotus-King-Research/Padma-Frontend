@@ -83,7 +83,14 @@
               <span class="dic_source_wrapper">
                 <span class="dic_source"> {{ item.source[0] }}</span>
               </span>
-              {{ item.text }}
+              <span v-if="item.text.length > 0">
+                <template v-for="val in item.text">
+                  {{ val }}
+                </template>
+              </span>
+              <span v-else>
+                {{ item.text }}
+              </span>
             </div>
           </template>
         </div>
