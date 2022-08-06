@@ -55,6 +55,7 @@ export default {
       this.dictionarySelected = [];
       this.dictionarySelected.push(this.selected);
       this.$root.$emit("partialSearch", this.dictionarySelected);
+      this.$store.commit("partialDicSelection", this.dictionarySelected);
       this.closeModal();
     }
   }

@@ -99,6 +99,22 @@ export default new Vuex.Store({
     },
     storeDicOptions(state, payload) {
       state.options = [...payload];
+    },
+    partialDicSelection(state, payload) {
+      const filteredArray = state.options.map(el => {
+        if (el.name === payload[0].name) {
+          el.checked = true;
+          return el;
+        } else {
+          el.checked = false;
+          return el;
+        }
+      });
+      state.options = [...filteredArray];
+    },
+    revertDictionaryList(state) {
+      const previousList = localStorage.getItem("options");
+      state.options = [...JSON.parse(previousList)];
     }
   },
   actions: {},

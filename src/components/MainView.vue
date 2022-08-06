@@ -292,6 +292,7 @@ export default {
     lookup() {
       if (this.tabSelected === "dictionary" || this.tabSelected === "lkt") {
         if (this.matching === "exact") {
+          this.$store.commit("revertDictionaryList");
           this.setSelectedfunction();
         } else {
           this.partialMatch();
@@ -335,7 +336,7 @@ export default {
         }
       } else if (this.tabSelected === "dictionary") {
         if (this.matching === "exact") {
-          this.setSelectedfunction();
+          this.lookup();
         } else {
           this.partialMatch();
         }
