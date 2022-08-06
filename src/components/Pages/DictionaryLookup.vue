@@ -229,6 +229,10 @@ export default {
           filteredDictionaries = this.options.filter(a => {
             if (a.checked === true) return a;
           });
+        } else if (!this.searchQuery) {
+          filteredDictionaries = this.options.filter(a => {
+            if (a.checked === true) return a;
+          });
         } else {
           filteredDictionaries = [...this.partialDictionarySelected];
         }

@@ -40,7 +40,7 @@
       </div>
       <div class="textArea">
         <div class="place-holder-text">
-          <label> Enter Tibetan Text </label>
+          <label> {{ placeHolderText }} </label>
         </div>
         <customTextArea
           v-model="queryString"
@@ -181,6 +181,7 @@ export default {
     return {
       queryString: "",
       routeQuery: "",
+      placeHolderText: "Enter Tibetan Text",
       tabSelected: "dictionary",
       selectedMenu: "Select Action",
       setTokenizeQuery: false,
@@ -260,6 +261,12 @@ export default {
         this.disableTokenization = true;
       } else {
         this.disableTokenization = false;
+      }
+      // changing the input place holder text for description
+      if (this.tabSelected === "description") {
+        this.placeHolderText = "Enter Text";
+      } else {
+        this.placeHolderText = "Enter Tibetan Text";
       }
     }
   },

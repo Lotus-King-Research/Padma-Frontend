@@ -1,9 +1,9 @@
 <template>
   <b-modal id="selectDictionary" content-class="modalContent" hide-header-close>
     <template #modal-title>
-      <div class="close-arrow" @click="closeModal()">
+      <!-- <div class="close-arrow" @click="closeModal()">
         <img src="@/assets/images/close-icon.svg" alt="close modal" />
-      </div>
+      </div> -->
     </template>
     <div class="d-block dictionaryList">
       <b-form-group
