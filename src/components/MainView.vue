@@ -448,7 +448,9 @@ export default {
       product.id === 1 ? this.exactMatch() : this.partialMatch();
     },
     partialMatch() {
-      this.selectedDictionary = this.options.filter(a => a.checked);
+      const checkedDicList = localStorage.getItem("options");
+      const parsedDicList = [...JSON.parse(checkedDicList)];
+      this.selectedDictionary = parsedDicList.filter(a => a.checked);
       if (this.setTokenizeQuery) {
         this.errorMessage =
           "You have to turn Tokenize off before doing partial search";
