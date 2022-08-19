@@ -169,6 +169,7 @@ import customTextArea from "@/components/Sub/customTextArea.vue";
 import messageBox from "@/components/Sub/messageBox.vue";
 import selectDictionary from "@/components/Sub/selectDictionary.vue";
 import { mapState } from "vuex";
+import lktDicList from "@/components/docs/lktDictionaryList.json";
 
 export default {
   name: "mainview",
@@ -357,21 +358,7 @@ export default {
       }
     },
     setDefaultDic() {
-      const list = [
-        {
-          id: 8,
-          name: "Tony duff",
-          value: "tony_duff",
-          checked: true
-        },
-        {
-          id: 9,
-          name: "Lotus king",
-          value: "lotus_king_trust",
-          checked: true
-        }
-      ];
-      this.$store.commit("setDicToDefaultList", list);
+      this.$store.commit("setDicToDefaultList", lktDicList);
     },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
