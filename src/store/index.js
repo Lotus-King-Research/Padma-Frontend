@@ -114,7 +114,7 @@ export default new Vuex.Store({
     },
     revertDictionaryList(state) {
       const previousList = localStorage.getItem("options");
-      if (previousList !== "") {
+      if (previousList) {
         state.options = [...JSON.parse(previousList)];
       }
     }
