@@ -170,6 +170,7 @@ export default {
   },
 
   mounted() {
+    localStorage.setItem("options", JSON.stringify(this.options));
     this.$root.$on("partialSearch", val => {
       this.partialDictionarySelected = [...val];
     });

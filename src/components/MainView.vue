@@ -435,7 +435,12 @@ export default {
       product.id === 1 ? this.exactMatch() : this.partialMatch();
     },
     partialMatch() {
-      const checkedDicList = localStorage.getItem("options");
+      let checkedDicList = [];
+      if (this.lktSessionStart) {
+        checkedDicList = localStorage.getItem("lktOptions");
+      } else {
+        checkedDicList = localStorage.getItem("options");
+      }
       const parsedDicList = [...JSON.parse(checkedDicList)];
       this.selectedDictionary = parsedDicList.filter(a => a.checked);
       if (this.setTokenizeQuery) {

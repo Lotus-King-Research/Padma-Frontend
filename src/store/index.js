@@ -46,9 +46,18 @@ export default new Vuex.Store({
       state.lktSessionStart = payload;
     },
     updateDictionary(state, payload) {
+      console.log("parload =", payload);
       if (payload.length > 0) {
-        state.options[payload[0].id].checked = payload[0].checked;
-        localStorage.setItem("options", JSON.stringify(state.options));
+        state.options.map(a => {
+          if (a.id === payload[0].id) {
+            a.checked = payload[0].checked;
+          }
+        });
+        if (state.lktSessionStart) {
+          localStorage.setItem("lktOptions", JSON.stringify(state.options));
+        } else {
+          localStorage.setItem("options", JSON.stringify(state.options));
+        }
       }
     },
     updateDictionaryList(state, payload) {
@@ -59,27 +68,6 @@ export default new Vuex.Store({
             return f.name === el.name;
           })
       );
-      // const delArray = [
-      //   {
-      //     id: 1,
-      //     name: "Erik pema kunsang",
-      //     value: "Erik_pema_kunsang",
-      //     checked: true
-      //   },
-      //   { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-      //   {
-      //     id: 3,
-      //     name: "Jeffrey hopkins",
-      //     value: "Jeffrey_hopkins",
-      //     checked: true
-      //   },
-      //   {
-      //     id: 4,
-      //     name: "Lobsang monlam",
-      //     value: "Lobsang_monlam",
-      //     checked: true
-      //   }
-      // ];
       filterArray.push.apply(filterArray, payload);
       state.options = [...filterArray];
       const finalArray = state.options.filter(val => {
@@ -88,6 +76,7 @@ export default new Vuex.Store({
         });
       });
       state.options = [...finalArray];
+      localStorage.setItem("lktOptions", JSON.stringify(state.options));
     },
     setDicToDefaultList(state, payload) {
       const myArrayFiltered = state.options.filter(el => {
@@ -113,7 +102,12 @@ export default new Vuex.Store({
       state.options = [...filteredArray];
     },
     revertDictionaryList(state) {
-      const previousList = localStorage.getItem("options");
+      let previousList = [];
+      if (state.lktSessionStart) {
+        previousList = localStorage.getItem("lktOptions");
+      } else {
+        previousList = localStorage.getItem("options");
+      }
       if (previousList) {
         state.options = [...JSON.parse(previousList)];
       }
