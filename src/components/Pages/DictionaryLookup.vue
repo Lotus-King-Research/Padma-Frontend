@@ -185,6 +185,7 @@ export default {
     this.value = [];
     this.filterDictionaries();
     this.addNewDic();
+    localStorage.setItem("lktOptions", JSON.stringify(this.options));
     this.doSearch();
   },
   methods: {

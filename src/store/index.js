@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     loading: false,
     lktSessionStart: false,
+    lktPrevList: [],
     options: [
       { id: 0, name: "Mahavyutpatti", value: "Mahavyutpatti", checked: true },
       {
@@ -69,6 +70,7 @@ export default new Vuex.Store({
           })
       );
       filterArray.push.apply(filterArray, payload);
+      console.log("filtered array =", payload, filterArray);
       state.options = [...filterArray];
       const finalArray = state.options.filter(val => {
         return !nonLktDicList.find(item => {
@@ -76,7 +78,6 @@ export default new Vuex.Store({
         });
       });
       state.options = [...finalArray];
-      localStorage.setItem("lktOptions", JSON.stringify(state.options));
     },
     setDicToDefaultList(state, payload) {
       const myArrayFiltered = state.options.filter(el => {
@@ -90,7 +91,8 @@ export default new Vuex.Store({
       state.options = [...payload];
     },
     partialDicSelection(state, payload) {
-      const filteredArray = state.options.map(el => {
+      const lktDicOptions = state.options;
+      const filteredArray = lktDicOptions.map(el => {
         if (el.name === payload[0].name) {
           el.checked = true;
           return el;

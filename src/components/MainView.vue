@@ -316,6 +316,10 @@ export default {
       this.previousTab = this.tabSelected;
       this.tabSelected = val;
       if (this.tabSelected === "dictionary") {
+        if (this.lktSessionStart) {
+          this.tabSelected = "lkt";
+          this.matching = "exact";
+        }
         this.matching = "exact";
       }
       if (this.tabSelected === "description") {
@@ -442,7 +446,7 @@ export default {
         checkedDicList = localStorage.getItem("options");
       }
       const parsedDicList = [...JSON.parse(checkedDicList)];
-      this.selectedDictionary = parsedDicList.filter(a => a.checked);
+      this.selectedDictionary = parsedDicList;
       if (this.setTokenizeQuery) {
         this.errorMessage =
           "You have to turn Tokenize off before doing partial search";
