@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import nonLktDicList from "@/components/docs/nonLktDicList.json";
+import defaultDicList from "@/components/docs/defaultDicList.json";
 
 Vue.use(Vuex);
 
@@ -9,31 +10,7 @@ export default new Vuex.Store({
     loading: false,
     lktSessionStart: false,
     lktPrevList: [],
-    options: [
-      { id: 0, name: "Mahavyutpatti", value: "Mahavyutpatti", checked: true },
-      {
-        id: 1,
-        name: "Erik pema kunsang",
-        value: "Erik_pema_kunsang",
-        checked: true
-      },
-      { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-      {
-        id: 3,
-        name: "Jeffrey hopkins",
-        value: "Jeffrey_hopkins",
-        checked: true
-      },
-      { id: 4, name: "Lobsang monlam", value: "Lobsang_monlam", checked: true },
-      { id: 5, name: "Verb lexicon", value: "Verb_lexicon", checked: true },
-      { id: 6, name: "Tibetan multi", value: "Tibetan_multi", checked: true },
-      {
-        id: 7,
-        name: "Tibetan medicine",
-        value: "Tibetan_medicine",
-        checked: true
-      }
-    ]
+    options: [...defaultDicList]
   },
   mutations: {
     requestInProgress(state) {
@@ -70,7 +47,6 @@ export default new Vuex.Store({
           })
       );
       filterArray.push.apply(filterArray, payload);
-      console.log("filtered array =", payload, filterArray);
       state.options = [...filterArray];
       const finalArray = state.options.filter(val => {
         return !nonLktDicList.find(item => {
@@ -113,6 +89,9 @@ export default new Vuex.Store({
       if (previousList) {
         state.options = [...JSON.parse(previousList)];
       }
+    },
+    newDicAdded(state, payload) {
+      state.options = [...payload];
     }
   },
   actions: {},

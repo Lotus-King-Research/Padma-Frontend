@@ -182,6 +182,10 @@ export default {
         });
       }
     });
+    this.$root.$on("viewUpdate", () => {
+      this.filterDicList();
+      this.addNewDic();
+    });
     this.value = [];
     this.filterDictionaries();
     this.addNewDic();

@@ -170,6 +170,7 @@ import messageBox from "@/components/Sub/messageBox.vue";
 import selectDictionary from "@/components/Sub/selectDictionary.vue";
 import { mapState } from "vuex";
 import lktDicList from "@/components/docs/lktDictionaryList.json";
+import defaultDicList from "@/components/docs/defaultDicList.json";
 
 export default {
   name: "mainview",
@@ -195,6 +196,8 @@ export default {
       selectedDictionary: [],
       matching: "exact",
       btnLabel: "EXACT MATCH",
+      defaultDicData: [],
+      localStoreValue: [],
       matchingList: [
         {
           id: 1,
@@ -223,6 +226,29 @@ export default {
     ...mapState(["lktSessionStart", "options"])
   },
   watch: {
+    defaultDicData() {
+      const firstArray = [...JSON.parse(localStorage.getItem("options"))];
+      const secondArray = [...JSON.parse(JSON.stringify(this.defaultDicData))];
+      const filterArray = firstArray.filter(object1 => {
+        return !secondArray.some(object2 => {
+          return object1.name === object2.name;
+        });
+      });
+      if (filterArray.length > 0) {
+        const finalArray = secondArray.filter(val => {
+          return !filterArray.find(item => {
+            return val.id === item.id;
+          });
+        });
+        if (finalArray.length > 0) {
+          localStorage.setItem("options", JSON.stringify(secondArray));
+        }
+      } else {
+        localStorage.setItem("options", JSON.stringify(secondArray));
+      }
+      this.$store.commit("newDicAdded", secondArray);
+      this.$root.$emit("viewUpdate");
+    },
     matching() {
       switch (this.matching) {
         case "partial":
@@ -272,6 +298,7 @@ export default {
     }
   },
   mounted() {
+    this.defaultDicData = [...defaultDicList];
     this.detectedRouterQuery();
     this.$root.$on("turnOffTokenization", () => {
       if (this.tabSelected === "tokenize") {
