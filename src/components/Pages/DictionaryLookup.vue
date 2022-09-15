@@ -83,7 +83,7 @@
               <span class="dic_source_wrapper">
                 <span class="dic_source"> {{ item.source[0] }}</span>
               </span>
-              <span v-if="item.text.length > 0">
+              <span v-if="Array.isArray(item.text)">
                 <template v-for="val in item.text">
                   {{ val }}
                 </template>
