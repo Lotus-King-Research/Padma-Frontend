@@ -198,6 +198,7 @@ export default {
       btnLabel: "EXACT MATCH",
       defaultDicData: [],
       localStoreValue: [],
+      dicSelected: false,
       matchingList: [
         {
           id: 1,
@@ -295,6 +296,12 @@ export default {
       } else {
         this.placeHolderText = "Enter Tibetan Text";
       }
+    },
+    queryString() {
+      this.dicSelected = false;
+    },
+    btnLabel() {
+      this.dicSelected = false;
     }
   },
   mounted() {
@@ -310,7 +317,9 @@ export default {
       }
     });
     this.$root.$on("partialSearch", val => {
-      console.log("main view partial =", val);
+      if (val.length > 0) {
+        this.dicSelected = true;
+      }
       this.setSelectedfunction();
     });
     this.$root.$on("closeModal", () => {
@@ -330,11 +339,19 @@ export default {
           this.$store.commit("revertDictionaryList");
           this.setSelectedfunction();
         } else {
-          this.partialMatch();
+          if (this.dicSelected) {
+            this.doDictionaryLookup();
+          } else {
+            this.partialMatch();
+          }
         }
       } else if (this.tabSelected === "description") {
         this.matching = "description";
-        this.partialMatch();
+        if (this.dicSelected) {
+          this.doDictionaryLookup();
+        } else {
+          this.partialMatch();
+        }
       } else {
         this.setSelectedfunction();
       }
