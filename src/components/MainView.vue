@@ -62,7 +62,7 @@
             split
             :text="btnLabel"
             class="look-up-btn m-2"
-            v-if="tabSelected === 'dictionary' || tabSelected === 'lkt'"
+            v-if="tabSelected === 'dictionary' || this.lktSessionStart"
           >
             <b-dropdown-item href="#" @click="matching = 'exact'">
               <div class="item-container">
@@ -268,7 +268,6 @@ export default {
     },
     $route() {
       if (this.$route.name === "lkt") {
-        this.tabSelected = "lkt";
         this.$store.commit("updateLktSession", true);
         this.setDefaultDic();
       }
@@ -332,13 +331,17 @@ export default {
   },
   methods: {
     lookup() {
-      if (this.tabSelected === "dictionary" || this.tabSelected === "lkt") {
+      if (this.tabSelected === "dictionary" || this.lktSessionStart) {
         if (this.matching === "exact") {
-          this.$store.commit("revertDictionaryList");
+          // this.$store.commit("revertDictionaryList");
           this.setSelectedfunction();
         } else {
           if (this.dicSelected) {
-            this.doDictionaryLookup();
+            if (this.lktSessionStart) {
+              this.doLktLookup();
+            } else {
+              this.doDictionaryLookup();
+            }
           } else {
             this.partialMatch();
           }
@@ -359,7 +362,6 @@ export default {
       this.tabSelected = val;
       if (this.tabSelected === "dictionary") {
         if (this.lktSessionStart) {
-          this.tabSelected = "lkt";
           this.matching = "exact";
         }
         this.matching = "exact";
@@ -396,7 +398,15 @@ export default {
         }
       } else if (this.tabSelected === "description") {
         this.matching = "description";
-        this.partialMatch();
+        if (this.dicSelected) {
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
+        } else {
+          this.partialMatch();
+        }
       } else {
         this.setSelectedfunction();
         this.btnLabel = "EXACT MATCH";
@@ -415,7 +425,6 @@ export default {
       } else if (this.$route.name === "tokenize") {
         this.tabSelected = "tokenize";
       } else if (this.$route.name === "lkt") {
-        this.tabSelected = "lkt";
         this.$store.commit("updateLktSession", true);
       }
     },
@@ -441,14 +450,19 @@ export default {
     },
     setSelectedfunction() {
       switch (this.tabSelected) {
-        case "lkt":
-          this.doLktLookup();
-          break;
         case "dictionary":
-          this.doDictionaryLookup();
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
           break;
         case "description":
-          this.doDictionaryLookup();
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
           break;
         case "texts":
           this.doSearchTexts();

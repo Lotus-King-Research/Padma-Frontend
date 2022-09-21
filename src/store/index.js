@@ -24,7 +24,6 @@ export default new Vuex.Store({
       state.lktSessionStart = payload;
     },
     updateDictionary(state, payload) {
-      console.log("parload =", payload);
       if (payload.length > 0) {
         state.options.map(a => {
           if (a.id === payload[0].id) {
@@ -79,17 +78,17 @@ export default new Vuex.Store({
       });
       state.options = [...filteredArray];
     },
-    revertDictionaryList(state) {
-      let previousList = [];
-      if (state.lktSessionStart) {
-        previousList = localStorage.getItem("lktOptions");
-      } else {
-        previousList = localStorage.getItem("options");
-      }
-      if (previousList) {
-        state.options = [...JSON.parse(previousList)];
-      }
-    },
+    // revertDictionaryList(state) {
+    //   let previousList = [];
+    //   if (state.lktSessionStart) {
+    //     previousList = localStorage.getItem("lktOptions");
+    //   } else {
+    //     previousList = localStorage.getItem("options");
+    //   }
+    //   if (previousList) {
+    //     state.options = [...JSON.parse(previousList)];
+    //   }
+    // },
     newDicAdded(state, payload) {
       state.options = [...payload];
     }
