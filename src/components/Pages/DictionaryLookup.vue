@@ -166,6 +166,13 @@ export default {
       this.addNewDic();
       this.filterDictionaries();
       this.doSearch();
+    },
+    value() {
+      if (this.value.length === 0) {
+        this.$root.$emit("dicSelected", false);
+      } else if (this.value.length >= 2) {
+        this.$root.$emit("dicSelected", false);
+      }
     }
   },
 

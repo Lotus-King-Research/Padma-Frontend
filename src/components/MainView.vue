@@ -296,12 +296,6 @@ export default {
       } else {
         this.placeHolderText = "Enter Tibetan Text";
       }
-    },
-    queryString() {
-      this.dicSelected = false;
-    },
-    btnLabel() {
-      this.dicSelected = false;
     }
   },
   mounted() {
@@ -320,7 +314,11 @@ export default {
       if (val.length > 0) {
         this.dicSelected = true;
       }
+      console.log("partial search runs");
       this.setSelectedfunction();
+    });
+    this.$root.$on("dicSelected", val => {
+      this.dicSelected = val;
     });
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
