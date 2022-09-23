@@ -96,6 +96,7 @@
         </div>
       </div>
     </div>
+    <popUp :message="msg" />
   </div>
 </template>
 
@@ -104,11 +105,13 @@ import { Services } from "@/services/services";
 import multiselect from "vue-multiselect";
 import { mapState } from "vuex";
 import lktDicList from "@/components/docs/lktDictionaryList.json";
+import popUp from "@/components/Sub/popUp.vue";
 
 export default {
   name: "dictionarylookup",
   components: {
-    multiselect
+    multiselect,
+    popUp
   },
 
   data() {
@@ -116,7 +119,9 @@ export default {
       results: {},
       value: [],
       noResultsFound: false,
-      partialDictionarySelected: []
+      partialDictionarySelected: [],
+      lastIndex: null,
+      msg: ""
     };
   },
 
@@ -170,6 +175,8 @@ export default {
     value() {
       if (this.value.length === 0) {
         this.$root.$emit("dicSelected", false);
+        this.msg = "select atleast one dictionary";
+        this.$root.$emit("bv::show::modal", "popUp");
       } else if (this.value.length >= 2) {
         this.$root.$emit("dicSelected", false);
       }
@@ -177,6 +184,10 @@ export default {
   },
 
   mounted() {
+    this.$root.$on("closePopUp", () => {
+      this.options[this.lastIndex].checked = true;
+      this.value.push(this.options[this.lastIndex]);
+    });
     localStorage.setItem("options", JSON.stringify(this.options));
     this.$root.$on("partialSearch", val => {
       this.partialDictionarySelected = [...val];
@@ -264,6 +275,7 @@ export default {
     onRemove(option) {
       let index = this.options.findIndex(item => item.id === option.id);
       this.options[index].checked = false;
+      this.lastIndex = index;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
       if (this.searchQuery) {
@@ -273,7 +285,11 @@ export default {
     removeSelectedDic(item) {
       let value = item.source.split("_").join(" ");
       let result = this.options.filter(a => a.name.toLowerCase() == value);
-      this.onRemove(result[0]);
+      if (this.value.length < 2) {
+        alert("select atleast one dictionary");
+      } else {
+        this.onRemove(result[0]);
+      }
     }
   }
 };
