@@ -268,9 +268,6 @@ export default {
       this.options[index].checked = true;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
-      if (this.searchQuery) {
-        this.doSearch();
-      }
     },
     onRemove(option) {
       let index = this.options.findIndex(item => item.id === option.id);
@@ -278,9 +275,6 @@ export default {
       this.lastIndex = index;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
-      if (this.searchQuery) {
-        this.doSearch();
-      }
     },
     removeSelectedDic(item) {
       let value = item.source.split("_").join(" ");
