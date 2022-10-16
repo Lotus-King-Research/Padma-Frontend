@@ -6,20 +6,26 @@
           :class="{ active: tabSelected === 'dictionary' }"
           @click="selectedTab('dictionary')"
         >
-          Dictionary
+          Tibetan
         </label>
         <label
+          :class="{ active: tabSelected === 'description' }"
+          @click="selectedTab('description')"
+        >
+          Description
+        </label>
+        <!-- <label
           :class="{ active: tabSelected === 'texts' }"
           @click="selectedTab('texts')"
         >
           Texts
-        </label>
+        </label> -->
         <!-- <label
           :class="{ active: tabSelected === 'similarWords' }"
         >
           Similar Words
         </label> -->
-        <label
+        <!-- <label
           :class="{ active: tabSelected === 'statistics' }"
           @click="selectedTab('statistics')"
         >
@@ -30,11 +36,11 @@
           @click="selectedTab('tokenize')"
         >
           Tokenize
-        </label>
+        </label> -->
       </div>
       <div class="textArea">
         <div class="place-holder-text">
-          <label> Enter Tibetan Text </label>
+          <label> {{ placeHolderText }} </label>
         </div>
         <customTextArea
           v-model="queryString"
@@ -56,7 +62,7 @@
             split
             :text="btnLabel"
             class="look-up-btn m-2"
-            v-if="tabSelected === 'dictionary' || tabSelected === 'lkt'"
+            v-if="tabSelected === 'dictionary' || this.lktSessionStart"
           >
             <b-dropdown-item href="#" @click="matching = 'exact'">
               <div class="item-container">
@@ -119,6 +125,9 @@
               </div>
             </b-dropdown-item>
           </b-dropdown>
+          <b-button @click="lookup()" v-else-if="tabSelected === 'description'">
+            Search Descriptions <span class="greater-than-arrow"> > </span>
+          </b-button>
           <b-button @click="lookup()" v-else>
             LOOKUP <span class="greater-than-arrow"> > </span>
           </b-button>
@@ -160,6 +169,8 @@ import customTextArea from "@/components/Sub/customTextArea.vue";
 import messageBox from "@/components/Sub/messageBox.vue";
 import selectDictionary from "@/components/Sub/selectDictionary.vue";
 import { mapState } from "vuex";
+import lktDicList from "@/components/docs/lktDictionaryList.json";
+import defaultDicList from "@/components/docs/defaultDicList.json";
 
 export default {
   name: "mainview",
@@ -172,6 +183,7 @@ export default {
     return {
       queryString: "",
       routeQuery: "",
+      placeHolderText: "Enter Tibetan Text",
       tabSelected: "dictionary",
       selectedMenu: "Select Action",
       setTokenizeQuery: false,
@@ -184,6 +196,9 @@ export default {
       selectedDictionary: [],
       matching: "exact",
       btnLabel: "EXACT MATCH",
+      defaultDicData: [],
+      localStoreValue: [],
+      dicSelected: false,
       matchingList: [
         {
           id: 1,
@@ -212,6 +227,29 @@ export default {
     ...mapState(["lktSessionStart", "options"])
   },
   watch: {
+    defaultDicData() {
+      const firstArray = [...JSON.parse(localStorage.getItem("options"))];
+      const secondArray = [...JSON.parse(JSON.stringify(this.defaultDicData))];
+      const filterArray = firstArray.filter(object1 => {
+        return !secondArray.some(object2 => {
+          return object1.name === object2.name;
+        });
+      });
+      if (filterArray.length > 0) {
+        const finalArray = secondArray.filter(val => {
+          return !filterArray.find(item => {
+            return val.id === item.id;
+          });
+        });
+        if (finalArray.length > 0) {
+          localStorage.setItem("options", JSON.stringify(secondArray));
+        }
+      } else {
+        localStorage.setItem("options", JSON.stringify(secondArray));
+      }
+      this.$store.commit("newDicAdded", secondArray);
+      this.$root.$emit("viewUpdate");
+    },
     matching() {
       switch (this.matching) {
         case "partial":
@@ -230,7 +268,6 @@ export default {
     },
     $route() {
       if (this.$route.name === "lkt") {
-        this.tabSelected = "lkt";
         this.$store.commit("updateLktSession", true);
         this.setDefaultDic();
       }
@@ -252,9 +289,16 @@ export default {
       } else {
         this.disableTokenization = false;
       }
+      // changing the input place holder text for description
+      if (this.tabSelected === "description") {
+        this.placeHolderText = "Enter Text";
+      } else {
+        this.placeHolderText = "Enter Tibetan Text";
+      }
     }
   },
   mounted() {
+    this.defaultDicData = [...defaultDicList];
     this.detectedRouterQuery();
     this.$root.$on("turnOffTokenization", () => {
       if (this.tabSelected === "tokenize") {
@@ -266,8 +310,14 @@ export default {
       }
     });
     this.$root.$on("partialSearch", val => {
-      console.log("main view partial =", val);
+      if (val.length > 0) {
+        this.dicSelected = true;
+      }
+      console.log("partial search runs");
       this.setSelectedfunction();
+    });
+    this.$root.$on("dicSelected", val => {
+      this.dicSelected = val;
     });
     this.$root.$on("closeModal", () => {
       this.tabSelected = this.previousTab;
@@ -281,9 +331,25 @@ export default {
   },
   methods: {
     lookup() {
-      if (this.tabSelected === "dictionary" || this.tabSelected === "lkt") {
+      if (this.tabSelected === "dictionary" || this.lktSessionStart) {
         if (this.matching === "exact") {
+          // this.$store.commit("revertDictionaryList");
           this.setSelectedfunction();
+        } else {
+          if (this.dicSelected) {
+            if (this.lktSessionStart) {
+              this.doLktLookup();
+            } else {
+              this.doDictionaryLookup();
+            }
+          } else {
+            this.partialMatch();
+          }
+        }
+      } else if (this.tabSelected === "description") {
+        this.matching = "description";
+        if (this.dicSelected) {
+          this.doDictionaryLookup();
         } else {
           this.partialMatch();
         }
@@ -294,7 +360,22 @@ export default {
     selectedTab(val) {
       this.previousTab = this.tabSelected;
       this.tabSelected = val;
-      this.callSelectedTabFunction();
+      if (this.tabSelected === "dictionary") {
+        if (this.lktSessionStart) {
+          this.matching = "exact";
+        }
+        this.matching = "exact";
+      }
+      if (this.tabSelected === "description") {
+        if (this.queryString === "") {
+          this.routeQuery = "";
+          this.$root.$emit("clearInputTextArea", "description");
+        } else {
+          this.callSelectedTabFunction();
+        }
+      } else {
+        this.callSelectedTabFunction();
+      }
     },
     callSelectedTabFunction() {
       if (this.setTokenizeQuery) {
@@ -311,7 +392,18 @@ export default {
         }
       } else if (this.tabSelected === "dictionary") {
         if (this.matching === "exact") {
-          this.setSelectedfunction();
+          this.lookup();
+        } else {
+          this.partialMatch();
+        }
+      } else if (this.tabSelected === "description") {
+        this.matching = "description";
+        if (this.dicSelected) {
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
         } else {
           this.partialMatch();
         }
@@ -322,21 +414,7 @@ export default {
       }
     },
     setDefaultDic() {
-      const list = [
-        {
-          id: 8,
-          name: "Tony duff",
-          value: "tony_duff",
-          checked: true
-        },
-        {
-          id: 9,
-          name: "Lotus king",
-          value: "lotus_king_trust",
-          checked: true
-        }
-      ];
-      this.$store.commit("setDicToDefaultList", list);
+      this.$store.commit("setDicToDefaultList", lktDicList);
     },
     detectedRouterQuery() {
       this.routeQuery = this.$route.query.query;
@@ -347,7 +425,6 @@ export default {
       } else if (this.$route.name === "tokenize") {
         this.tabSelected = "tokenize";
       } else if (this.$route.name === "lkt") {
-        this.tabSelected = "lkt";
         this.$store.commit("updateLktSession", true);
       }
     },
@@ -373,11 +450,19 @@ export default {
     },
     setSelectedfunction() {
       switch (this.tabSelected) {
-        case "lkt":
-          this.doLktLookup();
-          break;
         case "dictionary":
-          this.doDictionaryLookup();
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
+          break;
+        case "description":
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
           break;
         case "texts":
           this.doSearchTexts();
@@ -410,7 +495,14 @@ export default {
       product.id === 1 ? this.exactMatch() : this.partialMatch();
     },
     partialMatch() {
-      this.selectedDictionary = this.options.filter(a => a.checked);
+      let checkedDicList = [];
+      if (this.lktSessionStart) {
+        checkedDicList = localStorage.getItem("lktOptions");
+      } else {
+        checkedDicList = localStorage.getItem("options");
+      }
+      const parsedDicList = [...JSON.parse(checkedDicList)];
+      this.selectedDictionary = parsedDicList;
       if (this.setTokenizeQuery) {
         this.errorMessage =
           "You have to turn Tokenize off before doing partial search";

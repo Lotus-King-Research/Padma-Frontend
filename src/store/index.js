@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import nonLktDicList from "@/components/docs/nonLktDicList.json";
+import defaultDicList from "@/components/docs/defaultDicList.json";
 
 Vue.use(Vuex);
 
@@ -8,31 +9,8 @@ export default new Vuex.Store({
   state: {
     loading: false,
     lktSessionStart: false,
-    options: [
-      { id: 0, name: "Mahavyutpatti", value: "Mahavyutpatti", checked: true },
-      {
-        id: 1,
-        name: "Erik pema kunsang",
-        value: "Erik_pema_kunsang",
-        checked: true
-      },
-      { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-      {
-        id: 3,
-        name: "Jeffrey hopkins",
-        value: "Jeffrey_hopkins",
-        checked: true
-      },
-      { id: 4, name: "Lobsang monlam", value: "Lobsang_monlam", checked: true },
-      { id: 5, name: "Verb lexicon", value: "Verb_lexicon", checked: true },
-      { id: 6, name: "Tibetan multi", value: "Tibetan_multi", checked: true },
-      {
-        id: 7,
-        name: "Tibetan medicine",
-        value: "Tibetan_medicine",
-        checked: true
-      }
-    ]
+    lktPrevList: [],
+    options: [...defaultDicList]
   },
   mutations: {
     requestInProgress(state) {
@@ -47,8 +25,16 @@ export default new Vuex.Store({
     },
     updateDictionary(state, payload) {
       if (payload.length > 0) {
-        state.options[payload[0].id].checked = payload[0].checked;
-        localStorage.setItem("options", JSON.stringify(state.options));
+        state.options.map(a => {
+          if (a.id === payload[0].id) {
+            a.checked = payload[0].checked;
+          }
+        });
+        if (state.lktSessionStart) {
+          localStorage.setItem("lktOptions", JSON.stringify(state.options));
+        } else {
+          localStorage.setItem("options", JSON.stringify(state.options));
+        }
       }
     },
     updateDictionaryList(state, payload) {
@@ -59,27 +45,6 @@ export default new Vuex.Store({
             return f.name === el.name;
           })
       );
-      // const delArray = [
-      //   {
-      //     id: 1,
-      //     name: "Erik pema kunsang",
-      //     value: "Erik_pema_kunsang",
-      //     checked: true
-      //   },
-      //   { id: 2, name: "Ives waldo", value: "Ives_waldo", checked: true },
-      //   {
-      //     id: 3,
-      //     name: "Jeffrey hopkins",
-      //     value: "Jeffrey_hopkins",
-      //     checked: true
-      //   },
-      //   {
-      //     id: 4,
-      //     name: "Lobsang monlam",
-      //     value: "Lobsang_monlam",
-      //     checked: true
-      //   }
-      // ];
       filterArray.push.apply(filterArray, payload);
       state.options = [...filterArray];
       const finalArray = state.options.filter(val => {
@@ -98,6 +63,33 @@ export default new Vuex.Store({
       state.options = [...myArrayFiltered];
     },
     storeDicOptions(state, payload) {
+      state.options = [...payload];
+    },
+    partialDicSelection(state, payload) {
+      const lktDicOptions = state.options;
+      const filteredArray = lktDicOptions.map(el => {
+        if (el.name === payload[0].name) {
+          el.checked = true;
+          return el;
+        } else {
+          el.checked = false;
+          return el;
+        }
+      });
+      state.options = [...filteredArray];
+    },
+    // revertDictionaryList(state) {
+    //   let previousList = [];
+    //   if (state.lktSessionStart) {
+    //     previousList = localStorage.getItem("lktOptions");
+    //   } else {
+    //     previousList = localStorage.getItem("options");
+    //   }
+    //   if (previousList) {
+    //     state.options = [...JSON.parse(previousList)];
+    //   }
+    // },
+    newDicAdded(state, payload) {
       state.options = [...payload];
     }
   },

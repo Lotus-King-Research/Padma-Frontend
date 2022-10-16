@@ -1,22 +1,18 @@
 <template>
   <b-modal
-    id="messageBox"
-    ref="msg-Box"
+    id="popUp"
     content-class="modalContent"
     hide-header-close
     hide-footer
   >
     <template #modal-title>
-      <div class="close-arrow" @click="closeModal()">
+      <div class="close-arrow" @click="closePopUp()">
         <img src="@/assets/images/close-icon.svg" alt="close modal" />
       </div>
     </template>
     <div class="d-block message text-center">
       <label v-html="hightLightText(message)"> </label>
     </div>
-    <b-button @click="turnOfTokenization()">
-      TURN OFF <span class="greater-than-arrow"> > </span>
-    </b-button>
   </b-modal>
 </template>
 <script>
@@ -30,19 +26,15 @@ export default {
     return {};
   },
   methods: {
-    turnOfTokenization() {
-      this.$bvModal.hide("messageBox");
-      this.$root.$emit("turnOffTokenization");
-    },
     hightLightText(text) {
       return text.replaceAll(
         "Tokenize query",
         `<span class="highlight">${"Tokenize query"}</span>`
       );
     },
-    closeModal() {
-      this.$root.$emit("closeModal");
-      this.$bvModal.hide("messageBox");
+    closePopUp() {
+      this.$root.$emit("closePopUp");
+      this.$bvModal.hide("popUp");
     }
   }
 };

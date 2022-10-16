@@ -1,13 +1,13 @@
 <template>
   <b-modal id="selectDictionary" content-class="modalContent" hide-header-close>
     <template #modal-title>
-      <div class="close-arrow" @click="closeModal()">
+      <!-- <div class="close-arrow" @click="closeModal()">
         <img src="@/assets/images/close-icon.svg" alt="close modal" />
-      </div>
+      </div> -->
     </template>
     <div class="d-block dictionaryList">
       <b-form-group
-        label="Partial match supports only one dictionary at a time, pick one:"
+        label="Please select only one dictionary for current search only:"
         v-slot="{ dictionaryList }"
       >
         <template v-for="item in message">
@@ -55,6 +55,7 @@ export default {
       this.dictionarySelected = [];
       this.dictionarySelected.push(this.selected);
       this.$root.$emit("partialSearch", this.dictionarySelected);
+      this.$store.commit("partialDicSelection", this.dictionarySelected);
       this.closeModal();
     }
   }

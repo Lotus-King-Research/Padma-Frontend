@@ -83,12 +83,20 @@
               <span class="dic_source_wrapper">
                 <span class="dic_source"> {{ item.source[0] }}</span>
               </span>
-              {{ item.text }}
+              <span v-if="Array.isArray(item.text)">
+                <template v-for="val in item.text">
+                  {{ val }}
+                </template>
+              </span>
+              <span v-else>
+                {{ item.text }}
+              </span>
             </div>
           </template>
         </div>
       </div>
     </div>
+    <popUp :message="msg" />
   </div>
 </template>
 
@@ -97,11 +105,13 @@ import { Services } from "@/services/services";
 import multiselect from "vue-multiselect";
 import { mapState } from "vuex";
 import lktDicList from "@/components/docs/lktDictionaryList.json";
+import popUp from "@/components/Sub/popUp.vue";
 
 export default {
   name: "dictionarylookup",
   components: {
-    multiselect
+    multiselect,
+    popUp
   },
 
   data() {
@@ -109,7 +119,9 @@ export default {
       results: {},
       value: [],
       noResultsFound: false,
-      partialDictionarySelected: []
+      partialDictionarySelected: [],
+      lastIndex: null,
+      msg: ""
     };
   },
 
@@ -159,16 +171,43 @@ export default {
       this.addNewDic();
       this.filterDictionaries();
       this.doSearch();
+    },
+    value() {
+      if (this.value.length === 0) {
+        this.$root.$emit("dicSelected", false);
+        this.msg = "select atleast one dictionary";
+        this.$root.$emit("bv::show::modal", "popUp");
+      } else if (this.value.length >= 2) {
+        this.$root.$emit("dicSelected", false);
+      }
     }
   },
 
   mounted() {
+    this.$root.$on("closePopUp", () => {
+      this.options[this.lastIndex].checked = true;
+      this.value.push(this.options[this.lastIndex]);
+    });
+    localStorage.setItem("options", JSON.stringify(this.options));
     this.$root.$on("partialSearch", val => {
       this.partialDictionarySelected = [...val];
+    });
+    this.$root.$on("clearInputTextArea", val => {
+      if (val === "description") {
+        this.results = {};
+        this.$router.replace({
+          query: ""
+        });
+      }
+    });
+    this.$root.$on("viewUpdate", () => {
+      this.filterDicList();
+      this.addNewDic();
     });
     this.value = [];
     this.filterDictionaries();
     this.addNewDic();
+    localStorage.setItem("lktOptions", JSON.stringify(this.options));
     this.doSearch();
   },
   methods: {
@@ -214,6 +253,10 @@ export default {
           filteredDictionaries = this.options.filter(a => {
             if (a.checked === true) return a;
           });
+        } else if (!this.searchQuery) {
+          filteredDictionaries = this.options.filter(a => {
+            if (a.checked === true) return a;
+          });
         } else {
           filteredDictionaries = [...this.partialDictionarySelected];
         }
@@ -225,23 +268,22 @@ export default {
       this.options[index].checked = true;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
-      if (this.searchQuery) {
-        this.doSearch();
-      }
     },
     onRemove(option) {
       let index = this.options.findIndex(item => item.id === option.id);
       this.options[index].checked = false;
+      this.lastIndex = index;
       this.$store.commit("updateDictionary", this.value);
       this.filterDictionaries();
-      if (this.searchQuery) {
-        this.doSearch();
-      }
     },
     removeSelectedDic(item) {
       let value = item.source.split("_").join(" ");
       let result = this.options.filter(a => a.name.toLowerCase() == value);
-      this.onRemove(result[0]);
+      if (this.value.length < 2) {
+        alert("select atleast one dictionary");
+      } else {
+        this.onRemove(result[0]);
+      }
     }
   }
 };
