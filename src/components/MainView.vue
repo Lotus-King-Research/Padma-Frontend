@@ -62,7 +62,7 @@
             split
             :text="btnLabel"
             class="look-up-btn m-2"
-            v-if="tabSelected === 'dictionary' || this.lktSessionStart"
+            v-if="tabSelected === 'dictionary'"
           >
             <b-dropdown-item href="#" @click="matching = 'exact'">
               <div class="item-container">
@@ -331,7 +331,7 @@ export default {
   },
   methods: {
     lookup() {
-      if (this.tabSelected === "dictionary" || this.lktSessionStart) {
+      if (this.tabSelected === "dictionary") {
         if (this.matching === "exact") {
           // this.$store.commit("revertDictionaryList");
           this.setSelectedfunction();
@@ -349,7 +349,11 @@ export default {
       } else if (this.tabSelected === "description") {
         this.matching = "description";
         if (this.dicSelected) {
-          this.doDictionaryLookup();
+          if (this.lktSessionStart) {
+            this.doLktLookup();
+          } else {
+            this.doDictionaryLookup();
+          }
         } else {
           this.partialMatch();
         }
@@ -429,6 +433,7 @@ export default {
       }
     },
     doLktLookup() {
+      this.counter++;
       this.$router.push(
         `lkt?query=${this.queryString}&matching=${this.matching}&tokenize=${this.setTokenizeQuery}&count=${this.counter}`
       );
