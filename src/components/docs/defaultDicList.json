@@ -21,5 +21,77 @@
       "name": "Tibetan medicine",
       "value": "Tibetan_medicine",
       "checked": true
+    },
+    {
+        "id": 8,
+        "name": "Lotus king",
+        "value": "lotus_king_trust",
+        "checked": true
+    },
+    {
+        "id": 9,
+        "name": "Jim Welby",
+        "value": "jim_welby",
+        "checked": true
+    },
+    {
+        "id": 10,
+        "name": "84000",
+        "value": "84000",
+        "checked": true
+    },
+    {
+        "id": 11,
+        "name": "Laine Abbreviations",
+        "value": "laine_abbreviations",
+        "checked": true
+    },
+    {
+        "id": 12,
+        "name": "Tsig Dzo Chenmo",
+        "value": "tsig_dzo_chenmo",
+        "checked": true
+    },
+    {
+        "id": 13,
+        "name": "Negi Sanskrit",
+        "value": "negi_sanskrit",
+        "checked": true
+    },
+    {
+        "id": 14,
+        "name": "Tsepak Rigdzin",
+        "value": "tsepak_rigdzin",
+        "checked": true
+    },
+    {
+        "id": 15,
+        "name": "Yogacharabhumi Sanskrit",
+        "value": "yogacharabhumi_sanskrit",
+        "checked": true
+    },
+    {
+        "id": 16,
+        "name": "Sera",
+        "value": "sera",
+        "checked": true
+    },
+    {
+        "id": 17,
+        "name": "Chandra Sanskrit",
+        "value": "chandra_sanskrit",
+        "checked": true
+    },
+    {
+        "id": 18,
+        "name": "Dag Yig",
+        "value": "dag_yig",
+        "checked": true
+    },
+    {
+        "id": 19,
+        "name": "Monlam",
+        "value": "monlam",
+        "checked": true
     }
   ]
