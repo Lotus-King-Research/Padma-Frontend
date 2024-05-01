@@ -348,8 +348,8 @@ export default {
       }
     }
     .dic_source_wrapper {
-      display: block;
-      margin-bottom: 0.5rem;
+      display: inline-block;
+      margin-bottom: 0rem;
       .dic_source {
         color: hsl(17, 39%, 15%);
         text-transform: uppercase;
