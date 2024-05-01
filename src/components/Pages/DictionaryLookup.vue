@@ -393,7 +393,7 @@ export default {
         margin-bottom: 2rem;
 
         h1 {
-          margin-bottom: 1rem;
+          margin-bottom: 0rem;
         }
       }
       @include breakpointMax(small) {
