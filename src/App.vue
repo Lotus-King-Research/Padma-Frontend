@@ -39,7 +39,9 @@ export default {
 }
 body {
   padding: 0;
-  font-size: 1em !important;
+  font-size: 1.3em !important;
+  line-height: 1.3 !important;
+  font-weight: 500 !important;
   font-family: ZillaSlab !important;
   -moz-appearance: none;
   -webkit-appearance: none;
