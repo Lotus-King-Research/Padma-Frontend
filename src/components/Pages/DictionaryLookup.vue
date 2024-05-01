@@ -348,8 +348,8 @@ export default {
       }
     }
     .dic_source_wrapper {
-      display: block;
-      margin-bottom: 0.5rem;
+      display: inline-block;
+      margin-bottom: 0rem;
       .dic_source {
         color: hsl(17, 39%, 15%);
         text-transform: uppercase;
@@ -393,7 +393,7 @@ export default {
         margin-bottom: 2rem;
 
         h1 {
-          margin-bottom: 1rem;
+          margin-bottom: 0rem;
         }
       }
       @include breakpointMax(small) {
