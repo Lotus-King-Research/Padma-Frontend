@@ -39,7 +39,7 @@ export default {
 }
 body {
   padding: 0;
-  font-size: 1em !important;
+  font-size: 1.3em !important;
   font-family: ZillaSlab !important;
   -moz-appearance: none;
   -webkit-appearance: none;
