@@ -1,16 +1,15 @@
 FROM node:16.16.0-alpine
 
 # install simple http server for serving static content
-RUN yarn global add http-server
+RUN yarn global add http-server@14.1.1
 
 # make the 'app' folder the current working directory
 WORKDIR /app
 
-# copy both 'package.json' and 'package-lock.json' (if available)
-COPY package*.json ./
-
-# install project dependencies
-RUN yarn install
+# install the exact dependency versions from yarn.lock (Vue CLI 4 needs Node 16;
+# resolving fresh versions pulls modules that require Node 18+)
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
